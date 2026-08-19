@@ -8,8 +8,25 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wortabolario">
 <meta name="theme-color" content="#1b2340">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="icon" type="image/png" href="icon.png">
+<!-- Icone. I nomi sono univoci per app (worta-*): Glifo e Wortabolario stanno
+     sullo stesso host, zima-lab.github.io, e WebKit tiene una sola cache di
+     touch icon per host — con nomi uguali le due app se le sovrascrivono a
+     vicenda, ed è il motivo per cui su iPhone comparivano scambiate.
+
+     Le misure vanno dichiarate, e devono essere VERE: se il file non
+     corrisponde a quello che dice sizes, Safari scarta l'icona e ricade su
+     quella già in cache per il dominio, cioè su quella dell'altra app.
+     Chromium invece ridimensiona e tira dritto — da qui il fatto che su
+     Brave desktop si vedesse giusta e su iPhone no.
+
+     apple-touch-icon.png a nome fisso nella radice è l'ultima rete: le
+     versioni più vecchie di iOS lo cercano lì prima di leggere l'HTML. -->
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/worta-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/worta-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/worta-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/worta-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icons/worta-512.png">
 <title>Wortabolario — Vocabolario Tedesco ↔ Italiano</title>
 <meta name="description" content="Vocabolario tedesco ↔ italiano/inglese: verbi, sostantivi, aggettivi, grammatica per il corso B1.">
 <meta property="og:title" content="Wortabolario — Vocabolario Tedesco ↔ Italiano">
