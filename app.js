@@ -266,24 +266,28 @@ VERBI.forEach(v => {
 });
 
 SOSTANTIVI.forEach(s => {
+  const f = [ ["Articolo", s.de.split(" ")[0]], ["Plurale", s.pl] ];
+  if(s.prep) f.push(["Preposizione", s.prep]);
   ENTRIES.push({
     id: "s"+(uid++), type: "sostantivo",
     de: s.de, it: s.it, en: s.en, catLabel: s.cat,
-    fields: [ ["Articolo", s.de.split(" ")[0]], ["Plurale", s.pl] ],
+    fields: f,
     rows: [], enRows: [],
-    note: "", enNote: "",
+    note: s.note || "", enNote: s.enNote || "",
     ex: s.ex, enEx: s.enex
   });
 });
 
 AGGETTIVI.forEach(a => {
+  const f = [ ["Comparativo", a.comp], ["Superlativo", a.sup], ["Contrario", a.opp] ];
+  if(a.prep) f.unshift(["Preposizione", a.prep]);
   ENTRIES.push({
     id: "a"+(uid++), type: "aggettivo",
     de: a.de, it: a.it, en: a.en, catLabel: a.cat,
-    fields: [ ["Comparativo", a.comp], ["Superlativo", a.sup], ["Contrario", a.opp] ],
+    fields: f,
     rows: [], enRows: [],
-    note: "", enNote: "",
-    ex: [], enEx: []
+    note: a.note || "", enNote: a.enNote || "",
+    ex: a.ex || [], enEx: a.enex || []
   });
 });
 
@@ -335,7 +339,7 @@ const CAT_EN = {
   "frase utile":"useful phrase", "detto":"saying"
 };
 
-const FIELD_LABELS_EN = { "Articolo":"Article", "Plurale":"Plural", "Comparativo":"Comparative", "Superlativo":"Superlative", "Contrario":"Opposite" };
+const FIELD_LABELS_EN = { "Articolo":"Article", "Plurale":"Plural", "Comparativo":"Comparative", "Superlativo":"Superlative", "Contrario":"Opposite", "Preposizione":"Preposition" };
 
 function trCat(cat){ return lang === "en" ? (CAT_EN[cat] || cat) : cat; }
 function trFieldLabel(label){ return lang === "en" ? (FIELD_LABELS_EN[label] || label) : label; }
@@ -955,7 +959,25 @@ const BIGNAMI_PAGES = {
   /* Appendice (pp. 44-46) */
   "wurde · würde · werden — le differenze": 44,
   "dürfen · können — le differenze": 45,
-  "Position 0 — und/aber/oder/denn/sondern": 46
+  "Position 0 — und/aber/oder/denn/sondern": 46,
+  "Kommasetzung — la virgola": 47,
+  "Der Brief — Anrede und Gruß": 48,
+  /* Schede ricavate dal Grammatikanhang del libro (pp. 88-117).
+     Non hanno una pagina propria nel Bignami: come per le schede della v17,
+     sono mappate sulla pagina dell'argomento madre già esistente. */
+  "Indirekte Fragen — ob und W-Wörter": 2,
+  "Negationswörter — nicht, kein, nichts, niemand": 10,
+  "Zweiteilige und nachgestellte Präpositionen": 16,
+  "Adjektive mit Präpositionen": 18,
+  "Nomen mit Präpositionen": 18,
+  "Nomen-Verb-Verbindungen": 18,
+  "ohne … zu und (an)statt … zu": 23,
+  "Trennbare und untrennbare Vorsilben": 33,
+  "Perfekt mit doppeltem Infinitiv": 33,
+  "Das Wort es — le sue funzioni": 39,
+  "je …, desto / umso — und Vergleiche": 40,
+  "Das Verb lassen — vier Bedeutungen": 45,
+  "Vermutungen mit Modalverben — die Sicherheitsskala": 45
 };
 
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------
