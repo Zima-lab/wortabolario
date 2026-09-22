@@ -675,6 +675,12 @@ const AGGETTIVI = [
   {de:"oder", comp:"—", sup:"—", it:"o, oppure", en:"or", opp:"—", cat:"connettori"},
   {de:"denn", comp:"—", sup:"—", it:"perché, poiché (causale — non sposta il verbo)", en:"because, for (causal — doesn't move the verb)", opp:"—", cat:"connettori"},
   {de:"sondern", comp:"—", sup:"—", it:"ma, bensì (dopo una negazione)", en:"but rather (after a negation)", opp:"—", cat:"connettori"},
+  {de:"weil", comp:"—", sup:"—", it:"perché, poiché (causale, subordinante — verbo in fondo)", en:"because (causal, subordinating — verb goes to the end)", opp:"—", cat:"connettori"},
+  {de:"dass", comp:"—", sup:"—", it:"che (dichiarativa, subordinante — verbo in fondo)", en:"that (declarative, subordinating — verb goes to the end)", opp:"—", cat:"connettori"},
+  {de:"obwohl", comp:"—", sup:"—", it:"sebbene, benché, nonostante, quantunque (concessiva, subordinante — verbo in fondo)", en:"although, even though (concessive, subordinating — verb goes to the end)", opp:"—", cat:"connettori"},
+  {de:"damit", comp:"—", sup:"—", it:"affinché, perché (finale, subordinante — verbo in fondo)", en:"so that, in order that (purpose, subordinating — verb goes to the end)", opp:"—", cat:"connettori"},
+  {de:"seit / seitdem", comp:"—", sup:"—", it:"da quando (temporale, subordinante — verbo in fondo)", en:"since (temporal, subordinating — verb goes to the end)", opp:"—", cat:"connettori"},
+  {de:"bis", comp:"—", sup:"—", it:"finché, fino a quando (temporale, subordinante — verbo in fondo)", en:"until (temporal, subordinating — verb goes to the end)", opp:"—", cat:"connettori"},
   {de:"alleinstehend", comp:"—", sup:"—", it:"single, non sposato/a", en:"single, unmarried", opp:"verheiratet", cat:"aggettivo"},
   {de:"verwitwet", comp:"—", sup:"—", it:"vedovo/a", en:"widowed", opp:"verheiratet", cat:"aggettivo"},
   {de:"geschieden", comp:"—", sup:"—", it:"divorziato/a", en:"divorced", opp:"verheiratet", cat:"aggettivo"},
@@ -1111,8 +1117,23 @@ const GRAMMATICA = [
     note:"Il trucco: chiediti PERCHÉ non puoi. Se il divieto viene da una regola o da una persona che decide → dürfen; se dipende dalle tue capacità o dalle circostanze → können. Nel parlato Kann ich…? sostituisce spesso Darf ich…?, ma con estranei o in un testo formale è meglio dürfen.",
     enNote:"The trick: ask yourself WHY you can't. If the ban comes from a rule or from someone in charge → dürfen; if it comes from your own ability or the circumstances → können. In speech Kann ich…? often replaces Darf ich…?, but with strangers or in formal writing dürfen is better.",
     ex:[["Ich kann nicht kommen.","Non posso venire: sono malato, non ce la faccio."],["Ich darf nicht kommen.","Non posso venire: non me lo permettono."]],
-    enEx:[["Ich kann nicht kommen.","I can't come: I'm ill, I'm not able to."],["Ich darf nicht kommen.","I'm not allowed to come."]]}
+    enEx:[["Ich kann nicht kommen.","I can't come: I'm ill, I'm not able to."],["Ich darf nicht kommen.","I'm not allowed to come."]]}  ,
+  {de:"Kommasetzung — la virgola", it:"Quando si mette la virgola in tedesco", en:"When to use the comma in German", cat:"sintassi",
+    rows:[["Prima di aber · denn · sondern","SEMPRE: Ich bleibe zu Hause, denn ich bin krank."],["Prima di una subordinata","SEMPRE: Ich bleibe zu Hause, weil ich krank bin."],["Subordinata all'inizio","SEMPRE: Weil ich krank bin, bleibe ich zu Hause."],["Prima di und · oder fra due frasi","NO (è facoltativa): Ich koche und du deckst den Tisch."],["Elenco con und · oder","NO: Ich kaufe Brot, Milch und Käse."],["um … zu / ohne … zu / statt … zu","SEMPRE: Er spart Geld, um ein Auto zu kaufen."]],
+    enRows:[["Before aber · denn · sondern","ALWAYS: Ich bleibe zu Hause, denn ich bin krank."],["Before a subordinate clause","ALWAYS: Ich bleibe zu Hause, weil ich krank bin."],["Subordinate clause first","ALWAYS: Weil ich krank bin, bleibe ich zu Hause."],["Before und · oder between clauses","NO (optional): Ich koche und du deckst den Tisch."],["List with und · oder","NO: Ich kaufe Brot, Milch und Käse."],["um … zu / ohne … zu / statt … zu","ALWAYS: Er spart Geld, um ein Auto zu kaufen."]],
+    note:"In tedesco la virgola non segna la pausa del parlato: separa le frasi. Guarda il connettore e la regola si decide da sola. Dopo la riforma del 1996 la virgola prima di und e oder fra due frasi principali è ammessa ma non obbligatoria: al B1 conviene non metterla.",
+    enNote:"In German the comma does not mark a pause in speech: it separates clauses. Look at the connector and the rule decides itself. Since the 1996 reform the comma before und and oder between two main clauses is allowed but not required: at B1 it is easier to leave it out.",
+    ex:[["Ich bleibe zu Hause, weil ich krank bin.","Resto a casa perché sono malato. (virgola obbligatoria)"],["Ich koche und du deckst den Tisch.","Io cucino e tu apparecchi. (niente virgola)"]],
+    enEx:[["Ich bleibe zu Hause, weil ich krank bin.","I'm staying home because I'm ill. (comma required)"],["Ich koche und du deckst den Tisch.","I cook and you set the table. (no comma)"]]},
+  {de:"Der Brief — Anrede und Gruß", it:"La lettera: apertura e chiusura (telc B1)", en:"The letter: opening and closing (telc B1)", cat:"comunicazione",
+    rows:[["Informell — Anrede","Liebe Anna, · Lieber Tom, · Hallo Anna,"],["Informell — Gruß","Liebe Grüße · Viele Grüße · Bis bald · Tschüs"],["Halbformell — Anrede","Liebe Frau Meyer, · Lieber Herr Klein,"],["Halbformell — Gruß","Viele Grüße · Mit freundlichen Grüßen"],["Se non sai il nome","Sehr geehrte Damen und Herren, … Mit freundlichen Grüßen"],["Dopo l'Anrede","virgola, e la riga dopo comincia in minuscolo"]],
+    enRows:[["Informal — Anrede","Liebe Anna, · Lieber Tom, · Hallo Anna,"],["Informal — Gruß","Liebe Grüße · Viele Grüße · Bis bald · Tschüs"],["Semi-formal — Anrede","Liebe Frau Meyer, · Lieber Herr Klein,"],["Semi-formal — Gruß","Viele Grüße · Mit freundlichen Grüßen"],["If you don't know the name","Sehr geehrte Damen und Herren, … Mit freundlichen Grüßen"],["After the Anrede","comma, and the next line starts with a small letter"]],
+    note:"Prima decidi du oppure Sie e poi non cambiare più per tutta la lettera. Nella prova telc B1 devi rispondere a tutti i punti indicati (di solito 3–4) e firmare alla fine: bastano circa 80 parole.",
+    enNote:"First choose du or Sie and then never switch for the rest of the letter. In the telc B1 task you must answer every given point (usually 3–4) and sign at the end: about 80 words is enough.",
+    ex:[["Liebe Anna, ich schreibe dir, weil …","Cara Anna, ti scrivo perché… (informale, du)"],["Sehr geehrte Damen und Herren, ich schreibe Ihnen, weil …","Gentili signore e signori, Vi scrivo perché… (formale, Sie)"]],
+    enEx:[["Liebe Anna, ich schreibe dir, weil …","Dear Anna, I'm writing to you because… (informal, du)"],["Sehr geehrte Damen und Herren, ich schreibe Ihnen, weil …","Dear Sir or Madam, I'm writing to you because… (formal, Sie)"]]}
 ];
+
 const FRASI = [
   ["Wie geht's?","Come va?","How are you?"],
   ["Es geht mir gut, danke.","Sto bene, grazie.","I'm fine, thanks."],
@@ -1141,8 +1162,29 @@ const FRASI = [
   ["Ich warte auf das Wochenende.","Non vedo l'ora del weekend.","I can't wait for the weekend."],
   ["Ich bin heute sehr erschöpft.","Oggi sono molto stanco/a, esausto/a.","I'm very exhausted today."],
   ["Ich möchte, dass mein Deutsch flüssiger wird.","Vorrei che il mio tedesco diventasse più fluido.","I'd like my German to become more fluent."],
-  ["Umgekehrt.","Viceversa / al contrario.","The other way around / conversely."]
+  ["Umgekehrt.","Viceversa / al contrario.","The other way around / conversely."]  ,
+  ["Liebe Anna, / Lieber Tom,","Cara Anna, / Caro Tom, (lettera informale)","Dear Anna, / Dear Tom, (informal letter)"],
+  ["Liebe Frau Meyer, / Lieber Herr Klein,","Gentile signora Meyer, / Gentile signor Klein, (semiformale)","Dear Mrs Meyer, / Dear Mr Klein, (semi-formal)"],
+  ["Sehr geehrte Damen und Herren,","Gentili signore e signori, (non sai il nome)","Dear Sir or Madam, (you don't know the name)"],
+  ["Ich schreibe Ihnen, weil …","Le scrivo perché…","I'm writing to you because…"],
+  ["Ich schreibe dir, weil …","Ti scrivo perché…","I'm writing to you because…"],
+  ["Ich habe eine Frage / eine Bitte.","Ho una domanda / una richiesta.","I have a question / a request."],
+  ["Könnten Sie mir bitte sagen, ob …?","Potrebbe dirmi per favore se…?","Could you please tell me whether…?"],
+  ["Könnten Sie mich bitte anrufen?","Potrebbe chiamarmi, per favore?","Could you please call me?"],
+  ["Leider muss ich Ihnen mitteilen, dass …","Purtroppo devo comunicarLe che…","Unfortunately I have to inform you that…"],
+  ["Vielen Dank für Ihr Verständnis.","Grazie per la comprensione.","Thank you for your understanding."],
+  ["Vielen Dank im Voraus.","Grazie in anticipo.","Thank you in advance."],
+  ["Ich freue mich auf Ihre Antwort.","Attendo con piacere la Sua risposta.","I look forward to your reply."],
+  ["Ich wollte dich fragen, ob …","Volevo chiederti se…","I wanted to ask you whether…"],
+  ["Kannst du mir bitte sagen, ob …?","Puoi dirmi per favore se…?","Can you please tell me whether…?"],
+  ["Hast du Lust, … zu machen?","Ti va di fare…?","Do you feel like doing…?"],
+  ["Es tut mir leid, aber …","Mi dispiace, ma…","I'm sorry, but…"],
+  ["Ruf mich bitte an!","Chiamami, per favore!","Please call me!"],
+  ["Ich freue mich auf deine Antwort!","Aspetto la tua risposta!","I look forward to your reply!"],
+  ["Mit freundlichen Grüßen","Cordiali saluti (chiusura semiformale)","Kind regards (semi-formal closing)"],
+  ["Liebe Grüße / Viele Grüße","Cari saluti / Tanti saluti (chiusura)","Best wishes / Kind regards (closing)"]
 ];
+
 const DETTI = [
   ["Da liegt der Hund begraben.","Qui sta il punto / il problema.","Letteralmente: «lì è sepolto il cane».","That's the crux of the matter / the problem.","Literally: \"that's where the dog is buried\"."],
   ["Ich verstehe nur Bahnhof.","Non capisco proprio niente.","Letteralmente: «capisco solo stazione».","I don't understand a thing.","Literally: \"I only understand train station\"."],
