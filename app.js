@@ -336,7 +336,7 @@ const CAT_EN = {
   "verbi con preposizione":"verbs with prepositions",
   "tempi verbali":"verb tenses", "connettori":"connectors", "aggettivi":"adjectives",
   "modali":"modal verbs", "preposizioni":"prepositions", "verbi":"verbs",
-  "frase utile":"useful phrase", "detto":"saying"
+  "formazione delle parole":"word formation", "frase utile":"useful phrase", "detto":"saying"
 };
 
 const FIELD_LABELS_EN = { "Articolo":"Article", "Plurale":"Plural", "Comparativo":"Comparative", "Superlativo":"Superlative", "Contrario":"Opposite", "Preposizione":"Preposition" };
@@ -977,7 +977,13 @@ const BIGNAMI_PAGES = {
   "Das Wort es — le sue funzioni": 39,
   "je …, desto / umso — und Vergleiche": 40,
   "Das Verb lassen — vier Bedeutungen": 45,
-  "Vermutungen mit Modalverben — die Sicherheitsskala": 45
+  "Vermutungen mit Modalverben — die Sicherheitsskala": 45,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 39,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 39,
+  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 39,
+  "Vergleichssätze mit als oder wie": 40,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 11,
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 14
 };
 
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------
