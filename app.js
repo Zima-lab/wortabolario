@@ -393,6 +393,7 @@ const UI_STRINGS = {
     genusGood: "Bene! Le sbagliate finiscono nel ripasso.",
     genusMeh: "Il genere si impara col colore: riprova!",
     bignamiLink: (p) => `Scheda nel Bignami (pag. ${p})`,
+    bignamiB2Link: (p) => `Scheda nel Bignami B2 (pag. ${p})`,
     sortOrig: "Ordine originale", sortAZ: "A → Z", sortZA: "Z → A",
     tabHome: "Casa", tabSearch: "Cerca", tabPractice: "Esercizi", tabFavs: "Preferiti",
     streakTitle: "Giorni di studio consecutivi",
@@ -479,6 +480,7 @@ const UI_STRINGS = {
     genusGood: "Nice! Missed ones go into your review pile.",
     genusMeh: "Gender sticks with colour — try again!",
     bignamiLink: (p) => `See the Bignami sheet (p. ${p})`,
+    bignamiB2Link: (p) => `See the B2 Bignami sheet (p. ${p})`,
     sortOrig: "Original order", sortAZ: "A → Z", sortZA: "Z → A",
     tabHome: "Home", tabSearch: "Search", tabPractice: "Practice", tabFavs: "Favourites",
     streakTitle: "Consecutive study days",
@@ -986,10 +988,44 @@ const BIGNAMI_PAGES = {
   "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 14
 };
 
+/* ---------- BIGNAMI B2 (dalla v33) ----------
+   Le schede nuove rispetto al B1 hanno una pagina propria nel Bignami B2.
+   BIGNAMI_PAGES resta invariato (pagina "madre" nel B1): se una scheda sta
+   anche qui, il link e la sezione della vista grammatica usano il B2. */
+const BIGNAMI_B2_PDF = "Grammatica_Tedesca_B2_Bignami.pdf";
+const BIGNAMI_B2_PDF_EN = "German_Grammar_B2_Bignami_EN.pdf";
+function bignamiB2Pdf(){ return lang === "en" ? BIGNAMI_B2_PDF_EN : BIGNAMI_B2_PDF; }
+const BIGNAMI_B2_PAGES = {
+  "Perfekt mit doppeltem Infinitiv": 2,
+  "Das Verb lassen — vier Bedeutungen": 3,
+  "Vermutungen mit Modalverben — die Sicherheitsskala": 4,
+  "Trennbare und untrennbare Vorsilben": 5,
+  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 6,
+  "Das Wort es — le sue funzioni": 7,
+  "Indirekte Fragen — ob und W-Wörter": 8,
+  "Negationswörter — nicht, kein, nichts, niemand": 9,
+  "Vergleichssätze mit als oder wie": 10,
+  "je …, desto / umso — und Vergleiche": 11,
+  "ohne … zu und (an)statt … zu": 12,
+  "Zweiteilige und nachgestellte Präpositionen": 13,
+  "Adjektive mit Präpositionen": 14,
+  "Nomen mit Präpositionen": 15,
+  "Nomen-Verb-Verbindungen": 16,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 17,
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 18,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 19,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 19
+};
+/* Sezioni del B2: A verbi (2-5) · B frase (6-12) · C preposizioni (13-16) · D parole (17-19) */
+function bignamiB2Section(p){ return p <= 5 ? "B2A" : p <= 12 ? "B2B" : p <= 16 ? "B2C" : "B2D"; }
+function bignamiPageOf(e){ return BIGNAMI_B2_PAGES[e.de] || BIGNAMI_PAGES[e.de] || 99; }
+
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------
    La sezione si ricava dalla pagina del PDF: così la vista grammatica
    dell'app rispecchia l'indice del Bignami, con gli stessi colori. */
 function bignamiSection(e){
+  const p2 = BIGNAMI_B2_PAGES[e.de];
+  if(p2) return bignamiB2Section(p2);
   const p = BIGNAMI_PAGES[e.de];
   if(!p) return null;
   if(p <= 15) return "A";
@@ -1000,7 +1036,7 @@ function bignamiSection(e){
   if(p <= 43) return "F";
   return "AP";
 }
-const SEC_ORDER = ["A","B","C","D","E","F","AP"];
+const SEC_ORDER = ["A","B","C","D","E","F","AP", "B2A","B2B","B2C","B2D"];
 const SEC_LABELS = {
   A: { it: "I casi e i pronomi",            en: "Cases and pronouns" },
   B: { it: "Preposizioni e verbi",          en: "Prepositions and verbs" },
@@ -1008,10 +1044,17 @@ const SEC_LABELS = {
   D: { it: "Tempi verbali",                 en: "Verb tenses" },
   E: { it: "Struttura della frase",         en: "Sentence structure" },
   F: { it: "Luogo e direzione",             en: "Place and direction" },
-  AP:{ it: "Appendice",                     en: "Appendix" }
+  AP:{ it: "Appendice",                     en: "Appendix" },
+  B2A: { it: "B2 · Verbi",                  en: "B2 · Verbs" },
+  B2B: { it: "B2 · Struttura della frase",  en: "B2 · Sentence structure" },
+  B2C: { it: "B2 · Preposizioni e reggenze", en: "B2 · Prepositions and patterns" },
+  B2D: { it: "B2 · Parole e particelle",    en: "B2 · Words and particles" }
 };
+/* Sigla mostrata nella barra di sezione (B2A → "B2·A") */
+const SEC_CODE = { B2A: "B2·A", B2B: "B2·B", B2C: "B2·C", B2D: "B2·D" };
 /* Colore di sezione come nel PDF: A/E navy, B/F teal, C arancio, D prugna, Appendice ardesia */
-const SEC_COLOR = { A: "a", B: "b", C: "c", D: "d", E: "a", F: "b", AP: "ap" };
+const SEC_COLOR = { A: "a", B: "b", C: "c", D: "d", E: "a", F: "b", AP: "ap",
+                    B2A: "a", B2B: "b", B2C: "c", B2D: "d" };
 
 /* Articolo colorato per genere (der/die/das) — aiuta a memorizzare il genere */
 function genusChip(e){
@@ -1112,8 +1155,11 @@ function renderEntry(e){
     `).join("") + `</div>`;
   }
   const noteHtml = t.note ? `<div class="note">${t.note}</div>` : "";
+  const b2Page = e.type === "grammatica" ? BIGNAMI_B2_PAGES[e.de] : null;
   const bigPage = e.type === "grammatica" ? BIGNAMI_PAGES[e.de] : null;
-  const bignamiHtml = bigPage
+  const bignamiHtml = b2Page
+    ? `<a class="bignami-link" href="${bignamiB2Pdf()}#page=${b2Page}" target="_blank" rel="noopener">${ic("book","ic-sm")}${s.bignamiB2Link(b2Page)}</a>`
+    : bigPage
     ? `<a class="bignami-link" href="${bignamiPdf()}#page=${bigPage}" target="_blank" rel="noopener">${ic("book","ic-sm")}${s.bignamiLink(bigPage)}</a>`
     : "";
   const conjBtnHtml = e.type === "verbo"
@@ -1261,11 +1307,11 @@ function renderResults(){
     const bySec = {};
     list.forEach(e => { const k = bignamiSection(e) || "A"; (bySec[k] = bySec[k] || []).push(e); });
     host.innerHTML = SEC_ORDER.filter(k => bySec[k]).map(k => {
-      const items = bySec[k].slice().sort((x,y) => (BIGNAMI_PAGES[x.de] || 99) - (BIGNAMI_PAGES[y.de] || 99));
+      const items = bySec[k].slice().sort((x,y) => bignamiPageOf(x) - bignamiPageOf(y));
       return `
       <section class="gsec-group gsec-group-${SEC_COLOR[k]}">
         <div class="gsec gsec-${SEC_COLOR[k]}">
-          <span class="gsec-code">${k}</span>
+          <span class="gsec-code">${SEC_CODE[k] || k}</span>
           <span class="gsec-title">${SEC_LABELS[k][lang === "en" ? "en" : "it"]}</span>
           <span class="gsec-n">${items.length}</span>
         </div>

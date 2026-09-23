@@ -30,18 +30,10 @@ const PRECACHE = [
   "manifest.webmanifest",
   "icon.png",
   "favicon.png",
-  "favicon.ico",
-  "icons/worta-16.png",
-  "icons/worta-32.png",
-  "icons/worta-48.png",
-  "icons/worta-180.png",
-  "icons/worta-192.png",
-  "icons/worta-512.png",
-  "icons/worta-maskable-512.png",
-  "apple-touch-icon.png",
-  "apple-touch-icon-precomposed.png",
   "Grammatica_Tedesca_B1_Bignami.pdf",
-  "German_Grammar_B1_Bignami_EN.pdf"
+  "German_Grammar_B1_Bignami_EN.pdf",
+  "Grammatica_Tedesca_B2_Bignami.pdf",
+  "German_Grammar_B2_Bignami_EN.pdf"
 ];
 
 self.addEventListener("install", (event) => {
