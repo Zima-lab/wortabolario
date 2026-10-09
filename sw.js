@@ -22,6 +22,7 @@ const PRECACHE = [
   "version.js",
   "app.js",
   "data.js",
+  "esercizi.js",
   "fonts/IstokWeb-Regular.woff2",
   "fonts/IstokWeb-Bold.woff2",
   "fonts/IstokWeb-Italic.woff2",
