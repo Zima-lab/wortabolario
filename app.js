@@ -1092,7 +1092,7 @@ function bignamiSection(e){
   if(p <= 47) return "F";
   return "AP";
 }
-const SEC_ORDER = ["A","B","C","D","E","F","AP", "B2A","B2B","B2C","B2D"];
+const SEC_ORDER = ["A","B","C","D","E","F","AP", "B2A","B2B","B2C","B2D", "TELC"];
 const SEC_LABELS = {
   A: { it: "I casi e i pronomi",            en: "Cases and pronouns" },
   B: { it: "Preposizioni e verbi",          en: "Prepositions and verbs" },
@@ -1104,13 +1104,14 @@ const SEC_LABELS = {
   B2A: { it: "B2 · Verbi",                  en: "B2 · Verbs" },
   B2B: { it: "B2 · Struttura della frase",  en: "B2 · Sentence structure" },
   B2C: { it: "B2 · Preposizioni e reggenze", en: "B2 · Prepositions and patterns" },
-  B2D: { it: "B2 · Parole e particelle",    en: "B2 · Words and particles" }
+  B2D: { it: "B2 · Parole e particelle",    en: "B2 · Words and particles" },
+  TELC:{ it: "Esame telc B1 · B2",          en: "telc exam B1 · B2" }
 };
 /* Sigla mostrata nella barra di sezione (B2A → "B2·A") */
-const SEC_CODE = { B2A: "B2·A", B2B: "B2·B", B2C: "B2·C", B2D: "B2·D" };
+const SEC_CODE = { B2A: "B2·A", B2B: "B2·B", B2C: "B2·C", B2D: "B2·D", TELC: "telc" };
 /* Colore di sezione come nel PDF: A/E navy, B/F teal, C arancio, D prugna, Appendice ardesia */
 const SEC_COLOR = { A: "a", B: "b", C: "c", D: "d", E: "a", F: "b", AP: "ap",
-                    B2A: "a", B2B: "b", B2C: "c", B2D: "d" };
+                    B2A: "a", B2B: "b", B2C: "c", B2D: "d", TELC: "c" };
 
 /* Articolo colorato per genere (der/die/das) — aiuta a memorizzare il genere */
 function genusChip(e){
@@ -2626,7 +2627,8 @@ function exDueItems(){
 function exTopicName(t){ return lang === "en" ? t.en : t.it; }
 function exTopicEntry(t){ return ENTRIES.find(e => e.type === "grammatica" && e.de === t.cards[0]); }
 function exTopicByCard(de){ return exTopics().find(t => t.cards.includes(de)); }
-function exTopicSection(t){ const e = exTopicEntry(t); return (e && bignamiSection(e)) || "AP"; }
+/* v40: un argomento può dichiarare la propria sezione (es. sec: "TELC" per gli esercizi d'esame) */
+function exTopicSection(t){ if(t.sec) return t.sec; const e = exTopicEntry(t); return (e && bignamiSection(e)) || "AP"; }
 function exTopicStats(t){
   const st = { new: 0, now: 0, later: 0, mastered: 0 };
   t.items.forEach(it => st[exStatus(it.id)]++);
