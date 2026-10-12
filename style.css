@@ -14,6 +14,13 @@
     --amber-light: #fff8e0;
     --plum: #6a1b9a;      /* prugna Bignami sez. D — badge aggettivi */
     --plum-light: #ece7f6;
+    /* v39 — colori del GENERE, uguali alle tabelle del Bignami:
+       der azzurro · die rosa (sakura, non rosso) · das verde · Plural arancio */
+    --g-m: #1d5fa8;  --g-m-bg: #e3effa;
+    --g-f: #a8325f;  --g-f-bg: #fbe7ef;
+    --g-n: #2c6e31;  --g-n-bg: #e5f3e6;
+    --g-pl: #9a4a00; --g-pl-bg: #fff0dc;
+    --g-x: #3d4f58;  --g-x-bg: #eef1f3;
     --slate: #454f78;
     --slate-light: #e8ebf5;
     --indigo: #46539e;      /* badge frasi */
@@ -73,6 +80,11 @@
     --amber-light: #33260f;
     --plum: #d4aef0;
     --plum-light: #2a2138;
+    --g-m: #9cc8f5;  --g-m-bg: #16273b;
+    --g-f: #f3a7c4;  --g-f-bg: #3a1a28;
+    --g-n: #9fd8a3;  --g-n-bg: #15301a;
+    --g-pl: #f6b679; --g-pl-bg: #3a2610;
+    --g-x: #c2ccd2;  --g-x-bg: #232a2f;
     --slate: #aab6d4;
     --slate-light: #232838;
     --indigo: #a7b6e8;
@@ -421,9 +433,9 @@
     vertical-align: 2px; letter-spacing: .01em;
     font-family: 'Istok Web', -apple-system, sans-serif;
   }
-  .genus-der { background: var(--navy-light); color: var(--navy); }
-  .genus-die { background: var(--amber-light); color: var(--amber); }
-  .genus-das { background: var(--accent-light); color: var(--accent); }
+  .genus-der { background: var(--g-m-bg); color: var(--g-m); }
+  .genus-die { background: var(--g-f-bg); color: var(--g-f); }
+  .genus-das { background: var(--g-n-bg); color: var(--g-n); }
 
   /* Card progresso + pulsante ripassa */
   .progress-card {
@@ -649,9 +661,9 @@
     transition: transform .12s, box-shadow .15s;
   }
   .genus-opt:active { transform: translateY(1px); }
-  .genus-opt-der { background: var(--navy-light); color: var(--navy); }
-  .genus-opt-die { background: var(--amber-light); color: var(--amber); }
-  .genus-opt-das { background: var(--accent-light); color: var(--accent); }
+  .genus-opt-der { background: var(--g-m-bg); color: var(--g-m); }
+  .genus-opt-die { background: var(--g-f-bg); color: var(--g-f); }
+  .genus-opt-das { background: var(--g-n-bg); color: var(--g-n); }
   .genus-opt.right { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
   .genus-opt.wrong { opacity: .45; border-color: var(--border); }
   .genus-opt:disabled { cursor: default; }
@@ -1052,3 +1064,50 @@ input:focus-visible, [tabindex]:focus-visible {
 .ex-fb .bignami-link { align-self: flex-start; margin-top: 4px; }
 .ex-done-stat { font-size: var(--fs-sm); color: var(--muted); }
 .ex-topic-tag { font-size: var(--fs-sm); font-weight: 800; color: var(--navy); margin-bottom: 2px; }
+
+
+  /* ================= v39 — TABELLE CASI × GENERE ================= */
+  /* Modello del Bignami: righe = casi, colonne = der · die · das · Plural,
+     ogni colonna col colore del suo genere (vedi --g-*). */
+  .gtable-cap { margin: var(--sp-35) 0 var(--sp-1); font-size: var(--fs-xs); font-weight: 700;
+    color: var(--navy-dark); letter-spacing: .02em; }
+  .gtable-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--sp-2) 0 var(--sp-3);
+    border-radius: 10px; }
+  .gtable { border-collapse: separate; border-spacing: 2px; width: 100%; min-width: 100%;
+    font-size: var(--fs-sm); }
+  .gtable th, .gtable td { padding: 7px 8px; text-align: center; border-radius: 5px; white-space: nowrap; }
+  .gtable thead th { font-weight: 700; font-size: var(--fs-xs); color: #fff; }
+  .gtable thead th.g-k { background: var(--navy-dark); color: var(--bg, #fff); text-align: left; }
+  .gtable thead th.g-m { background: var(--g-m); }
+  .gtable thead th.g-f { background: var(--g-f); }
+  .gtable thead th.g-n { background: var(--g-n); }
+  .gtable thead th.g-pl { background: var(--g-pl); }
+  .gtable thead th.g-x { background: var(--g-x); }
+  :root[data-theme="dark"] .gtable thead th:not(.g-k) { color: #10151a; }
+  .gtable tbody th { text-align: left; font-weight: 700; color: var(--navy-dark); background: var(--g-x-bg); }
+  .gtable tbody th .gq { display: block; font-weight: 400; font-style: italic; font-size: var(--fs-2xs);
+    color: var(--muted); }
+  .gtable td { color: var(--text); }
+  .gtable td.g-m { background: var(--g-m-bg); }
+  .gtable td.g-f { background: var(--g-f-bg); }
+  .gtable td.g-n { background: var(--g-n-bg); }
+  .gtable td.g-pl { background: var(--g-pl-bg); }
+  .gtable td.g-x { background: var(--g-x-bg); }
+  .gtable td b.hl { font-weight: 700; }
+  .gtable td.g-m b.hl { color: var(--g-m); }
+  .gtable td.g-f b.hl { color: var(--g-f); }
+  .gtable td.g-n b.hl { color: var(--g-n); }
+  .gtable td.g-pl b.hl { color: var(--g-pl); }
+  .gtable td.g-x b.hl { color: var(--navy); }
+  @media (max-width: 520px) {
+    .gtable { font-size: var(--fs-xs); }
+    .gtable th, .gtable td { padding: 6px 5px; }
+  }
+
+  /* Quiz der/die/das: la regola della desinenza dopo la risposta */
+  .genus-rule { margin-top: var(--sp-2); font-size: var(--fs-sm); color: var(--muted);
+    display: flex; gap: 6px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .genus-rule.is-exc { color: var(--amber); }
+  /* tabelle larghe (es. Modalverben): la colonna dei casi resta ferma mentre si scorre */
+  .gtable thead th.g-k, .gtable tbody th { position: sticky; left: 0; z-index: 1; }
+  .gtable tbody th { box-shadow: 2px 0 0 var(--card, #fff); }

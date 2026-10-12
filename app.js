@@ -292,13 +292,19 @@ AGGETTIVI.forEach(a => {
 });
 
 GRAMMATICA.forEach(g => {
+  /* v39: tabelle casi × genere (GRAM_TABLES in data.js). Le righe testuali
+     che la tabella sostituisce vengono tolte (keep = indici da tenere). */
+  const gt = (typeof GRAM_TABLES !== "undefined" && GRAM_TABLES[g.de]) || null;
+  const keep = gt && gt.keep ? new Set(gt.keep) : null;
+  const pick = rows => keep ? rows.filter((r, i) => keep.has(i)) : rows;
   ENTRIES.push({
     id: "g"+(uid++), type: "grammatica",
     de: g.de, it: g.it, en: g.en, catLabel: g.cat,
     fields: [],
-    rows: g.rows, enRows: g.enRows,
-    note: g.note, enNote: g.enNote,
-    ex: g.ex, enEx: g.enEx
+    rows: pick(g.rows), enRows: pick(g.enRows),
+    note: gt && gt.note ? gt.note : g.note, enNote: gt && gt.enNote ? gt.enNote : g.enNote,
+    ex: g.ex, enEx: g.enEx,
+    tables: gt ? gt.tables : []
   });
 });
 
@@ -336,7 +342,7 @@ const CAT_EN = {
   "verbi con preposizione":"verbs with prepositions",
   "tempi verbali":"verb tenses", "connettori":"connectors", "aggettivi":"adjectives",
   "modali":"modal verbs", "preposizioni":"prepositions", "verbi":"verbs",
-  "formazione delle parole":"word formation", "frase utile":"useful phrase", "detto":"saying"
+  "formazione delle parole":"word formation", "genere":"gender", "numeri":"numbers", "meteo":"weather", "frase utile":"useful phrase", "detto":"saying"
 };
 
 const FIELD_LABELS_EN = { "Articolo":"Article", "Plurale":"Plural", "Comparativo":"Comparative", "Superlativo":"Superlative", "Contrario":"Opposite", "Preposizione":"Preposition" };
@@ -346,9 +352,9 @@ function trFieldLabel(label){ return lang === "en" ? (FIELD_LABELS_EN[label] || 
 
 function L(e){
   if(lang === "en"){
-    return { it: e.en || e.it, fields: e.fields, rows: e.enRows, note: e.enNote, ex: e.enEx, catLabel: trCat(e.catLabel) };
+    return { it: e.en || e.it, fields: e.fields, rows: e.enRows, note: e.enNote, ex: e.enEx, catLabel: trCat(e.catLabel), tables: e.tables || [] };
   }
-  return { it: e.it, fields: e.fields, rows: e.rows, note: e.note, ex: e.ex, catLabel: e.catLabel };
+  return { it: e.it, fields: e.fields, rows: e.rows, note: e.note, ex: e.ex, catLabel: e.catLabel, tables: e.tables || [] };
 }
 
 const UI_STRINGS = {
@@ -931,16 +937,19 @@ const BIGNAMI_PDF_EN = "German_Grammar_B1_Bignami_EN.pdf";
    BIGNAMI_PAGES vale per tutti e due i PDF. */
 function bignamiPdf(){ return lang === "en" ? BIGNAMI_PDF_EN : BIGNAMI_PDF; }
 const BIGNAMI_PAGES = {
+  /* v39 — Bignami B1 riorganizzato (54 pp): doppioni uniti, schede nuove,
+     tabelle casi × genere. Le chiavi = campo "de" delle voci GRAMMATICA. */
   /* Sezione A · I casi e i pronomi (pp. 2-15) */
   "Interrogativpronomen": 2,
   "Der/die/das — Artikel nach Kasus": 3,
+  "ein / kein — Artikel nach Kasus": 3,
   "Personalpronomen nei casi": 3,
   "Possessivpronomen": 3,
   "Verben mit Dativ": 3,
-  "Nominativ/Akkusativ/Dativ — il trucco": 4,
-  "Relativpronomen": 5,
-  "Infinitiv mit zu": 6,
-  "Verbi modali: mai zu davanti all'infinito": 6,
+  "Nominativ/Akkusativ/Dativ — il trucco": 3,
+  "der, die oder das? — il genere del nome": 4,
+  "Der Plural — come si forma il plurale": 5,
+  "Relativpronomen": 6,
   "Reflexivpronomen (Akk./Dat.)": 7,
   "Riflessivo + parte del corpo: mich o mir?": 7,
   "Adjektivdeklination — le desinenze": 8,
@@ -951,75 +960,86 @@ const BIGNAMI_PAGES = {
   "Adjektive ohne Artikel — Nullartikel": 13,
   "Partizip I & II als Adjektiv": 14,
   "n-Deklination": 15,
-  /* Sezione B · Preposizioni e verbi (pp. 16-21) */
-  "Auf, über, als, mit, bei, zu": 16,
+  /* Sezione B · Preposizioni e verbi (pp. 16-22) */
+  "Präpositionen — Akkusativ, Dativ oder Wechsel?": 16,
+  "Präposition + Artikel — am, im, ins, zum, zur": 16,
   "mit · zu · von — sempre dativo": 16,
-  "Pronominaladverb: wo(r)+ / da(r)+": 17,
-  "Verben mit Präpositionen": 18,
-  "telefonieren mit vs. anrufen": 18,
-  "Präposition + dass-Satz": 19,
-  "sonst": 20,
-  "Präpositionen mit Genitiv": 21,
-  /* Sezione C · Congiunzioni e Nebensätze (pp. 22-32) */
-  "Nebensatz mit bevor": 22,
-  "um...zu / damit": 23,
-  "nicht nur... sondern auch": 23,
+  "Auf, über, als, mit, bei, zu": 17,
+  "Pronominaladverb: wo(r)+ / da(r)+": 18,
+  "Preposizione vs Präpositionaladverb — la differenza": 18,
+  "Verben mit Präpositionen": 19,
+  "telefonieren mit vs. anrufen": 19,
+  "Präposition + dass-Satz": 20,
+  "sonst": 21,
+  "Präpositionen mit Genitiv": 22,
+  /* Sezione C · Congiunzioni e Nebensätze (pp. 23-33) */
+  "Nebensatz mit bevor": 23,
   "Konjunktionaladverbien vs Subjunktionen": 24,
   "Connettori doppi": 24,
+  "nicht nur... sondern auch": 24,
+  "Infinitiv mit zu": 25,
+  "um...zu / damit": 25,
   "als / wenn / wann": 26,
+  "Weitere Konjunktionen — falls, indem, solange, sodass": 27,
   "seit/seitdem und bis": 26,
-  "Verben mit doppelter Bedeutung": 27,
-  "Coppie che si confondono: lernen · laufen · üben": 27,
-  "Wenn das Komma die Bedeutung ändert": 28,
-  "Nebensatz mit während": 29,
-  "Nebensatz mit nachdem": 30,
-  "entweder … oder": 31,
-  "Relativsätze: Präposition, wo, was": 32,
-  /* Sezione D · Tempi verbali (pp. 33-38) */
-  "Präteritum: verbi forti, misti, irregolari": 33,
-  "Futur I — werden + Infinitiv": 34,
-  "Futur II": 34,
-  "Konjunktiv II": 35,
-  "Das Passiv": 36,
-  "Plusquamperfekt": 37,
-  "Passiv mit Modalverben": 38,
-  /* Sezione E · Struttura della frase (pp. 39-41) */
-  "Tekamolo": 39,
-  "Komparativ & Superlativ": 40,
-  "Comparativi irregolari: viel · gern · gut": 40,
-  "Adjektivdeklination + Komparativ/Superlativ": 41,
-  /* Sezione F · Luogo e direzione (pp. 42-43) */
-  "Wohin? / Wo? — i nomi geografici": 42,
-  "an · in · auf · zu/bei — dove vai / dove sei": 43,
-  "am Montag · in der Nacht — le preposizioni di tempo": 43,
-  /* Appendice (pp. 44-49) */
-  "wurde · würde · werden — le differenze": 44,
-  "dürfen · können — le differenze": 45,
-  "Position 0 — und/aber/oder/denn/sondern": 46,
-  "Kommasetzung — la virgola": 47,
-  "Der Brief — Anrede und Gruß": 48,
-  "Preposizione vs Präpositionaladverb — la differenza": 49,
-  /* Schede ricavate dal Grammatikanhang del libro (pp. 88-117).
-     Non hanno una pagina propria nel Bignami: come per le schede della v17,
-     sono mappate sulla pagina dell'argomento madre già esistente. */
+  "Verben mit doppelter Bedeutung": 28,
+  "Coppie che si confondono: lernen · laufen · üben": 28,
+  "Wenn das Komma die Bedeutung ändert": 29,
+  "Nebensatz mit während": 30,
+  "Nebensatz mit nachdem": 31,
+  "entweder … oder": 32,
+  "Relativsätze: Präposition, wo, was": 33,
+  /* Sezione D · Tempi verbali (pp. 34-41) */
+  "Das Perfekt — haben oder sein?": 34,
+  "Präteritum: verbi forti, misti, irregolari": 35,
+  "Modalverben — Präsens und Präteritum": 36,
+  "Verbi modali: mai zu davanti all'infinito": 36,
+  "Futur I — werden + Infinitiv": 37,
+  "Futur II": 37,
+  "Konjunktiv II": 38,
+  "Konjunktiv I — die indirekte Rede": 38,
+  "Das Passiv": 39,
+  "Plusquamperfekt": 40,
+  "Passiv mit Modalverben": 41,
+  /* Sezione E · Struttura della frase (pp. 42-44) */
+  "Tekamolo": 42,
+  "Komparativ & Superlativ": 43,
+  "Comparativi irregolari: viel · gern · gut": 43,
+  "Adjektivdeklination + Komparativ/Superlativ": 44,
+  /* Sezione F · Luogo e direzione (pp. 45-47) */
+  "Wohin? / Wo? — i nomi geografici": 45,
+  "an · in · auf · zu/bei — dove vai / dove sei": 46,
+  "am Montag · in der Nacht — le preposizioni di tempo": 46,
+  "W-Fragen — wo, wohin, woher · hin und her": 47,
+  /* Appendice (pp. 48-54) */
+  "wurde · würde · werden — le differenze": 48,
+  "dürfen · können — le differenze": 49,
+  "Position 0 — und/aber/oder/denn/sondern": 50,
+  "Kommasetzung — la virgola": 51,
+  "Die Zeichensetzung — Punkt, Ausrufezeichen, Doppelpunkt": 52,
+  "Der Brief — Anrede und Gruß": 53,
+  "Zahlen und Ordnungszahlen": 54,
+  "Das Wetter — es regnet, es ist kalt": 54,
+  /* Schede del Grammatikanhang del libro: hanno una pagina nel Bignami B2
+     (BIGNAMI_B2_PAGES ha la precedenza); qui la pagina "madre" del B1. */
   "Indirekte Fragen — ob und W-Wörter": 2,
   "Negationswörter — nicht, kein, nichts, niemand": 10,
-  "Zweiteilige und nachgestellte Präpositionen": 16,
-  "Adjektive mit Präpositionen": 18,
-  "Nomen mit Präpositionen": 18,
-  "Nomen-Verb-Verbindungen": 18,
-  "ohne … zu und (an)statt … zu": 23,
-  "Trennbare und untrennbare Vorsilben": 33,
-  "Perfekt mit doppeltem Infinitiv": 33,
-  "Das Wort es — le sue funzioni": 39,
-  "je …, desto / umso — und Vergleiche": 40,
-  "Das Verb lassen — vier Bedeutungen": 45,
-  "Vermutungen mit Modalverben — die Sicherheitsskala": 45,
-  "Das Wort eigentlich — Adverb oder Modalpartikel": 39,
-  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 39,
-  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 39,
-  "Vergleichssätze mit als oder wie": 40,
-  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 11,
+  "Zweiteilige und nachgestellte Präpositionen": 17,
+  "Adjektive mit Präpositionen": 19,
+  "Nomen mit Präpositionen": 19,
+  "Nomen-Verb-Verbindungen": 19,
+  "ohne … zu und (an)statt … zu": 25,
+  "Trennbare und untrennbare Vorsilben": 34,
+  "Perfekt mit doppeltem Infinitiv": 34,
+  "Das Wort es — le sue funzioni": 42,
+  "je …, desto / umso — und Vergleiche": 43,
+  "Das Verb lassen — vier Bedeutungen": 49,
+  "Vermutungen mit Modalverben — die Sicherheitsskala": 49,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 42,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 42,
+  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 42,
+  "Vergleichssätze mit als oder wie": 43,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 4,
   "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 14
 };
 
@@ -1035,24 +1055,25 @@ const BIGNAMI_B2_PAGES = {
   "Das Verb lassen — vier Bedeutungen": 3,
   "Vermutungen mit Modalverben — die Sicherheitsskala": 4,
   "Trennbare und untrennbare Vorsilben": 5,
-  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 6,
-  "Das Wort es — le sue funzioni": 7,
-  "Indirekte Fragen — ob und W-Wörter": 8,
-  "Negationswörter — nicht, kein, nichts, niemand": 9,
-  "Vergleichssätze mit als oder wie": 10,
-  "je …, desto / umso — und Vergleiche": 11,
-  "ohne … zu und (an)statt … zu": 12,
-  "Zweiteilige und nachgestellte Präpositionen": 13,
-  "Adjektive mit Präpositionen": 14,
-  "Nomen mit Präpositionen": 15,
-  "Nomen-Verb-Verbindungen": 16,
-  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 17,
-  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 18,
-  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 19,
-  "Das Wort eigentlich — Adverb oder Modalpartikel": 19
+  "Konjunktiv I — die indirekte Rede": 6,
+  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 7,
+  "Das Wort es — le sue funzioni": 8,
+  "Indirekte Fragen — ob und W-Wörter": 9,
+  "Negationswörter — nicht, kein, nichts, niemand": 10,
+  "Vergleichssätze mit als oder wie": 11,
+  "je …, desto / umso — und Vergleiche": 12,
+  "ohne … zu und (an)statt … zu": 13,
+  "Zweiteilige und nachgestellte Präpositionen": 14,
+  "Adjektive mit Präpositionen": 15,
+  "Nomen mit Präpositionen": 16,
+  "Nomen-Verb-Verbindungen": 17,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 18,
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 19,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 20,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 20
 };
-/* Sezioni del B2: A verbi (2-5) · B frase (6-12) · C preposizioni (13-16) · D parole (17-19) */
-function bignamiB2Section(p){ return p <= 5 ? "B2A" : p <= 12 ? "B2B" : p <= 16 ? "B2C" : "B2D"; }
+/* Sezioni del B2 (v39): A verbi (2-6) · B frase (7-13) · C preposizioni (14-17) · D parole (18-20) */
+function bignamiB2Section(p){ return p <= 6 ? "B2A" : p <= 13 ? "B2B" : p <= 17 ? "B2C" : "B2D"; }
 function bignamiPageOf(e){ return BIGNAMI_B2_PAGES[e.de] || BIGNAMI_PAGES[e.de] || 99; }
 
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------
@@ -1064,11 +1085,11 @@ function bignamiSection(e){
   const p = BIGNAMI_PAGES[e.de];
   if(!p) return null;
   if(p <= 15) return "A";
-  if(p <= 21) return "B";
-  if(p <= 32) return "C";
-  if(p <= 38) return "D";
-  if(p <= 41) return "E";
-  if(p <= 43) return "F";
+  if(p <= 22) return "B";
+  if(p <= 33) return "C";
+  if(p <= 41) return "D";
+  if(p <= 44) return "E";
+  if(p <= 47) return "F";
   return "AP";
 }
 const SEC_ORDER = ["A","B","C","D","E","F","AP", "B2A","B2B","B2C","B2D"];
@@ -1156,6 +1177,7 @@ function matches(entry, q){
     entry.de, entry.it, entry.en, entry.catLabel,
     ...entry.fields.map(f=>f[1]),
     ...entry.rows.map(r=>r[0]+" "+r[1]), ...entry.enRows.map(r=>r[0]+" "+r[1]),
+    ...(entry.tables || []).map(tableText),
     ...entry.ex.flat(), ...entry.enEx.flat()
   ].join(" ").toLowerCase();
   if(hay.includes(q)) return true;
@@ -1165,6 +1187,34 @@ function matches(entry, q){
   return [entry.de, entry.it, entry.en || ""].join(" ").toLowerCase()
     .split(/[\s,.;:()'"!?\/–—-]+/)
     .some(w => w.length >= 3 && lev1(normSearch(w), nq));
+}
+
+/* ---------- TABELLE DI GRAMMATICA (v39) ----------
+   Modello del Bignami: righe = casi, colonne = generi con i loro colori.
+   Celle: {x} = forma che cambia (evidenziata) · *x* = grassetto. */
+const CASE_Q = { Nominativ: "Wer? Was?", Akkusativ: "Wen? Was?", Dativ: "Wem?", Genitiv: "Wessen?" };
+function cellHtml(txt){
+  return String(txt)
+    .replace(/\{([^}]*)\}/g, '<b class="hl">$1</b>')
+    .replace(/\*([^*]+)\*/g, "<b>$1</b>");
+}
+function tLabel(x){ return Array.isArray(x) ? (lang === "en" ? x[1] : x[0]) : x; }
+function tableText(tb){
+  return [tLabel(tb.caption || ""), ...tb.cols.map(c => c[1]),
+          ...tb.rows.map(r => r.map(tLabel).join(" "))].join(" ").replace(/[{}*]/g, "");
+}
+function gramTableHtml(tb){
+  const head = tb.head !== undefined ? tLabel(tb.head) : "Kasus";
+  const cap = tb.caption ? `<div class="gtable-cap">${tLabel(tb.caption)}</div>` : "";
+  const ths = tb.cols.map(([k, lab]) => `<th class="g-${k}" scope="col">${lab}</th>`).join("");
+  const trs = tb.rows.map(r => {
+    const lab = tLabel(r[0]);
+    const q = CASE_Q[lab];
+    const th = `<th scope="row">${lab}${q ? `<span class="gq">${q}</span>` : ""}</th>`;
+    const tds = r.slice(1).map((c, i) => `<td class="g-${tb.cols[i][0]}">${cellHtml(c)}</td>`).join("");
+    return `<tr>${th}${tds}</tr>`;
+  }).join("");
+  return `${cap}<div class="gtable-wrap"><table class="gtable"><thead><tr><th class="g-k">${head}</th>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
 }
 
 function renderEntry(e){
@@ -1177,6 +1227,7 @@ function renderEntry(e){
       <div class="field"><span class="k">${trFieldLabel(f[0])}</span><b>${f[1]}</b></div>
     `).join("") + `</div>`;
   }
+  const tablesHtml = (t.tables || []).map(gramTableHtml).join("");
   let rowsHtml = "";
   if(t.rows.length){
     rowsHtml = `<div class="rows">` + t.rows.map(r=>`
@@ -1225,6 +1276,7 @@ function renderEntry(e){
       </div>
       <div class="entry-body">
         ${fieldsHtml}
+        ${tablesHtml}
         ${rowsHtml}
         ${exHtml}
         ${noteHtml}
@@ -1955,6 +2007,36 @@ document.addEventListener("keydown", (ev) => {
 
 let genusDeck = [], genusIdx = 0, genusOk = 0, genusLock = false, genusAnswers = [];
 
+/* v39 — dopo la risposta il quiz der/die/das mostra la regola della desinenza
+   (come nella scheda «der, die o das?» del Bignami). Se la parola fa eccezione
+   lo dice: aiuta a ricordare proprio i casi strani. */
+const GENUS_RULES = [
+  /* l'ordine conta: prima le desinenze più lunghe (-ment prima di -ent, -schaft prima di -t…) */
+  [/ung$/, "die", true], [/heit$/, "die", true], [/keit$/, "die", true], [/schaft$/, "die", true],
+  [/tät$/, "die", true], [/ion$/, "die", false], [/ei$/, "die", false], [/ik$/, "die", false],
+  [/ie$/, "die", false], [/ur$/, "die", false], [/age$/, "die", false], [/enz$/, "die", false],
+  [/chen$/, "das", true], [/lein$/, "das", true], [/ment$/, "das", false], [/um$/, "das", false],
+  [/ett$/, "das", false], [/ma$/, "das", false], [/nis$/, "das", false], [/tum$/, "das", false],
+  [/ling$/, "der", true], [/ismus$/, "der", true], [/ig$/, "der", false], [/ant$/, "der", false],
+  [/ent$/, "der", false], [/ist$/, "der", false], [/loge$/, "der", false], [/eur$/, "der", false],
+  [/är$/, "der", false], [/or$/, "der", false],
+  [/e$/, "die", false]
+];
+function genusRuleHtml(word, art){
+  const w = word.split(/[\s,(]/)[0];
+  const r = GENUS_RULES.find(([re]) => re.test(w));
+  if(!r) return "";
+  const [re, ruleArt, always] = r;
+  const suf = "-" + re.source.replace("$", "");
+  const en = lang === "en";
+  const txt = ruleArt === art
+    ? (en ? `Rule: ${suf} → ${always ? "always" : "usually"} <b>${ruleArt}</b>`
+          : `Regola: ${suf} → ${always ? "sempre" : "di solito"} <b>${ruleArt}</b>`)
+    : (en ? `${suf} is usually <b>${ruleArt}</b>, but this word is an exception: <b>${art}</b>`
+          : `${suf} di solito è <b>${ruleArt}</b>, ma questa parola è un'eccezione: <b>${art}</b>`);
+  return `<div class="genus-rule${ruleArt === art ? "" : " is-exc"}">${ic("book","ic-sm")}${txt}</div>`;
+}
+
 function openGenusQuiz(){
   const nouns = ENTRIES.filter(e => genusChip(e));
   for(let i = nouns.length - 1; i > 0; i--){
@@ -2028,7 +2110,8 @@ function renderGenus(){
     });
     const ans = document.getElementById("genusAnswer");
     ans.innerHTML = `<span class="genus genus-${g.art}">${g.art}</span> <b>${g.rest}</b> — ${t.it}` +
-      (plural ? `<span class="genus-pl"> · ${s.genusPlural}: ${plural}</span>` : "");
+      (plural ? `<span class="genus-pl"> · ${s.genusPlural}: ${plural}</span>` : "") +
+      genusRuleHtml(g.rest, g.art);
     ans.classList.add("show");
     /* Il pulsante audio sta accanto alla PAROLA GRANDE, non alla riga della
        soluzione. Compare solo ora che hai risposto: prima leggerebbe

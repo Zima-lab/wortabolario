@@ -1498,9 +1498,15 @@ const GRAMMATICA = [
     note:"Il prefisso più comune è un-, come «dis-/in-» in italiano (onesto → disonesto). in- e des- si usano quasi solo con parole di origine latina o francese, proprio come in italiano (incompetente, disinteressato). -bar corrisponde spesso a «-abile/-ibile»: machbar = fattibile, lesbar = leggibile. -los = «senza» (come l'inglese -less).",
     enNote:"The most common prefix is un- (like English un-/dis-). in- and des- are used almost only with words of Latin or French origin, just like in English (incompetent, disinterested). -bar often matches «-able/-ible»: machbar = feasible, lesbar = readable. -los = «without» (like English -less).",
     ex:[["Das Projekt ist machbar, aber nicht einfach.", "Il progetto è fattibile, ma non facile."], ["Nach dem Studium war er ein halbes Jahr arbeitslos.", "Dopo gli studi è stato disoccupato per sei mesi."], ["Sie ist eine erfolgreiche und humorvolle Chefin.", "È una capa di successo e spiritosa."]],
-    enEx:[["Das Projekt ist machbar, aber nicht einfach.", "The project is feasible, but not easy."], ["Nach dem Studium war er ein halbes Jahr arbeitslos.", "After his studies he was unemployed for six months."], ["Sie ist eine erfolgreiche und humorvolle Chefin.", "She is a successful and humorous boss."]]}
+    enEx:[["Das Projekt ist machbar, aber nicht einfach.", "The project is feasible, but not easy."], ["Nach dem Studium war er ein halbes Jahr arbeitslos.", "After his studies he was unemployed for six months."], ["Sie ist eine erfolgreiche und humorvolle Chefin.", "She is a successful and humorous boss."]]},
+  {de:"Preposizione vs Präpositionaladverb — la differenza", it:"Auf den Bus oder darauf? Quando si usa da(r)- / wo(r)-", en:"Auf den Bus or darauf? When to use da(r)- / wo(r)-", cat:"preposizioni",
+    rows:[["Preposizione","introduce un nome o pronome (Akk./Dat.) e vale per persone e cose: Ich warte auf den Bus. · Ich warte auf ihn."],["Präpositionaladverb","sostituisce \"preposizione + cosa\" in una parola sola, contiene già la preposizione: Ich warte darauf."],["Forma","da(r)- = risposta (darauf, damit, dafür) · wo(r)- = domanda (worauf, womit, wofür)"],["Regola della r","preposizione con vocale → +r: daran, darauf, darin · woran, worauf, worin. Con consonante niente r: damit, dafür · womit, wofür"],["Cose o persone?","cose e concetti → da(r)-/wo(r)-: Woran denkst du? → Daran. · persone → preposizione + pronome: An wen denkst du? → An ihn."],["Perché esiste","non si può dire \"auf es\" o \"mit es\": al posto di preposizione + es si dice darauf, damit"],["Dopo da(r)-","può seguire un dass-Satz o zu + Infinitiv: Ich freue mich darauf, dass du kommst."],["Quando NON si forma","con ohne, seit, bis, außer, statt e le preposizioni di genitivo (wegen, trotz, während): ohne das · seit wann? · bis wann?"]],
+    enRows:[["Preposition","introduces a noun or pronoun (Akk./Dat.) and works for people and things: Ich warte auf den Bus. · Ich warte auf ihn."],["Präpositionaladverb","replaces \"preposition + thing\" with a single word, it already contains the preposition: Ich warte darauf."],["Form","da(r)- = answer (darauf, damit, dafür) · wo(r)- = question (worauf, womit, wofür)"],["The r rule","preposition starting with a vowel → +r: daran, darauf, darin · woran, worauf, worin. With a consonant no r: damit, dafür · womit, wofür"],["Things or people?","things and ideas → da(r)-/wo(r)-: Woran denkst du? → Daran. · people → preposition + pronoun: An wen denkst du? → An ihn."],["Why it exists","you cannot say \"auf es\" or \"mit es\": instead of preposition + es you say darauf, damit"],["After da(r)-","a dass-Satz or zu + Infinitiv can follow: Ich freue mich darauf, dass du kommst."],["When it is NOT formed","with ohne, seit, bis, außer, statt and the genitive prepositions (wegen, trotz, während): ohne das · seit wann? · bis wann?"]],
+    note:"Il trucco: se puoi rispondere con una persona, tieni la preposizione e metti il pronome (an ihn). Se parli di una cosa o di un'idea, la preposizione si fonde con da(r)- o wo(r)-: il verbo con la sua preposizione fissa resta uguale (warten auf → worauf / darauf).",
+    enNote:"The trick: if the answer is a person, keep the preposition and use the pronoun (an ihn). If you are talking about a thing or an idea, the preposition merges with da(r)- or wo(r)-: the verb with its fixed preposition stays the same (warten auf → worauf / darauf).",
+    ex:[["Woran denkst du? – Ich denke daran.","A cosa pensi? – Ci penso."],["An wen denkst du? – Ich denke an ihn.","A chi pensi? – Penso a lui."],["Ich freue mich darauf, dass du kommst.","Non vedo l'ora che tu venga."]],
+    enEx:[["Woran denkst du? – Ich denke daran.","What are you thinking about? – I'm thinking about it."],["An wen denkst du? – Ich denke an ihn.","Who are you thinking about? – I'm thinking about him."],["Ich freue mich darauf, dass du kommst.","I'm looking forward to you coming."]]}
 ];
-
 const FRASI = [
   ["Wie geht's?","Come va?","How are you?"],
   ["Es geht mir gut, danke.","Sto bene, grazie.","I'm fine, thanks."],
@@ -1571,3 +1577,613 @@ const DETTI = [
   ["Alles hat ein Ende, nur die Wurst hat zwei.","Prima o poi tutto finisce (detto scherzoso).","Letteralmente: «tutto ha una fine, solo la salsiccia ne ha due».","Sooner or later everything ends (a playful saying).","Literally: \"everything has an end, only the sausage has two\"."],
   ["Ich drücke dir die Daumen.","Ti auguro buona fortuna, ti faccio il tifo.","Letteralmente: «ti premo i pollici».","I'll keep my fingers crossed for you.","Literally: \"I'll press your thumbs\"."]
 ];
+
+/* =====================================================================
+   v39 (2026-10-12) — TABELLE DI GRAMMATICA nel modello del Bignami
+   Righe = casi (Nominativ · Akkusativ · Dativ · Genitiv), colonne = generi
+   der · die · das · Plural, ognuno col suo colore (m azzurro, f rosa,
+   n verde, Pl arancio). {x} = forma che cambia rispetto al Nominativ.
+   Chiave di GRAM_TABLES = campo "de" della voce GRAMMATICA.
+   keep = indici delle righe testuali da tenere: le altre ora stanno nella
+   tabella. note/enNote (facoltativi) sostituiscono la nota della voce.
+   ===================================================================== */
+const G4 = [["m", "der · m"], ["f", "die · f"], ["n", "das · n"], ["pl", "die · Pl"]];
+const PERS = [["x", "ich"], ["x", "du"], ["m", "er"], ["f", "sie"], ["n", "es"], ["x", "wir"], ["x", "ihr"], ["pl", "sie"], ["x", "Sie"]];
+
+const GRAM_TABLES = {
+  "Der/die/das — Artikel nach Kasus": {
+    keep: [],
+    note: "In evidenza le forme che cambiano rispetto al Nominativ. Al Dativ plurale anche il nome prende -n (mit den Kindern); al Genitiv m/n il nome prende -(e)s (des Hundes).",
+    enNote: "Highlighted: the forms that differ from the Nominativ. In the Dativ plural the noun also takes -n (mit den Kindern); in the Genitiv m/n the noun takes -(e)s (des Hundes).",
+    tables: [{ cols: G4, rows: [
+      ["Nominativ", "der", "die", "das", "die"],
+      ["Akkusativ", "{den}", "die", "das", "die"],
+      ["Dativ", "{dem}", "{der}", "{dem}", "{den} …-n"],
+      ["Genitiv", "{des} …-s", "{der}", "{des} …-s", "{der}"]] }]
+  },
+  "Personalpronomen nei casi": {
+    keep: [],
+    note: "Al Nominativ il pronome non cambia. Attenzione: sie = lei / loro · Sie = Lei (cortesia) · ihr = voi, ma al Dativ anche «a lei».",
+    enNote: "In the Nominativ the pronoun doesn't change. Careful: sie = she / they · Sie = polite you · ihr = you (plural), but in the Dativ also «to her».",
+    tables: [{ cols: PERS, rows: [
+      ["Nominativ", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "Sie"],
+      ["Akkusativ", "{mich}", "{dich}", "{ihn}", "sie", "es", "uns", "euch", "sie", "Sie"],
+      ["Dativ", "{mir}", "{dir}", "{ihm}", "{ihr}", "{ihm}", "uns", "euch", "{ihnen}", "{Ihnen}"]] }]
+  },
+  "Possessivpronomen": {
+    keep: [],
+    note: "Stesse desinenze per dein-, sein-, ihr-, unser-, euer-, Ihr- (come kein). Attenzione: sein-/ihr- si scelgono in base a CHI POSSIEDE (lui → sein, lei → ihr), la desinenza in base alla cosa posseduta.",
+    enNote: "Same endings for dein-, sein-, ihr-, unser-, euer-, Ihr- (like kein). Careful: sein-/ihr- depend on WHO OWNS (he → sein, she → ihr), the ending on the thing owned.",
+    tables: [{ cols: G4, rows: [
+      ["Nominativ", "mein", "mein{e}", "mein", "mein{e}"],
+      ["Akkusativ", "mein{en}", "mein{e}", "mein", "mein{e}"],
+      ["Dativ", "mein{em}", "mein{er}", "mein{em}", "mein{en}"],
+      ["Genitiv", "mein{es}", "mein{er}", "mein{es}", "mein{er}"]] }]
+  },
+  "Relativpronomen": {
+    keep: [],
+    tables: [{ cols: G4, rows: [
+      ["Nominativ", "der", "die", "das", "die"],
+      ["Akkusativ", "den", "die", "das", "die"],
+      ["Dativ", "dem", "der", "dem", "{denen}"],
+      ["Genitiv", "{dessen}", "{deren}", "{dessen}", "{deren}"]] }]
+  },
+  "Reflexivpronomen (Akk./Dat.)": {
+    keep: [],
+    tables: [{ cols: [["x", "ich"], ["x", "du"], ["m", "er · sie · es"], ["x", "wir"], ["x", "ihr"], ["pl", "sie · Sie"]], rows: [
+      ["Nominativ", "ich", "du", "er / sie / es", "wir", "ihr", "sie / Sie"],
+      ["Akkusativ", "mich", "dich", "{sich}", "uns", "euch", "{sich}"],
+      ["Dativ", "mir", "dir", "{sich}", "uns", "euch", "{sich}"]] }]
+  },
+  "Interrogativpronomen": {
+    keep: [0, 1, 2, 3, 4],
+    tables: [{ caption: ["welcher / welche / welches — quale?", "welcher / welche / welches — which?"], cols: G4, rows: [
+      ["Nominativ", "welcher", "welche", "welches", "welche"],
+      ["Akkusativ", "{welchen}", "welche", "welches", "welche"],
+      ["Dativ", "{welchem}", "{welcher}", "{welchem}", "{welchen}"],
+      ["Genitiv", "{welches}", "{welcher}", "{welches}", "{welcher}"]] }]
+  },
+  "Adjektivdeklination — le desinenze": {
+    keep: [0, 7, 8, 9],
+    tables: [
+      { caption: ["Dopo der / die / das — solo -e o -en", "After der / die / das — only -e or -en"], cols: G4, rows: [
+        ["Nominativ", "-e", "-e", "-e", "-en"],
+        ["Akkusativ", "{-en}", "-e", "-e", "-en"],
+        ["Dativ", "{-en}", "{-en}", "{-en}", "-en"]] },
+      { caption: ["Dopo ein / kein / mein — l'aggettivo dice il genere", "After ein / kein / mein — the adjective shows the gender"],
+        cols: [["m", "ein · m"], ["f", "eine · f"], ["n", "ein · n"], ["pl", "meine · Pl"]], rows: [
+        ["Nominativ", "{-er}", "-e", "{-es}", "-en"],
+        ["Akkusativ", "-en", "-e", "{-es}", "-en"],
+        ["Dativ", "-en", "-en", "-en", "-en"]] }]
+  },
+  "Indefinitpronomen": {
+    keep: [],
+    tables: [{ cols: G4, rows: [
+      ["Nominativ", "einer / keiner", "eine / keine", "eins / keins", "welche / keine"],
+      ["Akkusativ", "{einen} / {keinen}", "eine / keine", "eins / keins", "welche / keine"],
+      ["Dativ", "{einem} / {keinem}", "{einer} / {keiner}", "{einem} / {keinem}", "{welchen} / {keinen}"]] }]
+  },
+  "Adjektivendungen im Genitiv": {
+    keep: [0, 3],
+    tables: [{ head: ["Genitiv con…", "Genitiv with…"], cols: G4, rows: [
+      [["articolo det.", "definite article"], "des klein{en} Jungen", "der klein{en} Tasse", "des klein{en} Hauses", "der klein{en} Tassen"],
+      [["ein- / mein- / kein-", "ein- / mein- / kein-"], "eines gut{en} Freundes", "einer gut{en} Idee", "eines neu{en} Projekts", "meiner alt{en} Freunde"]] }]
+  },
+  "Adjektive ohne Artikel — Nullartikel": {
+    keep: [4],
+    note: "Senza articolo l'aggettivo «copia» l'articolo determinativo: der → -er, das → -es, dem → -em. Unica eccezione: Genitiv m/n = -en (il -s sta già sul nome: guten Weines). Esempi: guter Wein, kaltes Bier, frische Milch.",
+    enNote: "Without an article the adjective «copies» the definite article: der → -er, das → -es, dem → -em. Only exception: Genitiv m/n = -en (the -s is already on the noun: guten Weines). Examples: guter Wein, kaltes Bier, frische Milch.",
+    tables: [{ cols: G4, rows: [
+      ["Nominativ", "{-er}", "-e", "{-es}", "-e"],
+      ["Akkusativ", "{-en}", "-e", "{-es}", "-e"],
+      ["Dativ", "{-em}", "{-er}", "{-em}", "{-en}"],
+      ["Genitiv", "{-en}", "{-er}", "{-en}", "{-er}"]] }]
+  },
+  "Adjektivdeklination + Komparativ/Superlativ": {
+    keep: [0, 1, 2, 3, 4],
+    tables: [
+      { caption: ["Dopo der / die / das / dies-", "After der / die / das / dies-"], cols: G4, rows: [
+        ["Nominativ", "-e", "-e", "-e", "-en"],
+        ["Akkusativ", "{-en}", "-e", "-e", "-en"],
+        ["Dativ", "{-en}", "{-en}", "{-en}", "-en"]] },
+      { caption: ["Dopo ein- / kein- / mein-", "After ein- / kein- / mein-"], cols: [["m", "ein · m"], ["f", "eine · f"], ["n", "ein · n"], ["pl", "meine · Pl"]], rows: [
+        ["Nominativ", "{-er}", "-e", "{-es}", "-en"],
+        ["Akkusativ", "-en", "-e", "{-es}", "-en"],
+        ["Dativ", "-en", "-en", "-en", "-en"]] }]
+  },
+  "Relativsätze: Präposition, wo, was": {
+    keep: [0, 1, 2, 3],
+    tables: [{ caption: ["Il relativo dopo la preposizione", "The relative pronoun after a preposition"], cols: G4, rows: [
+      ["Akkusativ", "den", "die", "das", "die"],
+      ["Dativ", "dem", "der", "dem", "{denen}"]] }]
+  },
+  "n-Deklination": {
+    keep: [0, 2, 3, 4],
+    tables: [{ cols: [["m", "der Student"], ["m", "ein Student"], ["m", "der Kollege"], ["pl", "Plural"]], rows: [
+      ["Nominativ", "der Student", "ein Student", "der Kollege", "die Student{en}"],
+      ["Akkusativ", "den Student{en}", "einen Student{en}", "den Kolleg{en}", "die Student{en}"],
+      ["Dativ", "dem Student{en}", "einem Student{en}", "dem Kolleg{en}", "den Student{en}"],
+      ["Genitiv", "des Student{en}", "eines Student{en}", "des Kolleg{en}", "der Student{en}"]] }]
+  }
+};
+
+/* ---------- Nuove voci v39 (allineate alle schede nuove del Bignami B1) ---------- */
+GRAMMATICA.push(
+  {
+    de: "ein / kein — Artikel nach Kasus",
+    it: "Articolo indeterminativo e negativo nei 4 casi", en: "Indefinite and negative article in the 4 cases",
+    cat: "casi",
+    rows: [["Possessivi", "mein, dein, sein, ihr, unser, euer, Ihr si declinano come kein"],
+           ["Plurale", "ein non ha plurale: Ich habe Hunde. — ma: Ich habe keine Hunde."]],
+    enRows: [["Possessives", "mein, dein, sein, ihr, unser, euer, Ihr decline like kein"],
+             ["Plural", "ein has no plural: Ich habe Hunde. — but: Ich habe keine Hunde."]],
+    note: "Come per der/die/das: tra Nominativ e Akkusativ cambia solo il maschile (ein → einen).",
+    enNote: "As with der/die/das: between Nominativ and Akkusativ only the masculine changes (ein → einen).",
+    ex: [["Ich habe einen Hund und eine Katze.", "Ho un cane e una gatta."], ["Wir haben kein Auto.", "Non abbiamo la macchina."]],
+    enEx: [["Ich habe einen Hund und eine Katze.", "I have a dog and a cat."], ["Wir haben kein Auto.", "We don't have a car."]]
+  },
+  {
+    de: "der, die oder das? — il genere del nome",
+    it: "Come indovinare il genere: regole e desinenze", en: "How to guess the gender: rules and endings",
+    cat: "genere",
+    rows: [["★ Sempre die", "-ung · -heit · -keit · -schaft · -ei · -ion · -tät · -ik · -ie · -ur (die Zeitung, die Freiheit)"],
+           ["★ Sempre das", "-chen · -lein (das Mädchen, das Brötchen) · infinito come nome (das Essen)"],
+           ["Di solito der", "-ig · -ling · -ismus · -ant · -us (der König, der Liebling) · giorni, mesi, stagioni, meteo"],
+           ["Di solito die", "quasi tutti i nomi in -e (die Straße) · donne (-in: die Lehrerin) · fiori e frutti"],
+           ["Parole composte", "comanda l'ULTIMA parola: das Haus + die Tür = die Haustür"],
+           ["Plurale", "sempre die: der Hund → die Hunde"]],
+    enRows: [["★ Always die", "-ung · -heit · -keit · -schaft · -ei · -ion · -tät · -ik · -ie · -ur (die Zeitung, die Freiheit)"],
+             ["★ Always das", "-chen · -lein (das Mädchen, das Brötchen) · infinitive as a noun (das Essen)"],
+             ["Usually der", "-ig · -ling · -ismus · -ant · -us (der König, der Liebling) · days, months, seasons, weather"],
+             ["Usually die", "almost all nouns in -e (die Straße) · women (-in: die Lehrerin) · flowers and fruit"],
+             ["Compound nouns", "the LAST word decides: das Haus + die Tür = die Haustür"],
+             ["Plural", "always die: der Hund → die Hunde"]],
+    note: "Le regole funzionano nell'80–90% dei casi: usale per indovinare, poi controlla e impara sempre il nome con l'articolo. Eccezioni da ricordare: der Junge, der Name, der Löwe (-e ma maschili).",
+    enNote: "These rules work in 80–90% of cases: use them to guess, then check and always learn the noun with its article. Exceptions to remember: der Junge, der Name, der Löwe (-e but masculine).",
+    ex: [["die Hundeleine = der Hund + die Leine", "il guinzaglio (comanda Leine)"], ["das Eichhörnchen", "lo scoiattolo (-chen → das)"]],
+    enEx: [["die Hundeleine = der Hund + die Leine", "the dog lead (Leine decides)"], ["das Eichhörnchen", "the squirrel (-chen → das)"]]
+  },
+  {
+    de: "Präpositionen — Akkusativ, Dativ oder Wechsel?",
+    it: "Le preposizioni e il caso che vogliono", en: "Prepositions and the case they take",
+    cat: "preposizioni",
+    rows: [["Sempre Akkusativ", "durch · für · gegen · ohne · um · bis — Das ist für den Hund."],
+           ["Sempre Dativ", "aus · bei · mit · nach · seit · von · zu · außer · gegenüber · ab — Ich fahre mit dem Bus."],
+           ["Wechselpräpositionen", "an · auf · hinter · in · neben · über · unter · vor · zwischen"],
+           ["★ Wohin? → Akkusativ", "movimento verso: Ich gehe in den Park."],
+           ["★ Wo? → Dativ", "posizione: Ich bin in dem (im) Park."],
+           ["Verbi in coppia", "legen → liegen · stellen → stehen · setzen → sitzen · hängen → hängen (Wohin? Akk. / Wo? Dat.)"],
+           ["Genitiv", "während · wegen · trotz · (an)statt"]],
+    enRows: [["Always Akkusativ", "durch · für · gegen · ohne · um · bis — Das ist für den Hund."],
+             ["Always Dativ", "aus · bei · mit · nach · seit · von · zu · außer · gegenüber · ab — Ich fahre mit dem Bus."],
+             ["Two-way prepositions", "an · auf · hinter · in · neben · über · unter · vor · zwischen"],
+             ["★ Wohin? → Akkusativ", "movement towards: Ich gehe in den Park."],
+             ["★ Wo? → Dativ", "position: Ich bin in dem (im) Park."],
+             ["Verb pairs", "legen → liegen · stellen → stehen · setzen → sitzen · hängen → hängen (Wohin? Akk. / Wo? Dat.)"],
+             ["Genitiv", "während · wegen · trotz · (an)statt"]],
+    note: "Trucco per l'Akkusativ: «DOGFUB» = durch, ohne, gegen, für, um, bis. zu e nach vogliono il Dativ anche se c'è movimento (Ich gehe zum Arzt).",
+    enNote: "Trick for the Akkusativ: «DOGFUB» = durch, ohne, gegen, für, um, bis. zu and nach take the Dativ even with movement (Ich gehe zum Arzt).",
+    ex: [["Ich lege die Leine auf den Tisch.", "Metto il guinzaglio sul tavolo. (Wohin?)"], ["Die Leine liegt auf dem Tisch.", "Il guinzaglio è sul tavolo. (Wo?)"]],
+    enEx: [["Ich lege die Leine auf den Tisch.", "I put the lead on the table. (Wohin?)"], ["Die Leine liegt auf dem Tisch.", "The lead is on the table. (Wo?)"]]
+  },
+  {
+    de: "Präposition + Artikel — am, im, ins, zum, zur",
+    it: "Preposizione e articolo diventano una parola", en: "Preposition and article become one word",
+    cat: "preposizioni",
+    rows: [["Nel parlato", "anche aufs, fürs, ums, durchs: aufs Land, fürs Kind"]],
+    enRows: [["In speech", "also aufs, fürs, ums, durchs: aufs Land, fürs Kind"]],
+    note: "Le forme contratte si usano quasi sempre: Ich gehe ins Kino (non «in das Kino»). zur esiste solo con il femminile Dativ.",
+    enNote: "The contracted forms are used almost always: Ich gehe ins Kino (not «in das Kino»). zur only exists with the feminine Dativ.",
+    ex: [["Am Montag gehe ich zum Arzt.", "Lunedì vado dal medico."], ["Wir fahren ins Zentrum.", "Andiamo in centro."]],
+    enEx: [["Am Montag gehe ich zum Arzt.", "On Monday I'm going to the doctor."], ["Wir fahren ins Zentrum.", "We're going to the centre."]]
+  },
+  {
+    de: "Das Perfekt — haben oder sein?",
+    it: "Il passato prossimo: haben/sein + Partizip II", en: "The spoken past: haben/sein + Partizip II",
+    cat: "tempi verbali",
+    rows: [["Formula", "haben / sein (posizione 2) + … + Partizip II (in fondo): Ich habe Pizza gegessen."],
+           ["★ sein", "movimento da A a B (gehen, fahren, fliegen, kommen) · cambiamento di stato (aufstehen, einschlafen, werden) · sein, bleiben, passieren"],
+           ["haben", "tutti gli altri: essen, kaufen, schlafen, arbeiten, verbi riflessivi"],
+           ["Regolari", "ge- + radice + -t: machen → gemacht"],
+           ["Irregolari", "ge- + radice + -en: essen → gegessen, fahren → gefahren"],
+           ["Separabili", "-ge- in mezzo: einkaufen → eingekauft, aufstehen → aufgestanden"],
+           ["Senza ge-", "be-/ver-/er-/ent-/zer- e -ieren: besuchen → besucht, studieren → studiert"]],
+    enRows: [["Formula", "haben / sein (position 2) + … + Partizip II (at the end): Ich habe Pizza gegessen."],
+             ["★ sein", "movement from A to B (gehen, fahren, fliegen, kommen) · change of state (aufstehen, einschlafen, werden) · sein, bleiben, passieren"],
+             ["haben", "all the others: essen, kaufen, schlafen, arbeiten, reflexive verbs"],
+             ["Regular", "ge- + stem + -t: machen → gemacht"],
+             ["Irregular", "ge- + stem + -en: essen → gegessen, fahren → gefahren"],
+             ["Separable", "-ge- in the middle: einkaufen → eingekauft, aufstehen → aufgestanden"],
+             ["No ge-", "be-/ver-/er-/ent-/zer- and -ieren: besuchen → besucht, studieren → studiert"]],
+    note: "Nel parlato si usa quasi sempre il Perfekt; il Präteritum si usa nello scritto e con sein, haben e i modali (ich war, ich hatte, ich musste).",
+    enNote: "In speech the Perfekt is used almost always; the Präteritum is used in writing and with sein, haben and the modals (ich war, ich hatte, ich musste).",
+    ex: [["Ich bin nach Italien gefahren.", "Sono andato in Italia."], ["Ich habe den Hund gefüttert.", "Ho dato da mangiare al cane."]],
+    enEx: [["Ich bin nach Italien gefahren.", "I went to Italy."], ["Ich habe den Hund gefüttert.", "I fed the dog."]]
+  },
+  {
+    de: "Modalverben — Präsens und Präteritum",
+    it: "I verbi modali: tutte le forme", en: "The modal verbs: every form",
+    cat: "modali",
+    rows: [["können", "capacità, possibilità — Ich kann schwimmen."],
+           ["dürfen", "permesso — Hier darf man nicht rauchen."],
+           ["müssen", "necessità, obbligo — Ich muss morgen arbeiten."],
+           ["sollen", "dovere voluto da un altro — Der Arzt sagt, ich soll mehr schlafen."],
+           ["wollen", "volontà decisa — Ich will Hundetrainer werden."],
+           ["möchten", "desiderio gentile — Ich möchte einen Kaffee."],
+           ["mögen", "piacere (+ nome) — Ich mag Hunde."]],
+    enRows: [["können", "ability, possibility — Ich kann schwimmen."],
+             ["dürfen", "permission — Hier darf man nicht rauchen."],
+             ["müssen", "necessity, obligation — Ich muss morgen arbeiten."],
+             ["sollen", "duty set by someone else — Der Arzt sagt, ich soll mehr schlafen."],
+             ["wollen", "firm intention — Ich will Hundetrainer werden."],
+             ["möchten", "polite wish — Ich möchte einen Kaffee."],
+             ["mögen", "to like (+ noun) — Ich mag Hunde."]],
+    note: "ich ed er/sie/es sono uguali e senza desinenza (ich kann, er kann). Nel Präteritum sparisce l'Umlaut (müssen → musste). möchten non ha passato: si usa wollte. L'infinito va in fondo, senza zu.",
+    enNote: "ich and er/sie/es are identical and have no ending (ich kann, er kann). In the Präteritum the Umlaut disappears (müssen → musste). möchten has no past: use wollte. The infinitive goes at the end, without zu.",
+    ex: [["Ich muss heute lange arbeiten.", "Oggi devo lavorare a lungo."], ["…, weil ich heute lange arbeiten muss.", "…, perché oggi devo lavorare a lungo."]],
+    enEx: [["Ich muss heute lange arbeiten.", "Today I have to work late."], ["…, weil ich heute lange arbeiten muss.", "…, because today I have to work late."]]
+  },
+  {
+    de: "Zahlen und Ordnungszahlen",
+    it: "I numeri, gli ordinali e le date", en: "Numbers, ordinals and dates",
+    cat: "numeri",
+    rows: [["0–12", "null, eins, zwei, drei, vier, fünf, sechs, sieben, acht, neun, zehn, elf, zwölf"],
+           ["13–19", "dreizehn, vierzehn, fünfzehn, sechzehn (senza s), siebzehn (senza en), achtzehn, neunzehn"],
+           ["Decine", "zwanzig, dreißig (ß!), vierzig, fünfzig, sechzig, siebzig, achtzig, neunzig, (ein)hundert, (ein)tausend"],
+           ["★ Da 21", "prima l'unità, poi la decina: 21 = einundzwanzig · 58 = achtundfünfzig · 345 = dreihundertfünfundvierzig"],
+           ["Ordinali 1–19", "numero + -te: der erste, zweite, dritte, vierte, siebte, achte"],
+           ["Ordinali da 20", "numero + -ste: der zwanzigste, einundzwanzigste"],
+           ["Date", "Heute ist der 12. (zwölfte) Oktober. · Ich bin am 3. (dritten) Mai geboren."]],
+    enRows: [["0–12", "null, eins, zwei, drei, vier, fünf, sechs, sieben, acht, neun, zehn, elf, zwölf"],
+             ["13–19", "dreizehn, vierzehn, fünfzehn, sechzehn (no s), siebzehn (no en), achtzehn, neunzehn"],
+             ["Tens", "zwanzig, dreißig (ß!), vierzig, fünfzig, sechzig, siebzig, achtzig, neunzig, (ein)hundert, (ein)tausend"],
+             ["★ From 21", "unit first, then the ten: 21 = einundzwanzig · 58 = achtundfünfzig · 345 = dreihundertfünfundvierzig"],
+             ["Ordinals 1–19", "number + -te: der erste, zweite, dritte, vierte, siebte, achte"],
+             ["Ordinals from 20", "number + -ste: der zwanzigste, einundzwanzigste"],
+             ["Dates", "Heute ist der 12. (zwölfte) Oktober. · Ich bin am 3. (dritten) Mai geboren."]],
+    note: "Si scrive tutto attaccato. eins diventa ein- davanti a «und»: einundzwanzig. Gli anni fino al 1999 si dicono a centinaia: 1990 = neunzehnhundertneunzig.",
+    enNote: "Written as one word. eins becomes ein- before «und»: einundzwanzig. Years up to 1999 are said in hundreds: 1990 = neunzehnhundertneunzig.",
+    ex: [["Ich wohne in der Weserstraße 34.", "Abito in Weserstraße 34. (vierunddreißig)"], ["Der Kurs beginnt am 1. November.", "Il corso inizia il 1° novembre. (am ersten)"]],
+    enEx: [["Ich wohne in der Weserstraße 34.", "I live at Weserstraße 34. (vierunddreißig)"], ["Der Kurs beginnt am 1. November.", "The course starts on 1 November. (am ersten)"]]
+  },
+  {
+    de: "Das Wetter — es regnet, es ist kalt",
+    it: "Il meteo: le frasi con es", en: "The weather: sentences with es",
+    cat: "meteo",
+    rows: [["es + verbo", "Es regnet. · Es schneit. · Es friert. · Es hagelt. · Es blitzt. · Es donnert."],
+           ["es ist + aggettivo", "heiß · warm · kühl · kalt · windig · sonnig · feucht · schön"],
+           ["Domande", "Wie ist das Wetter? · Wie wird das Wetter morgen?"],
+           ["Nomi", "der Regen · der Schnee · der Wind · die Sonne · die Wolke · das Gewitter"]],
+    enRows: [["es + verb", "Es regnet. · Es schneit. · Es friert. · Es hagelt. · Es blitzt. · Es donnert."],
+             ["es ist + adjective", "heiß · warm · kühl · kalt · windig · sonnig · feucht · schön"],
+             ["Questions", "Wie ist das Wetter? · Wie wird das Wetter morgen?"],
+             ["Nouns", "der Regen · der Schnee · der Wind · die Sonne · die Wolke · das Gewitter"]],
+    note: "Il meteo comincia sempre con es (soggetto «vuoto», come in inglese it). Eccezione: Die Sonne scheint.",
+    enNote: "Weather sentences always start with es (an «empty» subject, like English it). Exception: Die Sonne scheint.",
+    ex: [["Es regnet, wir bleiben zu Hause.", "Piove, restiamo a casa."], ["Morgen wird es sonnig.", "Domani ci sarà il sole."]],
+    enEx: [["Es regnet, wir bleiben zu Hause.", "It's raining, we're staying at home."], ["Morgen wird es sonnig.", "Tomorrow it will be sunny."]]
+  }
+);
+
+Object.assign(GRAM_TABLES, {
+  "ein / kein — Artikel nach Kasus": {
+    tables: [{ cols: G4, rows: [
+      ["Nominativ", "ein / kein", "eine / keine", "ein / kein", "— / keine"],
+      ["Akkusativ", "{einen} / {keinen}", "eine / keine", "ein / kein", "— / keine"],
+      ["Dativ", "{einem} / {keinem}", "{einer} / {keiner}", "{einem} / {keinem}", "— / {keinen}"],
+      ["Genitiv", "{eines} / {keines}", "{einer} / {keiner}", "{eines} / {keines}", "— / {keiner}"]] }]
+  },
+  "der, die oder das? — il genere del nome": {
+    tables: [{ head: ["Regola", "Rule"], cols: [["m", "der"], ["f", "die"], ["n", "das"]], rows: [
+      [["Persone", "People"], "der Mann, der Lehrer", "die Frau, die Lehrer{in}", "das Kind, das Baby"],
+      [["Desinenze", "Endings"], "-ig · -ling · -ismus · -ant", "-ung · -heit · -keit · -schaft · -ion · -e", "-chen · -lein · -ment · -um"],
+      [["Altro", "Other"], "giorni, mesi, meteo", "fiori, frutti", "infinito come nome"]] }]
+  },
+  "Präposition + Artikel — am, im, ins, zum, zur": {
+    tables: [{ head: ["", ""], cols: [["m", "+ dem (Dat. m/n)"], ["f", "+ der (Dat. f)"], ["n", "+ das (Akk. n)"]], rows: [
+      [["an", "an"], "an dem → *am*", "—", "an das → *ans*"],
+      [["in", "in"], "in dem → *im*", "—", "in das → *ins*"],
+      [["bei", "bei"], "bei dem → *beim*", "—", "—"],
+      [["von", "von"], "von dem → *vom*", "—", "—"],
+      [["zu", "zu"], "zu dem → *zum*", "zu der → *zur*", "—"]] }]
+  },
+  "Modalverben — Präsens und Präteritum": {
+    tables: [
+      { caption: ["Präsens", "Präsens"], head: ["", ""],
+        cols: [["x", "können"], ["x", "dürfen"], ["x", "müssen"], ["x", "sollen"], ["x", "wollen"], ["pl", "möchten"], ["x", "mögen"]], rows: [
+        [["ich", "ich"], "{kann}", "{darf}", "{muss}", "{soll}", "{will}", "möchte", "{mag}"],
+        [["du", "du"], "kannst", "darfst", "musst", "sollst", "willst", "möchtest", "magst"],
+        [["er/sie/es", "er/sie/es"], "{kann}", "{darf}", "{muss}", "{soll}", "{will}", "möchte", "{mag}"],
+        [["wir", "wir"], "können", "dürfen", "müssen", "sollen", "wollen", "möchten", "mögen"],
+        [["ihr", "ihr"], "könnt", "dürft", "müsst", "sollt", "wollt", "möchtet", "mögt"],
+        [["sie/Sie", "sie/Sie"], "können", "dürfen", "müssen", "sollen", "wollen", "möchten", "mögen"]] },
+      { caption: ["Präteritum · Partizip II", "Präteritum · Partizip II"], head: ["", ""],
+        cols: [["x", "können"], ["x", "dürfen"], ["x", "müssen"], ["x", "sollen"], ["x", "wollen"], ["pl", "möchten"], ["x", "mögen"]], rows: [
+        [["ich / er", "ich / er"], "konnte", "durfte", "musste", "sollte", "wollte", "→ wollte", "mochte"],
+        [["du", "du"], "konntest", "durftest", "musstest", "solltest", "wolltest", "→ wolltest", "mochtest"],
+        [["wir / sie", "wir / sie"], "konnten", "durften", "mussten", "sollten", "wollten", "→ wollten", "mochten"],
+        [["ihr", "ihr"], "konntet", "durftet", "musstet", "solltet", "wolltet", "→ wolltet", "mochtet"],
+        [["Partizip II", "Partizip II"], "gekonnt", "gedurft", "gemusst", "gesollt", "gewollt", "—", "gemocht"]] }]
+  }
+});
+
+/* Il meteo anche come frasi utili (cercabili e nelle flashcard) */
+FRASI.push(
+  ["Wie ist das Wetter?", "Che tempo fa?", "What's the weather like?"],
+  ["Es regnet.", "Piove.", "It's raining."],
+  ["Es schneit.", "Nevica.", "It's snowing."],
+  ["Es friert.", "Gela.", "It's freezing."],
+  ["Es hagelt.", "Grandina.", "It's hailing."],
+  ["Es blitzt und donnert.", "Lampeggia e tuona.", "There's thunder and lightning."],
+  ["Es ist heiß.", "Fa molto caldo.", "It's hot."],
+  ["Es ist kalt.", "Fa freddo.", "It's cold."],
+  ["Es ist windig.", "C'è vento.", "It's windy."],
+  ["Es ist sonnig.", "C'è il sole.", "It's sunny."],
+  ["Die Sonne scheint.", "Splende il sole.", "The sun is shining."]
+);
+
+/* =====================================================================
+   v39 (2026-10-12, 2° blocco) — dal materiale «tabelle tedesco»:
+   vocabolario del meteo, la scuola tedesca, parole curiose, modi di dire,
+   lettere formali, nuove schede (plurale, domande W-, congiunzioni,
+   punteggiatura, Konjunktiv I).
+   ===================================================================== */
+const _S = (de, pl, it, en, cat, exDe, exIt, exEn, note, enNote) =>
+  Object.assign({ de, pl, it, en, cat, ex: [[exDe, exIt]], enex: [[exDe, exEn]] }, note ? { note, enNote } : {});
+SOSTANTIVI.push(
+  /* meteo */
+  _S("die Hitze", "—", "caldo (intenso)", "heat", "meteo", "Bei dieser Hitze bleibe ich zu Hause.", "Con questo caldo resto a casa.", "In this heat I'm staying at home."),
+  _S("die Hitzewelle", "die Hitzewellen", "ondata di caldo", "heat wave", "meteo", "Die Hitzewelle dauert eine Woche.", "L'ondata di caldo dura una settimana.", "The heat wave lasts a week."),
+  _S("die Kälte", "—", "freddo", "cold", "meteo", "Ich mag die Kälte nicht.", "Non mi piace il freddo.", "I don't like the cold."),
+  _S("die Kältewelle", "die Kältewellen", "ondata di freddo", "cold spell", "meteo", "Eine Kältewelle kommt aus dem Osten.", "Un'ondata di freddo arriva da est.", "A cold spell is coming from the east."),
+  _S("die Luft", "die Lüfte", "aria", "air", "meteo", "Die Luft ist heute sehr feucht.", "Oggi l'aria è molto umida.", "The air is very humid today."),
+  _S("die Schneeflocke", "die Schneeflocken", "fiocco di neve", "snowflake", "meteo", "Die ersten Schneeflocken fallen.", "Cadono i primi fiocchi di neve.", "The first snowflakes are falling."),
+  _S("die Temperatur", "die Temperaturen", "temperatura", "temperature", "meteo", "Die Temperaturen steigen auf 30 Grad.", "Le temperature salgono a 30 gradi.", "Temperatures rise to 30 degrees."),
+  _S("die Überschwemmung", "die Überschwemmungen", "alluvione, inondazione", "flood", "meteo", "Nach dem Regen gab es Überschwemmungen.", "Dopo la pioggia ci sono state inondazioni.", "After the rain there were floods."),
+  _S("das Eis", "—", "ghiaccio (anche: gelato)", "ice (also: ice cream)", "meteo", "Auf dem See ist Eis.", "Sul lago c'è il ghiaccio.", "There's ice on the lake."),
+  _S("das Glatteis", "—", "ghiaccio sulla strada (vetrato)", "black ice", "meteo", "Vorsicht, Glatteis!", "Attenzione, strada ghiacciata!", "Careful, black ice!"),
+  _S("das Klima", "die Klimas", "clima", "climate", "meteo", "Das Klima in Berlin ist kontinental.", "Il clima di Berlino è continentale.", "Berlin's climate is continental."),
+  _S("das Gewitter", "die Gewitter", "temporale", "thunderstorm", "meteo", "Heute Abend gibt es ein Gewitter.", "Stasera c'è un temporale.", "There's a thunderstorm tonight."),
+  _S("der Blitz", "die Blitze", "fulmine, lampo", "lightning flash", "meteo", "Der Blitz hat in den Baum eingeschlagen.", "Il fulmine ha colpito l'albero.", "Lightning struck the tree."),
+  _S("der Donner", "die Donner", "tuono", "thunder", "meteo", "Mein Hund hat Angst vor dem Donner.", "Il mio cane ha paura del tuono.", "My dog is afraid of thunder."),
+  _S("der Frost", "die Fröste", "gelo", "frost", "meteo", "In der Nacht gibt es Frost.", "Di notte gela.", "There will be frost at night."),
+  _S("der Nebel", "die Nebel", "nebbia", "fog", "meteo", "Am Morgen ist viel Nebel.", "Al mattino c'è molta nebbia.", "There's a lot of fog in the morning."),
+  _S("der Niederschlag", "die Niederschläge", "precipitazione", "rainfall, precipitation", "meteo", "Morgen gibt es kaum Niederschlag.", "Domani poche precipitazioni.", "Tomorrow there'll be hardly any rainfall."),
+  _S("der Orkan", "die Orkane", "uragano", "hurricane", "meteo", "Der Orkan hat viele Bäume umgeworfen.", "L'uragano ha abbattuto molti alberi.", "The hurricane knocked down many trees."),
+  _S("der Regenschauer", "die Regenschauer", "acquazzone", "rain shower", "meteo", "Am Nachmittag kommen Regenschauer.", "Nel pomeriggio arrivano acquazzoni.", "Showers are coming in the afternoon."),
+  _S("der Schatten", "die Schatten", "ombra", "shade, shadow", "meteo", "Der Hund liegt im Schatten.", "Il cane è sdraiato all'ombra.", "The dog is lying in the shade."),
+  _S("der Schneefall", "die Schneefälle", "nevicata", "snowfall", "meteo", "Starker Schneefall in den Alpen.", "Forti nevicate sulle Alpi.", "Heavy snowfall in the Alps."),
+  _S("der Schneesturm", "die Schneestürme", "tormenta di neve", "snowstorm", "meteo", "Wegen des Schneesturms fährt kein Zug.", "A causa della tormenta non parte nessun treno.", "Because of the snowstorm no trains are running."),
+  _S("der Sonnenschein", "—", "luce del sole", "sunshine", "meteo", "Wir hatten eine Woche Sonnenschein.", "Abbiamo avuto una settimana di sole.", "We had a week of sunshine."),
+  _S("der Sturm", "die Stürme", "tempesta", "storm", "meteo", "Der Sturm war sehr laut.", "La tempesta era molto rumorosa.", "The storm was very loud."),
+  _S("der Wetterbericht", "die Wetterberichte", "previsioni del tempo", "weather report", "meteo", "Was sagt der Wetterbericht?", "Cosa dicono le previsioni?", "What does the weather report say?"),
+  _S("der Wind", "die Winde", "vento", "wind", "meteo", "Heute weht ein kalter Wind.", "Oggi soffia un vento freddo.", "A cold wind is blowing today."),
+  _S("der Norden", "—", "nord", "north", "meteo", "Hamburg liegt im Norden.", "Amburgo è al nord.", "Hamburg is in the north.", "Punti cardinali: sempre der (der Norden, der Süden, der Osten, der Westen).", "Compass points: always der (der Norden, der Süden, der Osten, der Westen)."),
+  _S("der Süden", "—", "sud", "south", "meteo", "Im Süden ist es wärmer.", "Al sud fa più caldo.", "It's warmer in the south."),
+  _S("der Osten", "—", "est", "east", "meteo", "Die Sonne geht im Osten auf.", "Il sole sorge a est.", "The sun rises in the east."),
+  _S("der Westen", "—", "ovest", "west", "meteo", "Der Wind kommt aus dem Westen.", "Il vento viene da ovest.", "The wind comes from the west."),
+  /* la scuola tedesca */
+  _S("der Kindergarten", "die Kindergärten", "scuola materna", "nursery school", "scuola", "Mein Sohn geht in den Kindergarten.", "Mio figlio va alla scuola materna.", "My son goes to nursery school.", "Dai 3 ai 6 anni. Parola entrata anche in inglese.", "Ages 3 to 6. The word was borrowed into English too."),
+  _S("die Grundschule", "die Grundschulen", "scuola elementare", "primary school", "scuola", "Die Grundschule dauert vier Jahre.", "La scuola elementare dura quattro anni.", "Primary school lasts four years.", "In Berlino dura sei anni (classi 1–6).", "In Berlin it lasts six years (grades 1–6)."),
+  _S("die Hauptschule", "die Hauptschulen", "scuola secondaria di base", "lower secondary school", "scuola", "Nach der Hauptschule macht er eine Lehre.", "Dopo la Hauptschule fa un apprendistato.", "After the Hauptschule he does an apprenticeship."),
+  _S("die Realschule", "die Realschulen", "scuola secondaria (fino alla 10ª classe)", "intermediate secondary school", "scuola", "Sie hat die Realschule abgeschlossen.", "Ha finito la Realschule.", "She has finished Realschule."),
+  _S("das Gymnasium", "die Gymnasien", "liceo", "grammar school (academic high school)", "scuola", "Am Gymnasium macht man das Abitur.", "Al liceo si fa la maturità.", "At the Gymnasium you take the Abitur.", "Falso amico: NON è la palestra (die Turnhalle / das Fitnessstudio).", "False friend: it is NOT a gym (die Turnhalle / das Fitnessstudio)."),
+  _S("die Berufsschule", "die Berufsschulen", "scuola professionale", "vocational school", "scuola", "Zwei Tage pro Woche ist er in der Berufsschule.", "Due giorni a settimana va alla scuola professionale.", "Two days a week he's at vocational school."),
+  _S("das Abitur", "die Abiture", "maturità (esame di fine liceo)", "school-leaving exam (A levels)", "scuola", "Nach dem Abitur will sie studieren.", "Dopo la maturità vuole andare all'università.", "After the Abitur she wants to go to university."),
+  /* parole curiose: il tedesco «letterale» */
+  _S("das Fernweh", "—", "voglia di viaggiare lontano", "wanderlust", "varie", "Im Winter habe ich immer Fernweh.", "D'inverno ho sempre voglia di partire.", "In winter I always get wanderlust.", "Letteralmente «mal di lontano»: il contrario di Heimweh (nostalgia di casa).", "Literally «far-away ache»: the opposite of Heimweh (homesickness)."),
+  _S("der Kummerspeck", "—", "chili presi per consolarsi col cibo", "comfort-eating weight", "varie", "Nach der Trennung hat er Kummerspeck angesetzt.", "Dopo la separazione ha messo su qualche chilo.", "After the break-up he put on some comfort-eating weight.", "Letteralmente «lardo da dispiacere».", "Literally «grief bacon»."),
+  _S("die Schadenfreude", "—", "gioia per le disgrazie altrui", "schadenfreude", "varie", "Ein bisschen Schadenfreude war schon dabei.", "Un po' di gioia maligna c'era.", "There was a bit of schadenfreude.", "Schaden (danno) + Freude (gioia). È passata anche in inglese.", "Schaden (damage) + Freude (joy). Borrowed into English."),
+  _S("der Handschuh", "die Handschuhe", "guanto", "glove", "varie", "Ich habe meine Handschuhe vergessen.", "Ho dimenticato i guanti.", "I forgot my gloves.", "Letteralmente «scarpa della mano».", "Literally «hand shoe»."),
+  _S("das Glühwürmchen", "die Glühwürmchen", "lucciola", "firefly", "varie", "Im Juni sieht man Glühwürmchen.", "A giugno si vedono le lucciole.", "In June you can see fireflies.", "Letteralmente «vermetto che brilla». -chen → das.", "Literally «little glowing worm». -chen → das."),
+  _S("die Nacktschnecke", "die Nacktschnecken", "lumaca (senza guscio)", "slug", "varie", "Die Nacktschnecken fressen den Salat.", "Le lumache mangiano l'insalata.", "The slugs are eating the lettuce.", "Letteralmente «chiocciola nuda».", "Literally «naked snail»."),
+  _S("das Streichholz", "die Streichhölzer", "fiammifero", "match", "varie", "Hast du ein Streichholz?", "Hai un fiammifero?", "Do you have a match?", "Letteralmente «legno da strofinare».", "Literally «stroking wood»."),
+  _S("das Gänseblümchen", "die Gänseblümchen", "margherita (pratolina)", "daisy", "varie", "Auf der Wiese wachsen Gänseblümchen.", "Sul prato crescono le margherite.", "Daisies grow in the meadow.", "Letteralmente «fiorellino delle oche».", "Literally «little goose flower»."),
+  _S("der Glückspilz", "die Glückspilze", "persona fortunata", "lucky devil", "varie", "Du Glückspilz! Du hast gewonnen!", "Che fortunato! Hai vinto!", "You lucky thing! You've won!", "Letteralmente «fungo della fortuna». Il contrario: der Pechvogel.", "Literally «luck mushroom». The opposite: der Pechvogel."),
+  _S("der Scherzkeks", "die Scherzkekse", "burlone", "joker", "varie", "Du bist ja ein Scherzkeks!", "Sei proprio un burlone!", "You're such a joker!", "Letteralmente «biscotto scherzoso».", "Literally «joke biscuit»."),
+  _S("die Wasserschildkröte", "die Wasserschildkröten", "tartaruga d'acqua", "turtle", "varie", "Im Teich lebt eine Wasserschildkröte.", "Nello stagno vive una tartaruga d'acqua.", "A turtle lives in the pond.", "Letteralmente «rospo con lo scudo d'acqua».", "Literally «water shield toad»."),
+  _S("die Fußhupe", "die Fußhupen", "cagnolino (scherzoso)", "small yappy dog (jokey)", "varie", "Die Nachbarin hat eine kleine Fußhupe.", "La vicina ha un cagnolino che abbaia sempre.", "The neighbour has a little yappy dog.", "Letteralmente «clacson da piede»: cane piccolo che abbaia tanto. Scherzoso, un po' ironico.", "Literally «foot horn»: a small dog that barks a lot. Jokey, a bit mocking.")
+);
+
+FRASI.push(
+  /* meteo */
+  ["Es ist bewölkt.", "È nuvoloso.", "It's cloudy."],
+  ["Es ist schwül.", "C'è afa.", "It's muggy."],
+  ["So ein Sauwetter!", "Che tempo da cani!", "What lousy weather!"],
+  ["Mir ist kalt.", "Ho freddo.", "I feel cold."],
+  ["Ist es dir zu heiß?", "Hai troppo caldo?", "Are you too hot?"],
+  /* lingua parlata */
+  ["Das ist bescheuert.", "È una cosa ridicola / stupida.", "That's ridiculous."],
+  ["Na?", "Allora? / Come va? (saluto informale)", "So…? / Hey, how's it going?"],
+  ["Das ist mir Wurst.", "Non me ne importa niente.", "I couldn't care less."],
+  ["Ich besorge das Bier.", "La birra la porto io.", "I'll get the beer."],
+  ["Kein Schwein war da.", "Non c'era nessuno (colloquiale).", "Nobody was there (slang)."],
+  ["Der spinnt!", "È matto!", "He's nuts!"],
+  ["Langsam, langsam.", "Piano piano, un po' alla volta.", "Little by little."],
+  ["Das kannst du deiner Oma erzählen!", "Raccontalo a qualcun altro! (non ci credo)", "Tell it to your grandmother! (I don't believe it)"],
+  ["Das ist null acht fünfzehn.", "È una cosa banale, standard.", "That's run-of-the-mill."],
+  ["Ich habe die Nase voll davon.", "Ne ho le scatole piene.", "I'm fed up with it."],
+  ["Ich fress einen Besen!", "Non ci posso credere! (lett. mi mangio una scopa)", "I don't believe it! (lit. I'll eat a broom)"],
+  /* lettere formali */
+  ["Sehr geehrter Herr Schmidt,", "Gentile Sig. Schmidt, (formale)", "Dear Mr Schmidt, (formal)"],
+  ["Sehr geehrte Frau Schmidt,", "Gentile Sig.ra Schmidt, (formale)", "Dear Ms Schmidt, (formal)"],
+  ["Sehr geehrte Damen und Herren,", "Gentili Signore e Signori, (nome sconosciuto)", "Dear Sir or Madam, (name unknown)"],
+  ["Wir schreiben Ihnen bezüglich …", "La contattiamo in riferimento a …", "We are writing to you regarding …"],
+  ["Bezug nehmend auf Ihr Schreiben vom …", "In riferimento alla Sua lettera del …", "With reference to your letter of …"],
+  ["Ich schreibe Ihnen, um mich nach … zu erkundigen.", "Le scrivo per avere informazioni su …", "I'm writing to enquire about …"],
+  ["Ich wäre Ihnen sehr dankbar, wenn Sie … könnten.", "Le sarei molto grato se potesse …", "I would be very grateful if you could …"],
+  ["Würden Sie mir freundlicherweise … zusenden?", "Potrebbe gentilmente inviarmi …?", "Would you kindly send me …?"],
+  ["Leider müssen wir Ihnen mitteilen, dass …", "Siamo spiacenti di doverLa informare che …", "We regret to inform you that …"],
+  ["Für weitere Informationen stehe ich Ihnen gerne zur Verfügung.", "Resto a disposizione per ulteriori informazioni.", "I'm happy to provide any further information."],
+  ["Vielen Dank im Voraus.", "La ringrazio anticipatamente.", "Thank you in advance."],
+  ["Ich freue mich darauf, bald von Ihnen zu hören.", "Spero di sentirLa presto.", "I look forward to hearing from you soon."],
+  ["Mit freundlichen Grüßen", "Cordiali saluti (chiusura formale standard)", "Kind regards (standard formal closing)"]
+);
+
+DETTI.push(
+  ["Egal wie dicht du bist, Goethe war Dichter.", "Per quanto tu sia ubriaco, il poeta era Goethe.", "Gioco di parole: dicht = ubriaco (colloquiale), Dichter = poeta ma anche «più ubriaco».", "No matter how drunk you are, Goethe was the poet.", "Pun: dicht = drunk (slang), Dichter = poet but also «more drunk»."]
+);
+
+GRAMMATICA.push(
+  {
+    de: "Der Plural — come si forma il plurale",
+    it: "Il plurale dei nomi: le regole principali", en: "Noun plurals: the main rules",
+    cat: "genere",
+    rows: [["★ Articolo", "al plurale sempre die (Nominativ/Akkusativ) · Dativ: den + nome in -n (mit den Kindern)"],
+           ["-e", "molti maschili e neutri: der Tag → die Tage · das Jahr → die Jahre (spesso con Umlaut: der Stuhl → die Stühle)"],
+           ["-(e)n", "quasi tutti i femminili: die Frau → die Frauen · die Lampe → die Lampen · -heit/-keit/-ung/-schaft/-ei → -en"],
+           ["-er", "molti neutri corti, sempre con Umlaut se possibile: das Kind → die Kinder · das Buch → die Bücher"],
+           ["— (nessuna desinenza)", "maschili e neutri in -er, -el, -en, -chen, -lein: der Lehrer → die Lehrer · das Mädchen → die Mädchen (a volte Umlaut: der Vater → die Väter)"],
+           ["-s", "parole straniere e abbreviazioni: das Auto → die Autos · das Hotel → die Hotels · die Oma → die Omas"],
+           ["-nen", "femminili in -in: die Lehrerin → die Lehrerinnen"]],
+    enRows: [["★ Article", "in the plural always die (Nominativ/Akkusativ) · Dativ: den + noun in -n (mit den Kindern)"],
+             ["-e", "many masculine and neuter nouns: der Tag → die Tage · das Jahr → die Jahre (often with Umlaut: der Stuhl → die Stühle)"],
+             ["-(e)n", "almost all feminine nouns: die Frau → die Frauen · die Lampe → die Lampen · -heit/-keit/-ung/-schaft/-ei → -en"],
+             ["-er", "many short neuter nouns, with Umlaut when possible: das Kind → die Kinder · das Buch → die Bücher"],
+             ["— (no ending)", "masculine and neuter nouns in -er, -el, -en, -chen, -lein: der Lehrer → die Lehrer · das Mädchen → die Mädchen (sometimes Umlaut: der Vater → die Väter)"],
+             ["-s", "foreign words and abbreviations: das Auto → die Autos · das Hotel → die Hotels · die Oma → die Omas"],
+             ["-nen", "feminine nouns in -in: die Lehrerin → die Lehrerinnen"]],
+    note: "Le regole aiutano, ma il plurale va imparato insieme al nome: der Hund, die Hunde. Nel vocabolario dell'app il plurale è sempre indicato.",
+    enNote: "The rules help, but the plural must be learnt together with the noun: der Hund, die Hunde. In the app's vocabulary the plural is always shown.",
+    ex: [["Ich habe zwei Hunde und drei Katzen.", "Ho due cani e tre gatti."], ["Ich spiele mit den Kindern.", "Gioco con i bambini. (Dativ plurale: -n)"]],
+    enEx: [["Ich habe zwei Hunde und drei Katzen.", "I have two dogs and three cats."], ["Ich spiele mit den Kindern.", "I play with the children. (Dativ plural: -n)"]]
+  },
+  {
+    de: "W-Fragen — wo, wohin, woher · hin und her",
+    it: "Le domande con W- e gli avverbi di luogo", en: "W-questions and adverbs of place",
+    cat: "sintassi",
+    rows: [["Wer? / Was?", "chi? / che cosa? — Wer ist das? Was machst du?"],
+           ["Wen? / Wem? / Wessen?", "chi? (Akk.) / a chi? / di chi? — Wem gehört der Hund?"],
+           ["Wann? / Wie? / Warum?", "quando? / come? / perché? — Warum lernst du Deutsch?"],
+           ["★ Wo? · Wohin? · Woher?", "dove (stato)? · dove (verso)? · da dove? — Woher kommst du?"],
+           ["Wofür? / Worüber?", "per che cosa? / di che cosa? — wo(r) + preposizione per le COSE"],
+           ["hin", "movimento VIA da chi parla: Geh hin! · hinauf, hinunter, hinein"],
+           ["her", "movimento VERSO chi parla: Komm her! · herauf, herunter, herein"],
+           ["Parlato", "hin/her si accorciano in r-: rauf, runter, rein, raus (Komm rein! · Geh raus!)"],
+           ["Stato (Wo?)", "oben · unten · drinnen · draußen · hier · dort — Ich bin oben."],
+           ["Movimento (Wohin?)", "nach oben · nach unten · nach drinnen · nach draußen — Ich gehe nach oben."]],
+    enRows: [["Wer? / Was?", "who? / what? — Wer ist das? Was machst du?"],
+             ["Wen? / Wem? / Wessen?", "whom? / to whom? / whose? — Wem gehört der Hund?"],
+             ["Wann? / Wie? / Warum?", "when? / how? / why? — Warum lernst du Deutsch?"],
+             ["★ Wo? · Wohin? · Woher?", "where (location)? · where to? · where from? — Woher kommst du?"],
+             ["Wofür? / Worüber?", "what for? / about what? — wo(r) + preposition for THINGS"],
+             ["hin", "movement AWAY from the speaker: Geh hin! · hinauf, hinunter, hinein"],
+             ["her", "movement TOWARDS the speaker: Komm her! · herauf, herunter, herein"],
+             ["Speech", "hin/her shorten to r-: rauf, runter, rein, raus (Komm rein! · Geh raus!)"],
+             ["Location (Wo?)", "oben · unten · drinnen · draußen · hier · dort — Ich bin oben."],
+             ["Movement (Wohin?)", "nach oben · nach unten · nach drinnen · nach draußen — Ich gehe nach oben."]],
+    note: "Wohin? e Woher? si possono anche separare: Wo gehst du hin? · Wo kommst du her? Trucco: hin = via da me, her = verso di me.",
+    enNote: "Wohin? and Woher? can also be split: Wo gehst du hin? · Wo kommst du her? Trick: hin = away from me, her = towards me.",
+    ex: [["Woher kommst du? – Aus Italien.", "Da dove vieni? – Dall'Italia."], ["Komm bitte herunter!", "Scendi, per favore! (verso di me)"]],
+    enEx: [["Woher kommst du? – Aus Italien.", "Where are you from? – From Italy."], ["Komm bitte herunter!", "Please come down! (towards me)"]]
+  },
+  {
+    de: "Weitere Konjunktionen — falls, indem, solange, sodass",
+    it: "Altre congiunzioni subordinanti", en: "More subordinating conjunctions",
+    cat: "connettori",
+    rows: [["falls", "nel caso che, se — Falls es regnet, bleiben wir zu Hause."],
+           ["indem", "facendo… (il modo, risponde a Wie?) — Man lernt, indem man übt."],
+           ["solange", "finché, per tutto il tempo che — Solange du Fieber hast, bleibst du im Bett."],
+           ["sobald", "non appena — Ruf mich an, sobald du ankommst."],
+           ["sodass / so …, dass", "così che (conseguenza) — Es regnete stark, sodass wir zu Hause blieben."],
+           ["da", "poiché (motivo già noto, spesso all'inizio) — Da ich keine Zeit habe, komme ich nicht."],
+           ["ob", "se (domanda indiretta) — Ich weiß nicht, ob er kommt."],
+           ["zumal", "tanto più che — Ich bleibe zu Hause, zumal es regnet."],
+           ["Coordinanti (pos. 0)", "und · aber · oder · denn · sondern · sowie (e anche) — non spostano il verbo"]],
+    enRows: [["falls", "in case, if — Falls es regnet, bleiben wir zu Hause."],
+             ["indem", "by doing… (the manner, answers Wie?) — Man lernt, indem man übt."],
+             ["solange", "as long as — Solange du Fieber hast, bleibst du im Bett."],
+             ["sobald", "as soon as — Ruf mich an, sobald du ankommst."],
+             ["sodass / so …, dass", "so that (result) — Es regnete stark, sodass wir zu Hause blieben."],
+             ["da", "since, as (a reason already known, often first) — Da ich keine Zeit habe, komme ich nicht."],
+             ["ob", "whether (indirect question) — Ich weiß nicht, ob er kommt."],
+             ["zumal", "especially as — Ich bleibe zu Hause, zumal es regnet."],
+             ["Coordinating (pos. 0)", "und · aber · oder · denn · sondern · sowie (as well as) — they don't move the verb"]],
+    note: "Tutte le subordinanti mandano il verbo coniugato IN FONDO. Attenzione: indem ≠ «in quanto»; wenn = «se» in generale, falls = «se, nel caso (meno probabile)».",
+    enNote: "All subordinating conjunctions send the conjugated verb to the END. Careful: wenn = «if» in general, falls = «in case (less likely)».",
+    ex: [["Ich bleibe fit, indem ich jeden Tag mit dem Hund laufe.", "Resto in forma correndo ogni giorno col cane."], ["Falls du Hilfe brauchst, ruf mich an.", "Se hai bisogno di aiuto, chiamami."]],
+    enEx: [["Ich bleibe fit, indem ich jeden Tag mit dem Hund laufe.", "I keep fit by running with the dog every day."], ["Falls du Hilfe brauchst, ruf mich an.", "If you need help, call me."]]
+  },
+  {
+    de: "Die Zeichensetzung — Punkt, Ausrufezeichen, Doppelpunkt",
+    it: "La punteggiatura: gli altri segni oltre alla virgola", en: "Punctuation: the other marks besides the comma",
+    cat: "sintassi",
+    rows: [["Der Punkt (.)", "fine frase · dopo gli ordinali (der 3. Mai = der dritte Mai) · nelle date (12.10.2026) · nelle abbreviazioni (z. B., usw., ca.)"],
+           ["★ Numeri", "il punto separa le migliaia, la virgola i decimali: 1.200 Euro · 3,5 Kilo (al contrario dell'inglese)"],
+           ["Das Fragezeichen (?)", "domande dirette: Wo wohnst du? — NON nelle domande indirette: Ich frage, wo du wohnst."],
+           ["Das Ausrufezeichen (!)", "esclamazioni, ordini, auguri: Komm her! · Viel Glück! · anche dopo l'imperativo gentile: Bitte setzen Sie sich!"],
+           ["Der Doppelpunkt (:)", "annuncia un elenco o un discorso diretto. Dopo i due punti maiuscola se segue una frase intera: Er sagte: „Ich komme.“"],
+           ["Das Semikolon (;)", "separa due frasi principali legate, più forte della virgola: Es war spät; wir gingen nach Hause."],
+           ["Anführungszeichen „ “", "le virgolette tedesche: in basso all'inizio, in alto alla fine — „Hallo“"]],
+    enRows: [["Der Punkt (.)", "end of sentence · after ordinals (der 3. Mai = der dritte Mai) · in dates (12.10.2026) · in abbreviations (z. B., usw., ca.)"],
+             ["★ Numbers", "the point separates thousands, the comma decimals: 1.200 Euro · 3,5 Kilo (the opposite of English)"],
+             ["Das Fragezeichen (?)", "direct questions: Wo wohnst du? — NOT in indirect questions: Ich frage, wo du wohnst."],
+             ["Das Ausrufezeichen (!)", "exclamations, orders, wishes: Komm her! · Viel Glück! · also after a polite imperative: Bitte setzen Sie sich!"],
+             ["Der Doppelpunkt (:)", "introduces a list or direct speech. After the colon a capital letter if a full sentence follows: Er sagte: „Ich komme.“"],
+             ["Das Semikolon (;)", "separates two linked main clauses, stronger than a comma: Es war spät; wir gingen nach Hause."],
+             ["Anführungszeichen „ “", "German quotation marks: low at the start, high at the end — „Hallo“"]],
+    note: "La virgola ha una scheda a parte (Kommasetzung). Nelle lettere oggi dopo l'Anrede si usa la virgola (Liebe Anna,), il punto esclamativo (Liebe Anna!) è all'antica.",
+    enNote: "The comma has its own card (Kommasetzung). In letters today a comma follows the greeting (Liebe Anna,); an exclamation mark (Liebe Anna!) is old-fashioned.",
+    ex: [["Am 3. Oktober ist ein Feiertag.", "Il 3 ottobre è festa. (3. = dritten)"], ["Das kostet 1.250,50 Euro.", "Costa 1.250,50 euro."]],
+    enEx: [["Am 3. Oktober ist ein Feiertag.", "3 October is a public holiday. (3. = dritten)"], ["Das kostet 1.250,50 Euro.", "It costs 1,250.50 euros."]]
+  },
+  {
+    de: "Konjunktiv I — die indirekte Rede",
+    it: "Il Konjunktiv I: il discorso indiretto", en: "Konjunktiv I: reported speech",
+    cat: "tempi verbali",
+    rows: [["A cosa serve", "riferire le parole di un altro senza dire se sono vere — tipico di giornali, notiziari, testi ufficiali"],
+           ["Formazione", "radice dell'infinito + -e, -est, -e, -en, -et, -en: er komm-e, er hab-e, er könn-e"],
+           ["★ sein", "ich sei · du sei(e)st · er sei · wir seien · ihr seiet · sie seien"],
+           ["Si usa soprattutto alla 3ª persona", "er habe · sie komme · er müsse · man könne"],
+           ["Passato", "habe / sei + Partizip II: Er sagt, er habe keine Zeit gehabt. · Sie sagt, sie sei gekommen."],
+           ["Futuro", "werde + infinito: Er sagt, er werde morgen kommen."],
+           ["★ Se è uguale all'indicativo", "si usa il Konjunktiv II: sie haben → sie hätten · wir kommen → wir würden kommen"],
+           ["Nel parlato", "si usa quasi sempre l'indicativo o il Konjunktiv II: Er sagt, er hat / hätte keine Zeit."]],
+    enRows: [["What it's for", "reporting someone else's words without saying whether they are true — typical of newspapers, news, official texts"],
+             ["Formation", "infinitive stem + -e, -est, -e, -en, -et, -en: er komm-e, er hab-e, er könn-e"],
+             ["★ sein", "ich sei · du sei(e)st · er sei · wir seien · ihr seiet · sie seien"],
+             ["Mostly in the 3rd person", "er habe · sie komme · er müsse · man könne"],
+             ["Past", "habe / sei + Partizip II: Er sagt, er habe keine Zeit gehabt. · Sie sagt, sie sei gekommen."],
+             ["Future", "werde + infinitive: Er sagt, er werde morgen kommen."],
+             ["★ If it looks like the indicative", "use Konjunktiv II: sie haben → sie hätten · wir kommen → wir würden kommen"],
+             ["In speech", "people mostly use the indicative or Konjunktiv II: Er sagt, er hat / hätte keine Zeit."]],
+    note: "Livello B2: lo incontri soprattutto leggendo e ascoltando le notizie. Da riconoscere più che da produrre. Il Konjunktiv II (desideri, ipotesi) ha una scheda propria.",
+    enNote: "B2 level: you meet it mostly when reading or listening to the news. Recognise it rather than produce it. Konjunktiv II (wishes, hypotheses) has its own card.",
+    ex: [["Der Minister sagte, er sei nicht informiert gewesen.", "Il ministro ha detto di non essere stato informato."], ["Sie behauptet, sie habe den Hund nicht gesehen.", "Sostiene di non aver visto il cane."]],
+    enEx: [["Der Minister sagte, er sei nicht informiert gewesen.", "The minister said he had not been informed."], ["Sie behauptet, sie habe den Hund nicht gesehen.", "She claims she didn't see the dog."]]
+  }
+);
+
+/* aggiornamenti a schede esistenti */
+(function(){
+  const g = GRAMMATICA.find(x => x.de === "Präpositionen — Akkusativ, Dativ oder Wechsel?");
+  const i = g.rows.findIndex(r => r[0] === "Genitiv");
+  g.rows[i] = ["Genitiv", "während · wegen · trotz · (an)statt · infolge · innerhalb · außerhalb · oberhalb · unterhalb"];
+  g.enRows[i] = ["Genitiv", "während · wegen · trotz · (an)statt · infolge · innerhalb · außerhalb · oberhalb · unterhalb"];
+  g.rows.push(["Casi speciali", "dank + Dat. (grazie a) · entlang + Akk. dopo il nome (den Fluss entlang) · wider + Akk. (contro, formale)"],
+              ["Dove vai? / Dove sei?", "negozi, edifici: in den/die/ins → im/in der · persone: zum/zur → beim/bei der · città e paesi: nach → in · mare, lago: ans/an den → am/an der · luoghi alti e aperti: auf den/die → auf dem/der · casa: nach Hause → zu Hause"]);
+  g.enRows.push(["Special cases", "dank + Dat. (thanks to) · entlang + Akk. after the noun (den Fluss entlang) · wider + Akk. (against, formal)"],
+                ["Where to? / Where at?", "shops, buildings: in den/die/ins → im/in der · people: zum/zur → beim/bei der · cities and countries: nach → in · sea, lake: ans/an den → am/an der · high or open places: auf den/die → auf dem/der · home: nach Hause → zu Hause"]);
+})();
+
+/* Possessivi: da chi possiede → quale possessivo */
+GRAM_TABLES["Possessivpronomen"].tables.push({
+  caption: ["Chi possiede → quale possessivo", "Who owns → which possessive"], head: ["", ""],
+  cols: [["x", "ich"], ["x", "du"], ["m", "er"], ["f", "sie"], ["n", "es"], ["x", "wir"], ["x", "ihr"], ["pl", "sie"], ["x", "Sie"]],
+  rows: [[["Possessiv", "Possessive"], "mein", "dein", "sein", "ihr", "sein", "unser", "euer", "ihr", "Ihr"]]
+});
+/* Pronomi personali: anche riflessivo e possessivo nella stessa tabella */
+GRAM_TABLES["Personalpronomen nei casi"].tables[0].rows.push(
+  [["Reflexiv (Akk.)", "Reflexive (Akk.)"], "mich", "dich", "{sich}", "{sich}", "{sich}", "uns", "euch", "{sich}", "{sich}"],
+  [["Possessiv", "Possessive"], "mein", "dein", "sein", "ihr", "sein", "unser", "euer", "ihr", "Ihr"]
+);
+/* Plurale: tabella riassuntiva */
+GRAM_TABLES["Der Plural — come si forma il plurale"] = {
+  keep: [0, 1, 2, 3, 4, 5, 6],
+  tables: [{ head: ["Singolare", "Singular"], cols: [["m", "der · m"], ["f", "die · f"], ["n", "das · n"], ["pl", "Plural"]], rows: [
+    [["-e", "-e"], "der Tag", "—", "das Jahr", "die Tag{e} · die Jahr{e}"],
+    [["-(e)n", "-(e)n"], "der Junge", "die Frau", "das Auge", "die Frau{en} · die Auge{n}"],
+    [["-er", "-er"], "der Mann", "—", "das Kind", "die M{ä}nn{er} · die Kind{er}"],
+    [["— / ¨", "— / ¨"], "der Lehrer", "die Mutter", "das Mädchen", "die Lehrer · die M{ü}tter"],
+    [["-s", "-s"], "der Park", "die Oma", "das Auto", "die Park{s} · die Auto{s}"]] }]
+};
