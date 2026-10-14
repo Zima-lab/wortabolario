@@ -1015,6 +1015,7 @@ const BIGNAMI_PAGES = {
   "wurde · würde · werden — le differenze": 48,
   "dürfen · können — le differenze": 49,
   "Position 0 — und/aber/oder/denn/sondern": 50,
+  "also · so — Folge und Vergleich": 50,
   "Kommasetzung — la virgola": 51,
   "Die Zeichensetzung — Punkt, Ausrufezeichen, Doppelpunkt": 52,
   "Der Brief — Anrede und Gruß": 53,
@@ -1040,7 +1041,9 @@ const BIGNAMI_PAGES = {
   "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 42,
   "Vergleichssätze mit als oder wie": 43,
   "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 4,
-  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 14
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 14,
+  "Infinitivsatz oder dass-Satz?": 25,
+  "Infinitiv Perfekt — geschrieben zu haben": 25
 };
 
 /* ---------- BIGNAMI B2 (dalla v33) ----------
@@ -1063,17 +1066,20 @@ const BIGNAMI_B2_PAGES = {
   "Vergleichssätze mit als oder wie": 11,
   "je …, desto / umso — und Vergleiche": 12,
   "ohne … zu und (an)statt … zu": 13,
-  "Zweiteilige und nachgestellte Präpositionen": 14,
-  "Adjektive mit Präpositionen": 15,
-  "Nomen mit Präpositionen": 16,
-  "Nomen-Verb-Verbindungen": 17,
-  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 18,
-  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 19,
-  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 20,
-  "Das Wort eigentlich — Adverb oder Modalpartikel": 20
+  "Infinitivsatz oder dass-Satz?": 14,
+  "Infinitiv Perfekt — geschrieben zu haben": 15,
+  "Zweiteilige und nachgestellte Präpositionen": 16,
+  "Adjektive mit Präpositionen": 17,
+  "Nomen mit Präpositionen": 18,
+  "Nomen-Verb-Verbindungen": 19,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 20,
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 21,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 22,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 22,
+  "also · so — Folge und Vergleich": 23
 };
-/* Sezioni del B2 (v39): A verbi (2-6) · B frase (7-13) · C preposizioni (14-17) · D parole (18-20) */
-function bignamiB2Section(p){ return p <= 6 ? "B2A" : p <= 13 ? "B2B" : p <= 17 ? "B2C" : "B2D"; }
+/* Sezioni del B2 (v41): A verbi (2-6) · B frase (7-15) · C preposizioni (16-19) · D parole (20-22) */
+function bignamiB2Section(p){ return p <= 6 ? "B2A" : p <= 15 ? "B2B" : p <= 19 ? "B2C" : "B2D"; }
 function bignamiPageOf(e){ return BIGNAMI_B2_PAGES[e.de] || BIGNAMI_PAGES[e.de] || 99; }
 
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------

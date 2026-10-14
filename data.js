@@ -822,6 +822,7 @@ const AGGETTIVI = [
   {de:"beinahe", comp:"—", sup:"—", it:"quasi, pressappoco", en:"almost, nearly", opp:"—", cat:"avverbio", ex:[["Ich hätte beinahe den Bus verpasst.","Ho quasi perso l'autobus."]], enex:[["Ich hätte beinahe den Bus verpasst.","I almost missed the bus."]], note:"Sinonimo di 'fast'; spesso con il Konjunktiv II (hätte... beinahe...).", enNote:"Synonym of 'fast' (almost); often with Konjunktiv II (hätte... beinahe...)."},
   {de:"im Freien", comp:"—", sup:"—", it:"all'aperto", en:"outdoors, in the open air", opp:"drinnen", cat:"avverbio", ex:[["Wir essen heute im Freien.","Oggi mangiamo all'aperto."]], enex:[["Wir essen heute im Freien.","Today we're eating outdoors."]], note:"Contrario di 'drinnen' (dentro); espressione fissa, non un vero avverbio di grado.", enNote:"Opposite of 'drinnen' (inside); a fixed phrase, not a true degree adverb."},
   {de:"deshalb / deswegen", comp:"—", sup:"—", it:"perciò, per questo motivo", en:"therefore, that's why", opp:"—", cat:"avverbio", ex:[["Es regnet, deshalb bleibe ich zu Hause.","Piove, perciò rimango a casa."]], enex:[["Es regnet, deshalb bleibe ich zu Hause.","It's raining, so I'm staying home."]], note:"Position 1: occupano il primo posto della frase e spingono il verbo subito dopo di loro (deshalb BLEIBE ich...). Vedi scheda grammatica «Konjunktionaladverbien vs Subjunktionen».", enNote:"Position 1: they take the first slot in the sentence and push the verb right after them (deshalb BLEIBE ich...). See the grammar card «Konjunktionaladverbien vs Subjunktionen»."},
+{de:"also", comp:"—", sup:"—", it:"quindi, perciò (conseguenza) · allora, dunque (nel parlato)", en:"so, therefore (≠ English «also» = auch)", opp:"—", cat:"avverbio", ex:[["Es regnet, also bleiben wir zu Hause.","Piove, quindi restiamo a casa."],["Also, wo waren wir?","Allora, dove eravamo?"]], enex:[["Es regnet, also bleiben wir zu Hause.","It's raining, so we're staying at home."],["Also, wo waren wir?","So, where were we?"]]},
   {de:"trotzdem", comp:"—", sup:"—", it:"nonostante ciò, ciononostante", en:"nevertheless, even so", opp:"—", cat:"avverbio", ex:[["Es regnet, trotzdem gehe ich spazieren.","Piove, ciononostante vado a passeggiare."]], enex:[["Es regnet, trotzdem gehe ich spazieren.","It's raining, nevertheless I'm going for a walk."]], note:"Stessa regola di deshalb: Position 1, il verbo va subito dopo (trotzdem GEHE ich...).", enNote:"Same rule as deshalb: Position 1, the verb comes right after (trotzdem GEHE ich...)."},
   {de:"genauso wie", comp:"—", sup:"—", it:"esattamente come, uguale a", en:"just as, exactly like", opp:"anders als", cat:"avverbio", ex:[["Sie singt genauso wie ihre Mutter.","Canta esattamente come sua madre."]], enex:[["Sie singt genauso wie ihre Mutter.","She sings just like her mother."]], note:"Confronto di uguaglianza, come 'so... wie'.", enNote:"Comparison of equality, like 'so... wie'."},
   {de:"und", comp:"—", sup:"—", it:"e", en:"and", opp:"—", cat:"connettori", ex:[["Ich koche, und du deckst den Tisch.","Io cucino, e tu apparecchi la tavola."]], enex:[["Ich koche, und du deckst den Tisch.","I cook, and you set the table."]], note:"Position 0: non conta come elemento della frase, il verbo resta in 2ª posizione contando solo il soggetto che segue. Vedi scheda «Position 0».", enNote:"Position 0: it doesn't count as a sentence element, the verb stays in 2nd position counting only the following subject. See the «Position 0» grammar card."},
@@ -1161,13 +1162,13 @@ const GRAMMATICA = [
     enNote:"Comparison: Futur I 'Er wird schlafen' (he will sleep) → Futur II 'Er wird geschlafen haben' (he will have slept). Regular Partizip II: ge+stem+t; irregular: ge+stem+en.",
     ex:[["Er wird geschlafen haben.","Avrà dormito."]],
     enEx:[["Er wird geschlafen haben.","He will have slept."]]},
-  {de:"Konjunktiv II", it:"Desideri, ipotesi irreali e cortesia", en:"Konjunktiv II — wishes, hypotheticals and politeness", cat:"tempi verbali",
-    rows:[["haben → hätte","ich hätte, du hättest, er hätte, wir hätten, ihr hättet, sie hätten"],["sein → wäre","ich wäre, du wärst, er wäre, wir wären, ihr wärt, sie wären"],["la maggior parte dei verbi","würde/würdest/würde/würden/würdet/würden + Infinitiv in fondo"],["Modalverben (forma propria, no würden)","müsste, könnte, sollte, dürfte"],["★ Verbi che fanno a meno di würde","werden → würde · gehen → ginge · wissen → wüsste · kommen → käme · finden → fände"],["Come si costruisce","dal Präteritum, spesso con Umlaut: ich fand → ich fände · ich kam → ich käme"],["★ Konjunktiv II del PASSATO","hätte / wäre + Partizip II: Das wäre schrecklich gewesen."],["Passato con un modale","hätte + Infinitiv + Infinitiv del modale: Sonst hätten wir das Restaurant nicht eröffnen können."],["Ipotesi irreale nel passato","Wenn ich Siegfried nicht kennengelernt hätte, hätte ich heute keine Kinder."],["A cosa serve","desideri · richieste cortesi · proposte e consigli · supposizioni · condizioni irreali"]],
-    enRows:[["haben → hätte","ich hätte, du hättest, er hätte, wir hätten, ihr hättet, sie hätten"],["sein → wäre","ich wäre, du wärst, er wäre, wir wären, ihr wärt, sie wären"],["most other verbs","würde/würdest/würde/würden/würdet/würden + infinitive at the end"],["Modal verbs (own form, no würden)","müsste, könnte, sollte, dürfte"],["★ Verbs that do without würde","werden → würde · gehen → ginge · wissen → wüsste · kommen → käme · finden → fände"],["How it is built","from the Präteritum, often with an Umlaut: ich fand → ich fände · ich kam → ich käme"],["★ Konjunktiv II of the PAST","hätte / wäre + Partizip II: Das wäre schrecklich gewesen."],["Past with a modal","hätte + infinitive + infinitive of the modal: Sonst hätten wir das Restaurant nicht eröffnen können."],["Unreal condition in the past","Wenn ich Siegfried nicht kennengelernt hätte, hätte ich heute keine Kinder."],["What it is for","wishes · polite requests · suggestions and advice · assumptions · unreal conditions"]],
-    note:"Usato SOLO per desideri, ipotesi irreali e cortesia — a differenza del congiuntivo italiano non si usa per le opinioni. Il passato si fa sempre con hätte/wäre + Partizip II e serve per dire come sarebbero andate le cose se…: è il nostro «avrei fatto / sarei andato». Con i verbi molto frequenti (sein, haben, i modali, gehen, wissen, kommen) la forma propria suona meglio di würde.",
-    enNote:"Used ONLY for wishes, unreal hypotheses and politeness — unlike the Italian congiuntivo it is not used for opinions. The past is always hätte/wäre + Partizip II and is used to say how things would have gone if…. With very frequent verbs (sein, haben, the modals, gehen, wissen, kommen) the dedicated form sounds better than würde.",
-    ex:[["Wenn ich mehr Zeit hätte, würde ich reisen.","Se avessi più tempo, viaggerei."],["Damals hätten meine Eltern sich fast getrennt. Das wäre schrecklich gewesen.","All'epoca i miei genitori quasi si separavano. Sarebbe stato terribile."]],
-    enEx:[["Wenn ich mehr Zeit hätte, würde ich reisen.","If I had more time, I would travel."],["Damals hätten meine Eltern sich fast getrennt. Das wäre schrecklich gewesen.","Back then my parents nearly split up. That would have been awful."]]},
+  {de:"Konjunktiv II", it:"Desideri, consigli, proposte, ipotesi irreali e cortesia", en:"Konjunktiv II — wishes, advice, suggestions, hypotheticals and politeness", cat:"tempi verbali",
+    rows:[["haben → hätte","ich hätte, du hättest, er hätte, wir hätten, ihr hättet, sie hätten"],["sein → wäre","ich wäre, du wär(e)st, er wäre, wir wären, ihr wär(e)t, sie wären"],["la maggior parte dei verbi","würde/würdest/würde/würden/würdet/würden + Infinitiv in fondo"],["Modalverben (forma propria, no würden)","könnte, müsste, dürfte · sollte e wollte senza Umlaut (uguali al Präteritum)"],["★ Attenzione ai puntini","senza Umlaut è il passato: hatte ≠ hätte · wurde ≠ würde · konnte ≠ könnte · musste ≠ müsste"],["★ Verbi che fanno a meno di würde","gehen → ginge · kommen → käme · wissen → wüsste · geben → es gäbe · finden → fände · bleiben → bliebe · lassen → ließe · liegen → läge · tun → täte · brauchen → bräuchte (parlato)"],["Forme rare","schliefe, spräche, träfe, nähme, sähe, dächte esistono ma suonano formali: nel parlato würde schlafen, würde sprechen …"],["★ E möchte?","nasce come Konjunktiv II di mögen, ma oggi è un presente cortese (Ich möchte einen Kaffee). Per un'ipotesi: Wenn ich Zeit hätte, würde ich gern kommen — non «möchte ich kommen»."],["Come si costruisce","dal Präteritum, spesso con Umlaut: ich fand → ich fände · ich kam → ich käme"],["Desideri","Ich würde gern in einer WG leben. / Ich hätte lieber ein eigenes Haus. (+ gern / lieber / am liebsten)"],["Richieste gentili","Könnten Sie mir helfen? / Würdest du mir bitte helfen?"],["Proposte","Wir könnten ins Kino gehen. / Wie wäre es, wenn …?"],["Consigli","Du solltest weniger arbeiten. / An deiner Stelle würde ich kündigen."],["Supposizioni","Sie dürfte krank sein. (sarà malata)"],["Condizioni irreali","Wenn du einen Wunsch frei hättest, was würdest du dir wünschen?"],["Modali: il significato cambia","solltest = consiglio · könnten = proposta · Ich müsste eigentlich arbeiten. = dovrei, ma non ne ho voglia"],["★ Konjunktiv II del PASSATO","hätte / wäre + Partizip II: Das wäre schrecklich gewesen."],["Passato con un modale","hätte + Infinitiv + Infinitiv del modale: Ich hätte mehr lernen sollen. · Sonst hätten wir das Restaurant nicht eröffnen können."],["Ipotesi irreale nel passato","Wenn ich Siegfried nicht kennengelernt hätte, hätte ich heute keine Kinder."]],
+    enRows:[["haben → hätte","ich hätte, du hättest, er hätte, wir hätten, ihr hättet, sie hätten"],["sein → wäre","ich wäre, du wär(e)st, er wäre, wir wären, ihr wär(e)t, sie wären"],["most other verbs","würde/würdest/würde/würden/würdet/würden + infinitive at the end"],["Modal verbs (own form, no würden)","könnte, müsste, dürfte · sollte and wollte without Umlaut (same as the Präteritum)"],["★ Watch the dots","without the Umlaut it is the past: hatte ≠ hätte · wurde ≠ würde · konnte ≠ könnte · musste ≠ müsste"],["★ Verbs that do without würde","gehen → ginge · kommen → käme · wissen → wüsste · geben → es gäbe · finden → fände · bleiben → bliebe · lassen → ließe · liegen → läge · tun → täte · brauchen → bräuchte (spoken)"],["Rare forms","schliefe, spräche, träfe, nähme, sähe, dächte exist but sound formal: in speech würde schlafen, würde sprechen …"],["★ What about möchte?","it began as the Konjunktiv II of mögen, but today it is a polite present (Ich möchte einen Kaffee). For a hypothesis: Wenn ich Zeit hätte, würde ich gern kommen — not «möchte ich kommen»."],["How it is built","from the Präteritum, often with an Umlaut: ich fand → ich fände · ich kam → ich käme"],["Wishes","Ich würde gern in einer WG leben. / Ich hätte lieber ein eigenes Haus. (+ gern / lieber / am liebsten)"],["Polite requests","Könnten Sie mir helfen? / Würdest du mir bitte helfen?"],["Suggestions","Wir könnten ins Kino gehen. / Wie wäre es, wenn …?"],["Advice","Du solltest weniger arbeiten. / An deiner Stelle würde ich kündigen."],["Assumptions","Sie dürfte krank sein. (she's probably ill)"],["Unreal conditions","Wenn du einen Wunsch frei hättest, was würdest du dir wünschen?"],["Modals: the meaning changes","solltest = advice · könnten = suggestion · Ich müsste eigentlich arbeiten. = I ought to, but I don't feel like it"],["★ Konjunktiv II of the PAST","hätte / wäre + Partizip II: Das wäre schrecklich gewesen."],["Past with a modal","hätte + infinitive + infinitive of the modal: Ich hätte mehr lernen sollen. · Sonst hätten wir das Restaurant nicht eröffnen können."],["Unreal condition in the past","Wenn ich Siegfried nicht kennengelernt hätte, hätte ich heute keine Kinder."]],
+    note:"Usato SOLO per desideri, ipotesi irreali e cortesia — a differenza del congiuntivo italiano non si usa per le opinioni (Ich denke, dass er krank ist). Regola pratica: haben, sein, i modali e pochi verbi frequenti (ginge, käme, wüsste, gäbe) hanno la forma propria; tutti gli altri usano würde + infinito. Il passato si fa sempre con hätte/wäre + Partizip II: è il nostro «avrei fatto / sarei andato».",
+    enNote:"Used ONLY for wishes, unreal hypotheses and politeness — unlike the Italian congiuntivo it is not used for opinions (Ich denke, dass er krank ist). Rule of thumb: haben, sein, the modals and a few frequent verbs (ginge, käme, wüsste, gäbe) have their own form; all other verbs use würde + infinitive. The past is always hätte/wäre + Partizip II: «would have done / would have gone».",
+    ex:[["Wenn ich mehr Zeit hätte, würde ich reisen.","Se avessi più tempo, viaggerei."],["Wenn ich Zeit hätte, würde ich gern kommen.","Se avessi tempo, verrei volentieri."],["Damals hätten meine Eltern sich fast getrennt. Das wäre schrecklich gewesen.","All'epoca i miei genitori quasi si separavano. Sarebbe stato terribile."]],
+    enEx:[["Wenn ich mehr Zeit hätte, würde ich reisen.","If I had more time, I would travel."],["Wenn ich Zeit hätte, würde ich gern kommen.","If I had time, I'd gladly come."],["Damals hätten meine Eltern sich fast getrennt. Das wäre schrecklich gewesen.","Back then my parents nearly split up. That would have been awful."]]},
   {de:"Das Passiv", it:"Il Passivo: werden + Partizip II", en:"The Passive: werden + Partizip II", cat:"tempi verbali",
     rows:[["Struttura","Soggetto + werden (coniugato) + … + Partizip II (fine frase)"],["werden al Präsens","ich werde, du wirst, er wird, wir werden, ihr werdet, sie werden"],["Da attivo a passivo","Das Unternehmen schickt den Expat in die Schweiz. → Der Expat wird in die Schweiz geschickt."],["1 · Passiv Präsens","Die Expats WERDEN ins Ausland geschickt."],["2 · Passiv Präteritum","Die Expats WURDEN ins Ausland geschickt."],["★ 3 · Passiv Perfekt — con SEIN e WORDEN","Die Expats SIND ins Ausland geschickt WORDEN. (mai «geworden»)"],["4 · Passiv Präsens + Modalverb","Die Expats KÖNNEN ins Ausland geschickt WERDEN."],["5 · Passiv Präteritum + Modalverb","Die Expats KONNTEN ins Ausland geschickt WERDEN."],["6 · Passiv Konjunktiv II","Die Expats WÜRDEN ins Ausland geschickt."],["★ von + Dativ = CHI lo fa","Neue Informationen werden VOM sensorischen Gedächtnis gespeichert."],["★ durch + Akkusativ = COSA lo causa","DURCH körperliche Tätigkeit wird das Gehirn besser mit Sauerstoff versorgt."],["Passivo senza soggetto","in 1ª posizione ci va es o un'altra informazione: Es wurde viel gebaut. / In den letzten Jahren ist viel gebaut worden."]],
     enRows:[["Structure","Subject + werden (conjugated) + … + Partizip II (end of sentence)"],["werden in the Präsens","ich werde, du wirst, er wird, wir werden, ihr werdet, sie werden"],["From active to passive","Das Unternehmen schickt den Expat in die Schweiz. → Der Expat wird in die Schweiz geschickt."],["1 · Passive Präsens","Die Expats WERDEN ins Ausland geschickt."],["2 · Passive Präteritum","Die Expats WURDEN ins Ausland geschickt."],["★ 3 · Passive Perfekt — with SEIN and WORDEN","Die Expats SIND ins Ausland geschickt WORDEN. (never «geworden»)"],["4 · Passive Präsens + modal","Die Expats KÖNNEN ins Ausland geschickt WERDEN."],["5 · Passive Präteritum + modal","Die Expats KONNTEN ins Ausland geschickt WERDEN."],["6 · Passive Konjunktiv II","Die Expats WÜRDEN ins Ausland geschickt."],["★ von + dative = WHO does it","Neue Informationen werden VOM sensorischen Gedächtnis gespeichert."],["★ durch + accusative = WHAT causes it","DURCH körperliche Tätigkeit wird das Gehirn besser mit Sauerstoff versorgt."],["Passive with no subject","position 1 takes es or another piece of information: Es wurde viel gebaut. / In den letzten Jahren ist viel gebaut worden."]],
@@ -1802,26 +1803,38 @@ GRAMMATICA.push(
   },
   {
     de: "Modalverben — Präsens und Präteritum",
-    it: "I verbi modali: tutte le forme", en: "The modal verbs: every form",
+    it: "I verbi modali: tutte le forme e i significati", en: "The modal verbs: every form and meaning",
     cat: "modali",
-    rows: [["können", "capacità, possibilità — Ich kann schwimmen."],
-           ["dürfen", "permesso — Hier darf man nicht rauchen."],
-           ["müssen", "necessità, obbligo — Ich muss morgen arbeiten."],
-           ["sollen", "dovere voluto da un altro — Der Arzt sagt, ich soll mehr schlafen."],
-           ["wollen", "volontà decisa — Ich will Hundetrainer werden."],
-           ["möchten", "desiderio gentile — Ich möchte einen Kaffee."],
-           ["mögen", "piacere (+ nome) — Ich mag Hunde."]],
-    enRows: [["können", "ability, possibility — Ich kann schwimmen."],
-             ["dürfen", "permission — Hier darf man nicht rauchen."],
-             ["müssen", "necessity, obligation — Ich muss morgen arbeiten."],
-             ["sollen", "duty set by someone else — Der Arzt sagt, ich soll mehr schlafen."],
-             ["wollen", "firm intention — Ich will Hundetrainer werden."],
-             ["möchten", "polite wish — Ich möchte einen Kaffee."],
-             ["mögen", "to like (+ noun) — Ich mag Hunde."]],
-    note: "ich ed er/sie/es sono uguali e senza desinenza (ich kann, er kann). Nel Präteritum sparisce l'Umlaut (müssen → musste). möchten non ha passato: si usa wollte. L'infinito va in fondo, senza zu.",
-    enNote: "ich and er/sie/es are identical and have no ending (ich kann, er kann). In the Präteritum the Umlaut disappears (müssen → musste). möchten has no past: use wollte. The infinitive goes at the end, without zu.",
-    ex: [["Ich muss heute lange arbeiten.", "Oggi devo lavorare a lungo."], ["…, weil ich heute lange arbeiten muss.", "…, perché oggi devo lavorare a lungo."]],
-    enEx: [["Ich muss heute lange arbeiten.", "Today I have to work late."], ["…, weil ich heute lange arbeiten muss.", "…, because today I have to work late."]]
+    rows: [["müssen — necessità", "Er muss zu Fuß gehen. (Sein Auto ist kaputt.)"],
+           ["müssen — obbligo, compito", "Ich muss die Konferenz organisieren. (Das gehört zu meinen Aufgaben.)"],
+           ["nicht müssen = non serve", "Er muss nicht zu Fuß gehen. = Er braucht nicht zu Fuß zu gehen. (non è un divieto!)"],
+           ["können — capacità", "Sie konnte schon mit fünf Jahren lesen."],
+           ["können — possibilità", "Ich kann leider nicht mitkommen. (Ich habe keine Zeit.)"],
+           ["dürfen — permesso / divieto", "Hier darf man (nicht) rauchen. · nel parlato anche: Hier kann man (nicht) rauchen."],
+           ["sollen — lo vuole un altro", "Ich sollte früher immer abwaschen. (Das wollte mein Vater.)"],
+           ["sollen — offerta", "Soll ich das machen? (= Möchtest du, dass ich das mache?)"],
+           ["wollen — piano, volontà", "Er will in einer WG wohnen."],
+           ["möchten — desiderio cortese", "Ich möchte gern zur Party gehen."],
+           ["mögen — piacere (+ nome)", "Ich mag Hunde."],
+           ["★ Konjunktiv II = significato nuovo", "Du solltest weniger arbeiten. (consiglio) · Wir könnten ins Kino gehen. (proposta) · Ich müsste eigentlich arbeiten. (dovrei, ma non voglio)"],
+           ["★ Posizione", "modale in 2ª posizione, infinito in fondo — anche con inversione: Heute muss ich lange arbeiten."]],
+    enRows: [["müssen — necessity", "Er muss zu Fuß gehen. (Sein Auto ist kaputt.)"],
+             ["müssen — duty, task", "Ich muss die Konferenz organisieren. (Das gehört zu meinen Aufgaben.)"],
+             ["nicht müssen = no need", "Er muss nicht zu Fuß gehen. = Er braucht nicht zu Fuß zu gehen. (not a prohibition!)"],
+             ["können — ability", "Sie konnte schon mit fünf Jahren lesen."],
+             ["können — possibility", "Ich kann leider nicht mitkommen. (Ich habe keine Zeit.)"],
+             ["dürfen — permission / prohibition", "Hier darf man (nicht) rauchen. · in speech also: Hier kann man (nicht) rauchen."],
+             ["sollen — someone else wants it", "Ich sollte früher immer abwaschen. (Das wollte mein Vater.)"],
+             ["sollen — offer", "Soll ich das machen? (= Möchtest du, dass ich das mache?)"],
+             ["wollen — plan, intention", "Er will in einer WG wohnen."],
+             ["möchten — polite wish", "Ich möchte gern zur Party gehen."],
+             ["mögen — to like (+ noun)", "Ich mag Hunde."],
+             ["★ Konjunktiv II = new meaning", "Du solltest weniger arbeiten. (advice) · Wir könnten ins Kino gehen. (suggestion) · Ich müsste eigentlich arbeiten. (I ought to, but I don't want to)"],
+             ["★ Position", "modal in 2nd position, infinitive at the end — also with inversion: Heute muss ich lange arbeiten."]],
+    note: "ich ed er/sie/es sono uguali e senza desinenza (ich kann, er kann). Nel Präteritum sparisce l'Umlaut (müssen → musste), nel Konjunktiv II torna (müsste). möchten era il Konjunktiv II di mögen, ma oggi si usa come un verbo a sé, al presente: non ha passato, si usa wollte. L'infinito va in fondo, senza zu.",
+    enNote: "ich and er/sie/es are identical and have no ending (ich kann, er kann). In the Präteritum the Umlaut disappears (müssen → musste), in the Konjunktiv II it comes back (müsste). möchten was the Konjunktiv II of mögen, but today it is used as a verb of its own, in the present: it has no past, use wollte. The infinitive goes at the end, without zu.",
+    ex: [["Ich muss heute lange arbeiten.", "Oggi devo lavorare a lungo."], ["Heute muss ich lange arbeiten.", "Oggi devo lavorare a lungo. (inversione: il soggetto va dopo il modale)"], ["…, weil ich heute lange arbeiten muss.", "…, perché oggi devo lavorare a lungo."]],
+    enEx: [["Ich muss heute lange arbeiten.", "Today I have to work late."], ["Heute muss ich lange arbeiten.", "Today I have to work late. (inversion: the subject goes after the modal)"], ["…, weil ich heute lange arbeiten muss.", "…, because today I have to work late."]]
   },
   {
     de: "Zahlen und Ordnungszahlen",
@@ -1897,13 +1910,14 @@ Object.assign(GRAM_TABLES, {
         [["wir", "wir"], "können", "dürfen", "müssen", "sollen", "wollen", "möchten", "mögen"],
         [["ihr", "ihr"], "könnt", "dürft", "müsst", "sollt", "wollt", "möchtet", "mögt"],
         [["sie/Sie", "sie/Sie"], "können", "dürfen", "müssen", "sollen", "wollen", "möchten", "mögen"]] },
-      { caption: ["Präteritum · Partizip II", "Präteritum · Partizip II"], head: ["", ""],
+      { caption: ["Präteritum · Partizip II · Konjunktiv II", "Präteritum · Partizip II · Konjunktiv II"], head: ["", ""],
         cols: [["x", "können"], ["x", "dürfen"], ["x", "müssen"], ["x", "sollen"], ["x", "wollen"], ["pl", "möchten"], ["x", "mögen"]], rows: [
         [["ich / er", "ich / er"], "konnte", "durfte", "musste", "sollte", "wollte", "→ wollte", "mochte"],
         [["du", "du"], "konntest", "durftest", "musstest", "solltest", "wolltest", "→ wolltest", "mochtest"],
         [["wir / sie", "wir / sie"], "konnten", "durften", "mussten", "sollten", "wollten", "→ wollten", "mochten"],
         [["ihr", "ihr"], "konntet", "durftet", "musstet", "solltet", "wolltet", "→ wolltet", "mochtet"],
-        [["Partizip II", "Partizip II"], "gekonnt", "gedurft", "gemusst", "gesollt", "gewollt", "—", "gemocht"]] }]
+        [["Partizip II", "Partizip II"], "gekonnt", "gedurft", "gemusst", "gesollt", "gewollt", "—", "gemocht"],
+        [["Konjunktiv II", "Konjunktiv II"], "{könnte}", "{dürfte}", "{müsste}", "sollte", "wollte", "—", "{möchte}"]] }]
   }
 });
 
@@ -2187,3 +2201,215 @@ GRAM_TABLES["Der Plural — come si forma il plurale"] = {
     [["— / ¨", "— / ¨"], "der Lehrer", "die Mutter", "das Mädchen", "die Lehrer · die M{ü}tter"],
     [["-s", "-s"], "der Park", "die Oma", "das Auto", "die Park{s} · die Auto{s}"]] }]
 };
+
+/* =====================================================================
+   v41 (2026-10-12, 3° blocco) — dalle foto del libro B2, Kapitel 2
+   (Grammatik B 2.1.1 e B 2.1.2): infinitiva o dass, Infinitiv Perfekt,
+   Redemittel per discutere. Le due schede nuove sono nel Bignami B2 (B8, B9).
+   ===================================================================== */
+GRAMMATICA.push(
+  {de:"Infinitivsatz oder dass-Satz?", it:"Infinito con zu oppure dass: quando si può trasformare", en:"Infinitive clause or dass clause: when you can switch", cat:"sintassi",
+    rows:[["Stessa frase, due forme","Es ist doch blöd, dass man sich so oft streitet. → Es ist doch blöd, sich so oft zu streiten."],
+          ["Come si trasforma","togli dass e il soggetto · l'infinito va in fondo con zu davanti: …, sich so oft zu streiten"],
+          ["★ SÌ — stesso soggetto","Ich habe entschieden, dass ich den Mietvertrag kündige. → Ich habe entschieden, den Mietvertrag zu kündigen."],
+          ["★ SÌ — l'oggetto della principale è il soggetto del dass","Es stresst mich, dass ich so viele Dinge besitze. → Es stresst mich, so viele Dinge zu besitzen. (mich = ich)"],
+          ["Anche con il Dativ","Ein Freund hat mir vorgeschlagen, dass ich eine Wohnung miete. → …, eine Wohnung zu mieten. (mir = ich)"],
+          ["★ SÌ — es nella principale, man nel dass","Es ist nicht normal, dass man so viel Miete zahlt. → Es ist nicht normal, so viel Miete zu zahlen."],
+          ["★ NO — soggetti diversi","Ich fand es schön, dass wir uns so gut verstanden haben. (ich ≠ wir) · Ich hatte Angst, dass die Wohnung zu teuer ist. (ich ≠ die Wohnung)"],
+          ["★ NO — modale o wissen, sagen, antworten","Ich weiß, dass ich mich auf meine Nachbarn verlassen kann. · Sie sagte, dass sie Interesse hätte."],
+          ["Dove arriva zu","dopo certi nomi + haben, es + verbo + oggetto, es ist / ich finde es + aggettivo e certi verbi → scheda «Infinitiv mit zu»"],
+          ["Azione già avvenuta","Partizip II + zu + haben/sein → scheda «Infinitiv Perfekt»"]],
+    enRows:[["Same sentence, two forms","Es ist doch blöd, dass man sich so oft streitet. → Es ist doch blöd, sich so oft zu streiten."],
+          ["How to switch","drop dass and the subject · the infinitive goes to the end with zu in front: …, sich so oft zu streiten"],
+          ["★ YES — same subject","Ich habe entschieden, dass ich den Mietvertrag kündige. → Ich habe entschieden, den Mietvertrag zu kündigen."],
+          ["★ YES — the object of the main clause is the subject of the dass clause","Es stresst mich, dass ich so viele Dinge besitze. → Es stresst mich, so viele Dinge zu besitzen. (mich = ich)"],
+          ["With the dative too","Ein Freund hat mir vorgeschlagen, dass ich eine Wohnung miete. → …, eine Wohnung zu mieten. (mir = ich)"],
+          ["★ YES — es in the main clause, man in the dass clause","Es ist nicht normal, dass man so viel Miete zahlt. → Es ist nicht normal, so viel Miete zu zahlen."],
+          ["★ NO — different subjects","Ich fand es schön, dass wir uns so gut verstanden haben. (ich ≠ wir) · Ich hatte Angst, dass die Wohnung zu teuer ist. (ich ≠ die Wohnung)"],
+          ["★ NO — modal verb or wissen, sagen, antworten","Ich weiß, dass ich mich auf meine Nachbarn verlassen kann. · Sie sagte, dass sie Interesse hätte."],
+          ["Where zu comes in","after certain nouns + haben, es + verb + object, es ist / ich finde es + adjective and certain verbs → card «Infinitiv mit zu»"],
+          ["Action that already happened","Partizip II + zu + haben/sein → card «Infinitiv Perfekt»"]],
+    note:"Puoi togliere dass solo se chi fa l'azione è la stessa persona nelle due frasi, oppure un generico man. Prima di trasformare chiediti: chi fa l'azione nella frase con dass? Se è il soggetto della principale, oppure il suo oggetto (mich, mir, dich…), oppure man dopo un es, puoi usare zu + infinito. Se è un'altra persona, o se nella principale c'è un modale o un verbo come wissen, sagen, antworten, resta il dass. L'infinitiva è più corta e suona più naturale, soprattutto nello scritto.",
+    enNote:"You can drop dass only if the person doing the action is the same in both clauses, or a general man. Before switching ask yourself: who does the action in the dass clause? If it is the subject of the main clause, or its object (mich, mir, dich…), or man after an es, you can use zu + infinitive. If it is somebody else, or the main clause has a modal verb or a verb like wissen, sagen, antworten, keep dass. The infinitive clause is shorter and sounds more natural, especially in writing.",
+    ex:[["Ich habe vor, irgendwann umzuziehen.","Ho intenzione, prima o poi, di trasferirmi."],["Es stresst mich, so viele Dinge zu besitzen.","Mi stressa possedere così tante cose."],["Ein Freund hat mir vorgeschlagen, eine Wohnung am Stadtrand zu mieten.","Un amico mi ha proposto di affittare un appartamento in periferia."]],
+    enEx:[["Ich habe vor, irgendwann umzuziehen.","I'm planning to move at some point."],["Es stresst mich, so viele Dinge zu besitzen.","Owning so many things stresses me out."],["Ein Freund hat mir vorgeschlagen, eine Wohnung am Stadtrand zu mieten.","A friend suggested I rent a flat on the outskirts."]]},
+  {de:"Infinitiv Perfekt — geschrieben zu haben", it:"Infinito passato con zu: un'azione già avvenuta", en:"Perfect infinitive with zu: an action that already happened", cat:"tempi verbali",
+    rows:[["Infinitiva al presente","Es hat mir immer gefallen, Briefe zu schreiben. — le due azioni avvengono insieme"],
+          ["Infinitiva al passato","Ich bin froh, früher viele Briefe geschrieben zu haben. — l'azione dell'infinitiva viene PRIMA"],
+          ["★ Come si forma","Partizip II + zu + haben / sein → geschrieben zu haben · aufgewachsen zu sein"],
+          ["★ zu sta tra Partizip II e haben/sein","geschrieben zu haben — mai «zu geschrieben haben»"],
+          ["haben o sein?","lo stesso ausiliare del Perfekt: ich habe besessen → besessen zu haben · ich bin aufgewachsen → aufgewachsen zu sein"],
+          ["Confronto","Ich bin froh, mit WhatsApp aufzuwachsen. (succede adesso) · Ich bin froh, mit WhatsApp aufgewachsen zu sein. (è già successo)"],
+          ["Uguale al dass-Satz","Ich bin froh, dass ich mit WhatsApp aufgewachsen bin. = Ich bin froh, mit WhatsApp aufgewachsen zu sein."],
+          ["Verbi separabili","il Partizip II ha già il suo ge-: zu NON va in mezzo → die Prüfung abgelegt zu haben · umgezogen zu sein"],
+          ["Inizi di frase tipici","Ich bin froh / traurig, … · Es ärgert mich, … · Ich finde es schade, … · Ich erinnere mich, …"]],
+    enRows:[["Infinitive clause in the present","Es hat mir immer gefallen, Briefe zu schreiben. — both actions happen at the same time"],
+          ["Infinitive clause in the past","Ich bin froh, früher viele Briefe geschrieben zu haben. — the action of the infinitive clause comes FIRST"],
+          ["★ How to form it","Partizip II + zu + haben / sein → geschrieben zu haben · aufgewachsen zu sein"],
+          ["★ zu goes between Partizip II and haben/sein","geschrieben zu haben — never «zu geschrieben haben»"],
+          ["haben or sein?","the same auxiliary as in the Perfekt: ich habe besessen → besessen zu haben · ich bin aufgewachsen → aufgewachsen zu sein"],
+          ["Comparison","Ich bin froh, mit WhatsApp aufzuwachsen. (happening now) · Ich bin froh, mit WhatsApp aufgewachsen zu sein. (already happened)"],
+          ["Same as the dass clause","Ich bin froh, dass ich mit WhatsApp aufgewachsen bin. = Ich bin froh, mit WhatsApp aufgewachsen zu sein."],
+          ["Separable verbs","the Partizip II already has its ge-: zu does NOT go in the middle → die Prüfung abgelegt zu haben · umgezogen zu sein"],
+          ["Typical sentence openers","Ich bin froh / traurig, … · Es ärgert mich, … · Ich finde es schade, … · Ich erinnere mich, …"]],
+    note:"Se l'azione dell'infinitiva è già avvenuta, usa Partizip II + zu + haben oppure sein. Scegli l'ausiliare come nel Perfekt: i verbi di movimento e di cambiamento (gehen, aufwachsen, umziehen, aufstehen) vogliono sein, quasi tutti gli altri haben. Valgono le stesse condizioni della scheda B8: si può usare solo quando chi agisce è lo stesso nelle due frasi.",
+    enNote:"If the action of the infinitive clause has already happened, use Partizip II + zu + haben or sein. Choose the auxiliary as in the Perfekt: verbs of movement and change (gehen, aufwachsen, umziehen, aufstehen) take sein, almost all the others haben. The same conditions as on sheet B8 apply: you can only use it when the person doing the action is the same in both clauses.",
+    ex:[["Heute bin ich froh, als Kind kein Smartphone besessen zu haben.","Oggi sono contento di non aver avuto uno smartphone da bambino."],["Ich finde es traurig, den Kontakt zu meinen Freunden verloren zu haben.","Trovo triste aver perso i contatti con i miei amici."],["Er ärgert sich, so spät aufgestanden zu sein.","Si arrabbia per essersi alzato così tardi."]],
+    enEx:[["Heute bin ich froh, als Kind kein Smartphone besessen zu haben.","Today I'm glad I didn't have a smartphone as a child."],["Ich finde es traurig, den Kontakt zu meinen Freunden verloren zu haben.","I find it sad to have lost touch with my friends."],["Er ärgert sich, so spät aufgestanden zu sein.","He is annoyed that he got up so late."]]}
+);
+
+/* Infinitiv mit zu — ampliata con le quattro strutture del libro (B 2.1.1) e i verbi per significato */
+(function(){
+  const g = GRAMMATICA.find(x => x.de === "Infinitiv mit zu");
+  g.rows = [["Nome astratto + haben","die Absicht / die Hoffnung / die Möglichkeit haben · (keine) Lust / Zeit haben · Es macht (keinen) Spaß"],
+    ["es + verbo + oggetto","Es freut mich · Es gefällt mir · Es stresst mich · Es ärgert mich"],
+    ["es ist / ich finde es + aggettivo","Es ist wichtig / blöd / toll / verboten · Ich finde es praktisch / schade / prima"],
+    ["Verbi — proporre","empfehlen · vorschlagen · raten"],
+    ["Verbi — pensieri e sentimenti","sich vorstellen · sich freuen · sich ärgern"],
+    ["Verbi — desideri e piani","versuchen · hoffen · vorhaben · planen"],
+    ["Verbi — inizio e fine","anfangen · beginnen · aufhören"],
+    ["Verbi — permesso e divieto","erlauben · verbieten"],
+    ["Verbi — altri","vergessen · versprechen · bitten · helfen"],
+    ["★ Mai zu dopo i modali","Ich muss arbeiten. · Ich kann kommen. — ma: Es ist toll, wenig arbeiten zu müssen."],
+    ["★ Verbi separabili: zu in mezzo","auf-zu-hören · ein-zu-kaufen · um-zu-ziehen"],
+    ["Infinito o dass?","→ scheda B2 «Infinitivsatz oder dass-Satz?» · per il passato → «Infinitiv Perfekt»"]];
+  g.enRows = [["Abstract noun + haben","die Absicht / die Hoffnung / die Möglichkeit haben · (keine) Lust / Zeit haben · Es macht (keinen) Spaß"],
+    ["es + verb + object","Es freut mich · Es gefällt mir · Es stresst mich · Es ärgert mich"],
+    ["es ist / ich finde es + adjective","Es ist wichtig / blöd / toll / verboten · Ich finde es praktisch / schade / prima"],
+    ["Verbs — suggesting","empfehlen · vorschlagen · raten"],
+    ["Verbs — thoughts and feelings","sich vorstellen · sich freuen · sich ärgern"],
+    ["Verbs — wishes and plans","versuchen · hoffen · vorhaben · planen"],
+    ["Verbs — beginning and end","anfangen · beginnen · aufhören"],
+    ["Verbs — permission and ban","erlauben · verbieten"],
+    ["Verbs — others","vergessen · versprechen · bitten · helfen"],
+    ["★ Never zu after modal verbs","Ich muss arbeiten. · Ich kann kommen. — but: Es ist toll, wenig arbeiten zu müssen."],
+    ["★ Separable verbs: zu in the middle","auf-zu-hören · ein-zu-kaufen · um-zu-ziehen"],
+    ["Infinitive or dass?","→ B2 card «Infinitivsatz oder dass-Satz?» · for the past → «Infinitiv Perfekt»"]];
+  g.ex.push(["Ich habe keine Lust, in einem spießigen Reihenhaus zu leben.","Non ho nessuna voglia di vivere in una villetta a schiera piccolo-borghese."],
+            ["Es ist toll, wenig arbeiten zu müssen.","È fantastico dover lavorare poco."]);
+  g.enEx.push(["Ich habe keine Lust, in einem spießigen Reihenhaus zu leben.","I have no desire to live in a stuffy terraced house."],
+              ["Es ist toll, wenig arbeiten zu müssen.","It's great to have to work so little."]);
+})();
+
+FRASI.push(
+  /* Redemittel — eine Diskussion führen (libro B2, Kap. 2 · telc Sprechen Teil 2) */
+  ["Ich bin der Ansicht, dass …", "Sono dell'avviso che… (dass → verbo in fondo)", "I am of the opinion that… (dass → verb at the end)"],
+  ["Meiner Meinung nach ist das …", "Secondo me è… (il verbo viene subito dopo)", "In my opinion it is… (the verb comes right after)"],
+  ["Dafür spricht, dass …", "A favore c'è il fatto che…", "One argument for it is that…"],
+  ["Dagegen spricht, dass …", "Contro c'è il fatto che…", "One argument against it is that…"],
+  ["Ein weiteres Argument dafür ist …", "Un altro argomento a favore è…", "Another argument for it is…"],
+  ["Zum einen …, zum anderen …", "Da un lato…, dall'altro… (due argomenti nella stessa direzione)", "For one thing…, for another… (two points in the same direction)"],
+  ["Einerseits …, andererseits …", "Da una parte…, dall'altra… (pro e contro)", "On the one hand…, on the other hand… (pros and cons)"],
+  ["Ich halte nichts davon, … zu …", "Non sono per niente favorevole a…", "I don't think much of…"],
+  ["Ich finde es problematisch, wenn …", "Trovo problematico quando…", "I find it problematic when…"],
+  ["Teilweise hast du recht, aber …", "In parte hai ragione, però…", "You're partly right, but…"],
+  ["Ich verstehe deine Position, aber …", "Capisco la tua posizione, però…", "I understand your position, but…"],
+  ["Da muss ich widersprechen.", "Qui devo contraddirti.", "I have to disagree there."],
+  ["Das sehe ich ganz anders.", "Io la vedo in modo completamente diverso.", "I see it completely differently."],
+  ["Wie meinst du das genau?", "Cosa intendi esattamente? (per chiedere chiarimenti)", "What exactly do you mean? (to ask back)"]
+);
+
+/* =====================================================================
+   v42 (2026-10-12) — dalle slide B2.1 (Verben mit Präpositionen) e
+   ripasso didattico: schede troppo corte arricchite, esempi dove mancavano.
+   ===================================================================== */
+VERBI.push(
+  {inf:"informieren", pres:"informiert", pra:"informierte", perf:"hat informiert", it:"informare", en:"to inform",
+   ex:[["Ich habe meine Lehrerin darüber informiert, dass ich krank bin.","Ho informato la mia insegnante che sono malato."]],
+   enex:[["Ich habe meine Lehrerin darüber informiert, dass ich krank bin.","I informed my teacher that I am ill."]],
+   note:"jdn (Akk) über etw (Akk) informieren. Con una frase intera: darüber informieren, dass … Verbo in -ieren: niente ge- nel Partizip (informiert). Riflessivo: sich über etw informieren = informarsi su qualcosa.",
+   enNote:"jdn (Akk) über etw (Akk) informieren. With a whole clause: darüber informieren, dass … Verb in -ieren: no ge- in the Partizip (informiert). Reflexive: sich über etw informieren = to find out about something.",
+   cat:"verbi con preposizione"}
+);
+
+(function(){
+  const G = de => GRAMMATICA.find(x => x.de === de);
+  const add = (de, rows, enRows, ex, enEx) => {
+    const g = G(de);
+    if(rows) { g.rows.push(...rows); g.enRows.push(...enRows); }
+    if(ex) { g.ex.push(...ex); g.enEx.push(...enEx); }
+  };
+  add("Verben mit Präpositionen",
+    [["★ Persone o cose?","persona → preposizione + wen/wem: An wen denkst du? – An ihn. · cosa → wo(r)+/da(r)+: Woran denkst du? – Daran."],
+     ["Con il Dativ","Mit wem sprichst du? – Mit ihm / ihr / ihnen. · Von wem träumst du? – Von ihr."],
+     ["Con una frase intera","Ich habe meine Lehrerin darüber informiert, dass ich krank bin. · Ich ärgere mich darüber, so wenig Zeit zu haben."]],
+    [["★ People or things?","person → preposition + wen/wem: An wen denkst du? – An ihn. · thing → wo(r)+/da(r)+: Woran denkst du? – Daran."],
+     ["With the dative","Mit wem sprichst du? – Mit ihm / ihr / ihnen. · Von wem träumst du? – Von ihr."],
+     ["With a whole clause","Ich habe meine Lehrerin darüber informiert, dass ich krank bin. · Ich ärgere mich darüber, so wenig Zeit zu haben."]]);
+  add("nicht nur... sondern auch",
+    [["Due nomi","Ich spreche nicht nur Deutsch, sondern auch Englisch."],
+     ["Due aggettivi","Die Wohnung ist nicht nur groß, sondern auch billig."],
+     ["Due verbi","Er kocht nicht nur, sondern er backt auch."],
+     ["★ La virgola","prima di sondern c'è sempre la virgola"]],
+    [["Two nouns","Ich spreche nicht nur Deutsch, sondern auch Englisch."],
+     ["Two adjectives","Die Wohnung ist nicht nur groß, sondern auch billig."],
+     ["Two verbs","Er kocht nicht nur, sondern er backt auch."],
+     ["★ The comma","there is always a comma before sondern"]],
+    [["Der Hund ist nicht nur lieb, sondern auch klug.","Il cane non è solo buono, ma anche intelligente."]],
+    [["Der Hund ist nicht nur lieb, sondern auch klug.","The dog is not only sweet but also clever."]]);
+  add("Präposition + Artikel — am, im, ins, zum, zur",
+    [["Sempre contratte","an dem → am · in dem → im · in das → ins · zu dem → zum · zu der → zur · bei dem → beim · von dem → vom · an das → ans"],
+     ["★ Quando NON si contrae","se l'articolo è importante (quello e non un altro): Ich gehe zu dem Arzt, den du mir empfohlen hast."]],
+    [["Always contracted","an dem → am · in dem → im · in das → ins · zu dem → zum · zu der → zur · bei dem → beim · von dem → vom · an das → ans"],
+     ["★ When NOT to contract","when the article matters (that one, not another): Ich gehe zu dem Arzt, den du mir empfohlen hast."]]);
+  add("um...zu / damit",
+    [["Verbi separabili","um … einzukaufen · um … aufzustehen (zu in mezzo)"],
+     ["Domanda","Wozu? / Warum? → Um … zu … / Damit …"],
+     ["★ Con i modali","nella frase con damit non si usa wollen/sollen: Ich spreche langsam, damit du mich verstehst."]],
+    [["Separable verbs","um … einzukaufen · um … aufzustehen (zu in the middle)"],
+     ["Question","Wozu? / Warum? → Um … zu … / Damit …"],
+     ["★ With modals","in the damit clause you don't use wollen/sollen: Ich spreche langsam, damit du mich verstehst."]]);
+  add("Futur II",
+    [["Con sein","Bis morgen wird er angekommen sein."],
+     ["★ Supposizione sul passato","Er ist nicht da. – Er wird den Bus verpasst haben. (= probabilmente ha perso l'autobus)"],
+     ["Nel parlato","spesso basta il Perfekt + un'indicazione di tempo: Bis Montag habe ich es gemacht."]],
+    [["With sein","Bis morgen wird er angekommen sein."],
+     ["★ Guess about the past","Er ist nicht da. – Er wird den Bus verpasst haben. (= he has probably missed the bus)"],
+     ["In speech","the Perfekt + a time phrase is often enough: Bis Montag habe ich es gemacht."]],
+    [["Bis Freitag werde ich das Buch gelesen haben.","Entro venerdì avrò letto il libro."]],
+    [["Bis Freitag werde ich das Buch gelesen haben.","By Friday I will have read the book."]]);
+  add("nicht brauchen zu",
+    [["★ Al positivo si usa müssen","Ich muss arbeiten. → Ich brauche nicht zu arbeiten. (mai «Ich brauche zu arbeiten»)"],
+     ["Anche con nur","Du brauchst nur anzurufen. = basta che chiami."]],
+    [["★ In the positive use müssen","Ich muss arbeiten. → Ich brauche nicht zu arbeiten. (never «Ich brauche zu arbeiten»)"],
+     ["With nur too","Du brauchst nur anzurufen. = you only need to call."]]);
+  add("Personalpronomen nei casi", null, null,
+    [["Ich sehe ihn jeden Tag und helfe ihm oft.","Lo vedo ogni giorno e lo aiuto spesso."],["Kannst du es mir erklären?","Puoi spiegarmelo?"]],
+    [["Ich sehe ihn jeden Tag und helfe ihm oft.","I see him every day and often help him."],["Kannst du es mir erklären?","Can you explain it to me?"]]);
+  add("als / wenn / wann", null, null,
+    [["Als ich nach Berlin kam, sprach ich kein Deutsch.","Quando sono arrivato a Berlino non parlavo tedesco."],["Immer wenn es regnet, bleibt der Hund zu Hause.","Ogni volta che piove il cane resta a casa."]],
+    [["Als ich nach Berlin kam, sprach ich kein Deutsch.","When I came to Berlin I didn't speak German."],["Immer wenn es regnet, bleibt der Hund zu Hause.","Whenever it rains the dog stays at home."]]);
+  add("Wenn das Komma die Bedeutung ändert", null, null,
+    [["Wir essen, Opa!","Mangiamo, nonno! (parliamo al nonno)"],["Wir essen Opa!","Ci mangiamo il nonno! (senza virgola)"]],
+    [["Wir essen, Opa!","Let's eat, Grandpa! (talking to Grandpa)"],["Wir essen Opa!","We're eating Grandpa! (without the comma)"]]);
+})();
+
+/* =====================================================================
+   v43 (2026-10-14) — dalle slide del corso B2.1 «Verwendung also – so».
+   Scheda nuova nel Bignami B2 (D4); pagina madre nel B1 = AP3 Position 0/1 (p.50).
+   ===================================================================== */
+GRAMMATICA.push(
+  {de:"also · so — Folge und Vergleich", it:"also / und so = quindi, e così · so ≠ zu davanti all'aggettivo", en:"also / und so = so, and so · so ≠ zu before an adjective", cat:"connettori",
+    rows:[["★ also = quindi, perciò","conseguenza, come deshalb: Ich wollte mehr als das! Also habe ich mit dem Bloggen angefangen."],
+          ["Posizione del verbo","also sta in Position 1 → verbo SUBITO dopo: Also habe ich … (non «Also ich habe …»)"],
+          ["und so = e così","conseguenza di ciò che precede: Das Camp war voll, und so wurde ich in die Berge geschickt."],
+          ["und so = und dadurch","il mezzo, «e in questo modo»: Auf dem Blog könnt ihr lesen und so Ideen für eure Reisen finden."],
+          ["so + aggettivo = così","confronto, tono neutro: Sei nicht so streng mit dir! (non così severo)"],
+          ["zu + aggettivo = troppo","valore negativo: Sei nicht zu streng mit dir! (non troppo severo)"],
+          ["so … wie = tanto … quanto","Das Wetter ist nicht so schön wie gestern."],
+          ["Also, … (con la virgola)","nel parlato = allora, dunque: è fuori dalla frase, il verbo non si sposta: Also, ich finde das gut."],
+          ["★ Falso amico","also ≠ inglese «also»: «anche» si dice auch — Ich komme auch mit."]],
+    enRows:[["★ also = so, therefore","result, like deshalb: Ich wollte mehr als das! Also habe ich mit dem Bloggen angefangen."],
+          ["Verb position","also takes Position 1 → verb RIGHT after: Also habe ich … (not «Also ich habe …»)"],
+          ["und so = and so","result of what came before: Das Camp war voll, und so wurde ich in die Berge geschickt."],
+          ["und so = und dadurch","the means, «and that way»: Auf dem Blog könnt ihr lesen und so Ideen für eure Reisen finden."],
+          ["so + adjective = so","comparison, neutral tone: Sei nicht so streng mit dir! (not so strict)"],
+          ["zu + adjective = too","negative meaning: Sei nicht zu streng mit dir! (not too strict)"],
+          ["so … wie = as … as","Das Wetter ist nicht so schön wie gestern."],
+          ["Also, … (with a comma)","in speech = well, so: it stands outside the sentence, the verb does not move: Also, ich finde das gut."],
+          ["★ False friend","also ≠ English «also»: «also/too» is auch — Ich komme auch mit."]],
+    note:"also, deshalb, deswegen e daher esprimono tutti una conseguenza e occupano la Position 1: il verbo viene subito dopo. In «und so» il connettore und è Position 0 e so prende la Position 1: und so wurde ich … Davanti a un aggettivo so vuol dire «così» (neutro), zu «troppo» (negativo).",
+    enNote:"also, deshalb, deswegen and daher all express a result and take Position 1: the verb comes right after. In «und so» the connector und is Position 0 and so takes Position 1: und so wurde ich … Before an adjective so means «so» (neutral), zu «too» (negative).",
+    ex:[["Es regnet, also bleiben wir zu Hause.","Piove, quindi restiamo a casa."],["Der Zug war weg, und so mussten wir ein Taxi nehmen.","Il treno era partito, e così abbiamo dovuto prendere un taxi."],["Es sollte beim Wandern darum gehen, die Zeit zu genießen und nicht so streng mit sich zu sein.","Camminando si dovrebbe godersi il tempo e non essere così severi con se stessi."]],
+    enEx:[["Es regnet, also bleiben wir zu Hause.","It's raining, so we're staying at home."],["Der Zug war weg, und so mussten wir ein Taxi nehmen.","The train had gone, and so we had to take a taxi."],["Es sollte beim Wandern darum gehen, die Zeit zu genießen und nicht so streng mit sich zu sein.","Hiking should be about enjoying the time and not being so strict with yourself."]]}
+);
