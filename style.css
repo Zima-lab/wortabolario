@@ -301,15 +301,46 @@
   .field b { display: block; font-size: var(--fs-md); color: var(--navy-dark); margin-top: 2px; }
   .field .k { font-size: var(--fs-2xs); text-transform: uppercase; color: var(--muted); letter-spacing: .03em; }
 
-  .rows { margin: 12px 0; }
-  .rows .row { display: flex; gap: var(--sp-25); padding: 6px 0; border-bottom: 1px dashed var(--border); font-size: var(--fs-sm); }
-  .rows .row:last-child { border-bottom: none; }
-  .rows .row .rk { min-width: 190px; font-weight: 600; color: var(--navy-dark); flex-shrink: 0; }
-  .rows .row .rv { color: var(--text); }
+  /* ---- Regole di grammatica (v45): un blocco per regola ----
+     titolo (italiano) → esempi (tedesco corsivo + traduzione) → consiglio */
+  .rules { margin: 14px 0; display: flex; flex-direction: column; gap: var(--sp-25); }
+  .rule {
+    padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+    background: var(--surface-alt); font-size: var(--fs-sm); line-height: 1.5;
+  }
+  .rule-title { font-weight: 700; color: var(--navy-dark); font-size: var(--fs-md); line-height: 1.35; }
+  .rule-txt { margin-top: 6px; color: var(--text); }
+  .rule-txt .sep { color: var(--muted); margin: 0 .5em; }
+  .rule-ex { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 3px solid var(--accent); display: flex; flex-direction: column; gap: 8px; }
+  .rx { display: flex; flex-direction: column; }
+  .rx-de {
+    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+    font-style: italic; font-size: var(--fs-md); color: var(--text); line-height: 1.4;
+  }
+  .rx-tr { color: var(--muted); font-size: var(--fs-sm); }
+  .rx-arrow { font-style: normal; color: var(--accent); font-weight: 700; margin: 0 .2em; }
+  .rx-wrong .rx-de { text-decoration: line-through; text-decoration-color: var(--amber); color: var(--muted); }
+  .rx-mark { display: inline-block; font-style: normal; font-weight: 800; color: var(--amber); margin-right: .4em; text-decoration: none; }
+  .hl-de { font-weight: 700; font-style: italic; color: var(--accent); }
+  .rule-tip { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); color: var(--muted); font-size: var(--fs-sm); }
+  .rule-tip::before { content: "→ "; color: var(--accent); font-weight: 700; }
+  .rule-star { background: var(--amber-light); border-color: var(--note-border); border-left: 4px solid var(--amber); }
+  .rule-star .rule-ex { border-left-color: var(--amber); }
+  .rule-flag {
+    display: inline-flex; align-items: center; gap: 5px; margin-bottom: 4px;
+    font-size: var(--fs-2xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--amber);
+  }
+  /* parola tedesca dentro un testo italiano: corsivo + colore, così "es" non si perde */
+  .de-w { font-style: italic; font-weight: 700; color: var(--navy); }
+  .rule-title .de-w { color: var(--accent); }
+  .sec-h { font-size: var(--fs-2xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .note-rule { font-size: var(--fs-sm); color: var(--text); padding: 10px 14px; }
+  .note-rule p { margin: 0 0 6px; }
+  .note-rule p:last-child { margin-bottom: 0; }
 
   .examples { margin-top: 10px; }
   .example { font-size: var(--fs-sm); padding: 8px 10px; background: var(--surface-alt); border-left: 3px solid var(--accent); border-radius: 4px; margin-bottom: 6px; }
-  .example .de-ex { font-style: italic; }
+  .example .de-ex { font-style: italic; font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-md); }
   .example .it-ex { color: var(--muted); }
 
   .note { margin-top: 10px; font-size: var(--fs-xs); color: var(--muted); background: var(--note-bg); border: 1px solid var(--note-border); border-radius: 8px; padding: 8px 10px; }

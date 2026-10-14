@@ -400,6 +400,9 @@ const UI_STRINGS = {
     genusMeh: "Il genere si impara col colore: riprova!",
     bignamiLink: (p) => `Scheda nel Bignami (pag. ${p})`,
     bignamiB2Link: (p) => `Scheda nel Bignami B2 (pag. ${p})`,
+    ruleWatch: "Attenzione",
+    exHead: "Esempi",
+    noteHead: "In breve",
     sortOrig: "Ordine originale", sortAZ: "A → Z", sortZA: "Z → A",
     tabHome: "Casa", tabSearch: "Cerca", tabPractice: "Esercizi", tabFavs: "Preferiti",
     streakTitle: "Giorni di studio consecutivi",
@@ -506,6 +509,9 @@ const UI_STRINGS = {
     genusMeh: "Gender sticks with colour — try again!",
     bignamiLink: (p) => `See the Bignami sheet (p. ${p})`,
     bignamiB2Link: (p) => `See the B2 Bignami sheet (p. ${p})`,
+    ruleWatch: "Watch out",
+    exHead: "Examples",
+    noteHead: "In short",
     sortOrig: "Original order", sortAZ: "A → Z", sortZA: "Z → A",
     tabHome: "Home", tabSearch: "Search", tabPractice: "Practice", tabFavs: "Favourites",
     streakTitle: "Consecutive study days",
@@ -1189,7 +1195,7 @@ function matches(entry, q){
   const hay = [
     entry.de, entry.it, entry.en, entry.catLabel,
     ...entry.fields.map(f=>f[1]),
-    ...entry.rows.map(r=>r[0]+" "+r[1]), ...entry.enRows.map(r=>r[0]+" "+r[1]),
+    ...entry.rows.map(rowText), ...entry.enRows.map(rowText),
     ...(entry.tables || []).map(tableText),
     ...entry.ex.flat(), ...entry.enEx.flat()
   ].join(" ").toLowerCase();
@@ -1230,6 +1236,54 @@ function gramTableHtml(tb){
   return `${cap}<div class="gtable-wrap"><table class="gtable"><thead><tr><th class="g-k">${head}</th>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
 }
 
+/* ---------- RIGHE DI GRAMMATICA (v45) ----------
+   Ogni riga è un BLOCCO: titolo in italiano → esempi in tedesco → (consiglio).
+   Due formati in data.js, entrambi validi:
+   · vecchio: [titolo, "testo"]                              → testo su una riga, " · " = separatore
+   · nuovo:   [titolo, [[tedesco, traduzione], …], consiglio?] → un esempio per riga, con traduzione
+   Segni nei testi:
+   · _x_   parola tedesca dentro una frase italiana → corsivo
+   · «x»   tedesco citato → corsivo
+   · *x*   dentro una frase tedesca: la parte da notare → evidenziata
+   · "✗ "  all'inizio di un esempio = frase SBAGLIATA
+   · "A → B" dentro un esempio = trasformazione
+   · ★ all'inizio del titolo = regola da non dimenticare (riquadro "Attenzione")
+   Il corsivo è SOLO esplicito (_x_ o «x»): un corsivo automatico ne prende metà
+   e confonde più di quanto aiuti. */
+function richIt(txt){
+  return String(txt == null ? "" : txt)
+    .replace(/«([^»]*)»/g, '<i class="de-w" lang="de">$1</i>')
+    .replace(/_([^_]+)_/g, '<i class="de-w" lang="de">$1</i>');
+}
+function richDe(txt){
+  return String(txt).replace(/\*([^*]+)\*/g, '<b class="hl-de">$1</b>');
+}
+function rowText(r){
+  const body = Array.isArray(r[1]) ? r[1].map(x => [].concat(x).join(" ")).join(" ") : r[1];
+  return [r[0], body, r[2] || ""].join(" ").replace(/[_*«»✗★]/g, "");
+}
+function rowExHtml(item){
+  const [de, tr] = [].concat(item);
+  const wrong = /^✗\s*/.test(de);
+  const clean = String(de).replace(/^[✗✓]\s*/, "");
+  const deHtml = clean.split(/\s*→\s*/).map(richDe).join(' <span class="rx-arrow" aria-hidden="true">→</span> ');
+  return `<li class="rx${wrong ? " rx-wrong" : ""}">`
+    + `<span class="rx-de" lang="de">${wrong ? '<span class="rx-mark">✗</span>' : ""}${deHtml}</span>`
+    + (tr ? `<span class="rx-tr">${richIt(tr)}</span>` : "")
+    + `</li>`;
+}
+function ruleHtml(r, s){
+  const star = /^★\s*/.test(r[0]);
+  const title = richIt(String(r[0]).replace(/^★\s*/, ""));
+  const body = Array.isArray(r[1])
+    ? `<ul class="rule-ex">${r[1].map(rowExHtml).join("")}</ul>`
+    : `<div class="rule-txt">${String(r[1]).split(/\s+·\s+/).map(richIt).join('<span class="sep" aria-hidden="true">·</span>')}</div>`;
+  const tip = r[2] ? `<div class="rule-tip">${richIt(r[2])}</div>` : "";
+  return `<div class="rule${star ? " rule-star" : ""}">`
+    + (star ? `<span class="rule-flag">${ic("starFill", "ic-sm")}${s.ruleWatch}</span>` : "")
+    + `<div class="rule-title">${title}</div>${body}${tip}</div>`;
+}
+
 function renderEntry(e){
   const t = L(e);
   const s = UI_STRINGS[lang];
@@ -1243,17 +1297,17 @@ function renderEntry(e){
   const tablesHtml = (t.tables || []).map(gramTableHtml).join("");
   let rowsHtml = "";
   if(t.rows.length){
-    rowsHtml = `<div class="rows">` + t.rows.map(r=>`
-      <div class="row"><div class="rk">${r[0]}</div><div class="rv">${r[1]}</div></div>
-    `).join("") + `</div>`;
+    rowsHtml = `<div class="rules">` + t.rows.map(r => ruleHtml(r, s)).join("") + `</div>`;
   }
   let exHtml = "";
   if(t.ex.length){
-    exHtml = `<div class="examples">` + t.ex.map(pair=>`
-      <div class="example"><div class="de-ex">${pair[0]}</div><div class="it-ex">${pair[1]}</div></div>
+    exHtml = `<div class="examples">${e.type === "grammatica" ? `<div class="sec-h">${s.exHead}</div>` : ""}` + t.ex.map(pair=>`
+      <div class="example"><div class="de-ex" lang="de">${richDe(pair[0])}</div><div class="it-ex">${richIt(pair[1])}</div></div>
     `).join("") + `</div>`;
   }
-  const noteHtml = t.note ? `<div class="note">${t.note}</div>` : "";
+  const noteHtml = !t.note ? "" : e.type === "grammatica"
+    ? `<div class="note note-rule"><div class="sec-h">${s.noteHead}</div>${String(t.note).split("\n").map(p => `<p>${richIt(p)}</p>`).join("")}</div>`
+    : `<div class="note">${t.note}</div>`;
   const b2Page = e.type === "grammatica" ? BIGNAMI_B2_PAGES[e.de] : null;
   const bigPage = e.type === "grammatica" ? BIGNAMI_PAGES[e.de] : null;
   const bignamiHtml = b2Page
