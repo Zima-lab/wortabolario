@@ -1,807 +1,201 @@
-  body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-  :root {
-    color-scheme: light;
-    /* Palette: derivata dai colori di sezione del Bignami (A navy #1a227d,
-       B teal #00796b, C arancio #f57e16, D prugna #6a1b9a) resa "web":
-       accenti scuriti per passare il contrasto WCAG AA, fondi pastello
-       presi dalle righe dell'indice del PDF. Niente rossi (= errore). */
-    --navy: #2a3490;        /* navy Bignami sez. A (ammorbidito) */
-    --navy-dark: #191f56;   /* navy scuro — testo e superfici principali */
-    --navy-light: #e2f1fc;
-    --accent: #0c6b5e;        /* teal Bignami sez. B (scurito, AA) — accento primario */
-    --accent-light: #e8f5e9;
-    --amber: #9a4a00;       /* arancio Bignami sez. C (scurito, AA) — accento secondario */
-    --amber-light: #fff8e0;
-    --plum: #6a1b9a;      /* prugna Bignami sez. D — badge aggettivi */
-    --plum-light: #ece7f6;
-    /* v39 — colori del GENERE, uguali alle tabelle del Bignami:
-       der azzurro · die rosa (sakura, non rosso) · das verde · Plural arancio */
-    --g-m: #1d5fa8;  --g-m-bg: #e3effa;
-    --g-f: #a8325f;  --g-f-bg: #fbe7ef;
-    --g-n: #2c6e31;  --g-n-bg: #e5f3e6;
-    --g-pl: #9a4a00; --g-pl-bg: #fff0dc;
-    --g-x: #3d4f58;  --g-x-bg: #eef1f3;
-    --slate: #454f78;
-    --slate-light: #e8ebf5;
-    --indigo: #46539e;      /* badge frasi */
-    --indigo-light: #e7eaf8;
-    --border: #e2e8f0;
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --text: #1e293b;
-    --muted: #586174;
-    --fill-active: #191f56;     /* riempimento solido per pillole/chip attivi */
-    --surface-alt: #f8fafc; /* sfondo leggero per hover/campi/esempi */
-    --note-bg: #fff8e0;
-    --note-border: #f2d98c;
-    /* Sistema di elevazione (Material-like): 3 livelli di profondità */
-    --e1: 0 1px 2px rgba(15,23,42,.06), 0 1px 1px rgba(15,23,42,.05);
-    --e2: 0 4px 12px rgba(15,23,42,.10), 0 2px 4px rgba(15,23,42,.06);
-    --e3: 0 20px 50px rgba(15,23,42,.20), 0 6px 16px rgba(15,23,42,.12);
+/* Wortabolario — STILE
+   Indice:
+     1. Variabili (colori, tipografia, spaziature) · tema chiaro e scuro
+     2. Caratteri (Istok Web, Poltawski Nowy)
+     3. Base (pagina, titoli, icone)
+     4. Intestazione e interruttori lingua / tema
+     5. Ricerca, suggerimenti e filtri
+     6. Casa (data, card "Oggi", progressi, recenti, backup, carte del giorno)
+     7. Schede (voce, badge, pulsanti, regole di grammatica, esempi, tabelle, sezioni A–F)
+     8. Pannello a comparsa (coniugazioni e tutti i quiz) + contenuto coniugazioni
+     9. Flashcard
+    10. Quiz (der/die/das, coniugazione, wurde/würde, regola della desinenza)
+    11. Esercizi (tab Esercizi ed esercizi di grammatica)
+    12. Traguardi (XP, trofei, messaggi)
+    13. Navigazione (tab bar, torna su, stato vuoto, piè di pagina)
+    14. Accessibilità (aree di tocco, focus, movimento ridotto)
+   Regola: niente rossi — l'errore usa l'ambra. Ogni font-size usa un token --fs-*. */
 
-    /* ---------- SCALA TIPOGRAFICA (design token) ----------
-       In rem così rispetta la dimensione testo scelta dall'utente nel
-       browser/telefono (accessibilità). Riferimento: 1rem = 16px.
-       Ogni nuovo font-size DEVE usare uno di questi token. */
-    --fs-2xs: 0.6875rem;   /* 11px  — contatori, etichette della tab bar */
-    --fs-xs: 0.78125rem;   /* 12.5px — note, chip, badge */
-    --fs-sm: 0.8125rem;    /* 13px  — testo secondario */
-    --fs-md: 0.875rem;     /* 14px  — testo di base */
-    --fs-base: 0.9375rem;  /* 15px  — testo primario delle card */
-    --fs-lg: 1.0625rem;    /* 17px  — sottotitoli */
-    --fs-xl: 1.125rem;     /* 18px  — titoli di sezione */
-    --fs-2xl: 1.25rem;     /* 20px  — titoli overlay */
-    --fs-3xl: 1.5rem;      /* 24px  — titoli grandi */
-    --fs-4xl: 1.625rem;    /* 26px  — titolo dell'app */
-    --fs-display: 2.125rem;/* 34px  — parola flashcard */
-    --fs-hero: 2.75rem;    /* 44px  — parola del quiz genere */
 
-    /* ---------- SCALA SPAZIATURE (design token) ----------
-       Passo base 4px con mezzi passi dove il layout già li usa. */
-    --sp-05: 2px;
-    --sp-1: 4px;
-    --sp-15: 6px;
-    --sp-2: 8px;
-    --sp-25: 10px;
-    --sp-3: 12px;
-    --sp-35: 14px;
-    --sp-4: 16px;
-    --sp-5: 20px;
-    --sp-6: 24px;
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --navy: #aab4f2;
-    --navy-dark: #c9d1f7;
-    --navy-light: #1d2440;
-    --accent: #8fd6c8;
-    --accent-light: #152c27;
-    --amber: #f2b273;
-    --amber-light: #33260f;
-    --plum: #d4aef0;
-    --plum-light: #2a2138;
-    --g-m: #9cc8f5;  --g-m-bg: #16273b;
-    --g-f: #f3a7c4;  --g-f-bg: #3a1a28;
-    --g-n: #9fd8a3;  --g-n-bg: #15301a;
-    --g-pl: #f6b679; --g-pl-bg: #3a2610;
-    --g-x: #c2ccd2;  --g-x-bg: #232a2f;
-    --slate: #aab6d4;
-    --slate-light: #232838;
-    --indigo: #a7b6e8;
-    --indigo-light: #222a44;
-    --border: #2a3348;
-    --bg: #10141c;
-    --card: #171d2b;
-    --text: #e7ebf4;
-    --muted: #93a0b8;
-    --fill-active: #4d63a8;
-    --surface-alt: #1c2333;
-    --note-bg: #2c2712;
-    --note-border: #5c4a1a;
-    --e1: 0 1px 2px rgba(0,0,0,.35), 0 1px 1px rgba(0,0,0,.2);
-    --e2: 0 4px 14px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
-    --e3: 0 20px 60px rgba(0,0,0,.65), 0 6px 20px rgba(0,0,0,.4);
-  }
-  /* ---------- ISTOK WEB (carattere di testo) ----------
-     Font locali in formato WOFF2 (~260 KB in tutto contro i 968 KB dei TTF).
-     font-display:swap → il testo è leggibile subito col font di sistema e
-     "scatta" su Istok Web appena caricato: niente attesa a schermo bianco.
-     Licenza SIL OFL, vedi fonts/OFL-IstokWeb.txt. */
-  @font-face {
-    font-family: 'Istok Web'; font-style: normal; font-weight: 400; font-display: swap;
-    src: url('fonts/IstokWeb-Regular.woff2') format('woff2');
-  }
-  @font-face {
-    font-family: 'Istok Web'; font-style: italic; font-weight: 400; font-display: swap;
-    src: url('fonts/IstokWeb-Italic.woff2') format('woff2');
-  }
-  @font-face {
-    font-family: 'Istok Web'; font-style: normal; font-weight: 700; font-display: swap;
-    src: url('fonts/IstokWeb-Bold.woff2') format('woff2');
-  }
-  @font-face {
-    font-family: 'Istok Web'; font-style: italic; font-weight: 700; font-display: swap;
-    src: url('fonts/IstokWeb-BoldItalic.woff2') format('woff2');
-  }
+/* ============ 1. VARIABILI ============ */
 
-  /* ---------- POLTAWSKI NOWY (titoli e parole tedesche) ----------
-     Font VARIABILE: un solo file copre tutti i pesi da 400 a 700 (126 KB),
-     invece di quattro file statici. Sostituisce Iowan Old Style, che
-     esisteva solo su macOS: ora l'app si vede identica su ogni dispositivo.
-     Licenza SIL OFL, vedi fonts/OFL-PoltawskiNowy.txt. */
-  @font-face {
-    font-family: 'Poltawski Nowy'; font-style: normal; font-weight: 400 700; font-display: swap;
-    src: url('fonts/PoltawskiNowy-Variable.woff2') format('woff2-variations'),
-         url('fonts/PoltawskiNowy-Variable.woff2') format('woff2');
-  }
-  /* Corsivo: oggi nessun elemento serif lo usa, quindi il browser NON lo scarica.
-     È registrato per il futuro (un titolo o una parola tedesca in corsivo). */
-  @font-face {
-    font-family: 'Poltawski Nowy'; font-style: italic; font-weight: 400 700; font-display: swap;
-    src: url('fonts/PoltawskiNowy-Italic-Variable.woff2') format('woff2-variations'),
-         url('fonts/PoltawskiNowy-Italic-Variable.woff2') format('woff2');
-  }
+:root {
+  color-scheme: light;
+  /* Palette dai colori di sezione del Bignami (A navy #1a227d, B teal #00796b,
+     C arancio #f57e16, D prugna #6a1b9a) resa "web": accenti scuriti per il
+     contrasto WCAG AA, fondi pastello presi dalle righe dell'indice del PDF. */
+  --navy: #2a3490;          /* sez. A (ammorbidito) */
+  --navy-dark: #191f56;     /* testo e superfici principali */
+  --navy-light: #e2f1fc;
+  --accent: #0c6b5e;        /* sez. B — accento primario */
+  --accent-light: #e8f5e9;
+  --amber: #9a4a00;         /* sez. C — accento secondario, anche per gli errori */
+  --amber-light: #fff8e0;
+  --plum: #6a1b9a;          /* sez. D — badge aggettivi, XP */
+  --plum-light: #ece7f6;
+  /* Colori del GENERE, uguali alle tabelle del Bignami:
+     der azzurro · die rosa (sakura, non rosso) · das verde · Plural arancio */
+  --g-m: #1d5fa8;  --g-m-bg: #e3effa;
+  --g-f: #a8325f;  --g-f-bg: #fbe7ef;
+  --g-n: #2c6e31;  --g-n-bg: #e5f3e6;
+  --g-pl: #9a4a00; --g-pl-bg: #fff0dc;
+  --g-x: #3d4f58;  --g-x-bg: #eef1f3;
+  --slate: #454f78;
+  --slate-light: #e8ebf5;
+  --indigo: #46539e;        /* badge frasi */
+  --indigo-light: #e7eaf8;
+  --border: #e2e8f0;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --muted: #586174;
+  --fill-active: #191f56;   /* riempimento di pillole e chip attivi */
+  --surface-alt: #f8fafc;   /* fondo leggero per hover, campi, esempi */
+  --note-bg: #fff8e0;
+  --note-border: #f2d98c;
+  /* Barre delle sezioni A–F: piene con testo bianco, come nel PDF */
+  --bar-a-bg: #2a3490; --bar-a-fg: #ffffff; --bar-a-line: #2a3490;
+  --bar-b-bg: #0c6b5e; --bar-b-fg: #ffffff; --bar-b-line: #0c6b5e;
+  --bar-c-bg: #b3540a; --bar-c-fg: #ffffff; --bar-c-line: #b3540a;
+  --bar-d-bg: #6a1b9a; --bar-d-fg: #ffffff; --bar-d-line: #6a1b9a;
+  --bar-ap-bg: #37474f; --bar-ap-fg: #ffffff; --bar-ap-line: #37474f;
+  /* Elevazione: 3 livelli di profondità */
+  --e1: 0 1px 2px rgba(15,23,42,.06), 0 1px 1px rgba(15,23,42,.05);
+  --e2: 0 4px 12px rgba(15,23,42,.10), 0 2px 4px rgba(15,23,42,.06);
+  --e3: 0 20px 50px rgba(15,23,42,.20), 0 6px 16px rgba(15,23,42,.12);
 
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Istok Web', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: var(--fs-md);
-    line-height: 1.5;
-    transition: background-color .2s ease, color .2s ease;
-  }
-  body.conj-lock { overflow: hidden; }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-    font-weight: 600;
-  }
-  .wrap { max-width: 900px; margin: 0 auto; padding: 16px 16px 60px; }
-  @media (min-width: 560px){ .wrap { padding: 22px 20px 60px; } }
+  /* Scala tipografica in rem (rispetta la dimensione testo scelta dall'utente).
+     1rem = 16px. Ogni nuovo font-size DEVE usare uno di questi token. */
+  --fs-2xs: 0.6875rem;   /* 11px   contatori, tab bar */
+  --fs-xs: 0.78125rem;   /* 12.5px note, chip, badge */
+  --fs-sm: 0.8125rem;    /* 13px   testo secondario */
+  --fs-md: 0.875rem;     /* 14px   testo di base */
+  --fs-base: 0.9375rem;  /* 15px   testo primario delle card */
+  --fs-lg: 1.0625rem;    /* 17px   sottotitoli */
+  --fs-xl: 1.125rem;     /* 18px   titoli di sezione */
+  --fs-2xl: 1.25rem;     /* 20px   titoli dei pannelli */
+  --fs-3xl: 1.5rem;      /* 24px   titoli grandi */
+  --fs-4xl: 1.625rem;    /* 26px   titolo dell'app */
+  --fs-display: 2.125rem;/* 34px   parola della flashcard */
+  --fs-hero: 2.75rem;    /* 44px   parola del quiz genere */
 
-  header.top { margin-bottom: 14px; }
-  header.top h1 { margin: 0 0 2px; font-size: clamp(1.1875rem, 5.5vw, 1.375rem); color: var(--navy-dark); }
-  header.top p.sub { margin: 0; color: var(--muted); font-size: var(--fs-xs); }
-  .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-25); }
-  .toggles { display: flex; gap: var(--sp-15); flex-shrink: 0; margin-top: 2px; }
-  .lang-toggle, .theme-toggle {
-    display: flex; flex-shrink: 0; border: 1.5px solid var(--border); border-radius: 999px;
-    cursor: pointer; background: var(--card); padding: 2px;
-    box-shadow: var(--e1);
-  }
-  .lang-toggle .lang-opt, .theme-toggle .lang-opt {
-    padding: 8px 12px; font-size: var(--fs-xs); font-weight: 700; color: var(--muted); border-radius: 999px;
-    transition: background .15s, color .15s; display: flex; align-items: center; justify-content: center;
-    min-height: 20px;
-  }
-  .theme-toggle .lang-opt { font-size: var(--fs-md); line-height: 1; }
-  .lang-toggle .lang-opt.active, .theme-toggle .lang-opt.active { background: var(--fill-active); color: #fff; }
-
-  .searchbar {
-    display: flex; align-items: center; gap: var(--sp-25);
-    background: var(--card); border: 1.5px solid var(--border); border-radius: 12px;
-    padding: 12px 14px; margin: 14px 0 12px;
-    box-shadow: var(--e1);
-    position: sticky; top: max(env(safe-area-inset-top), 8px); z-index: 25;
-    transition: box-shadow .15s, border-color .15s;
-  }
-  .searchbar:focus-within { border-color: var(--navy); box-shadow: var(--e2); }
-  .search-input-wrap { position: relative; flex: 1; display: flex; align-items: center; min-width: 0; }
-  .search-input-wrap input {
-    width: 100%; border: none; outline: none; font-size: 1rem; background: transparent; color: var(--text);
-  }
-  .clear-btn {
-    border: none; background: transparent; color: var(--muted); font-size: var(--fs-2xl); line-height: 1;
-    cursor: pointer; padding: 2px 4px; flex-shrink: 0;
-  }
-  .clear-btn:hover { color: var(--navy-dark); }
-  .searchbar .count { font-size: var(--fs-xs); color: var(--muted); white-space: nowrap; }
-
-  .suggest-list {
-    position: absolute; top: calc(100% + 10px); left: -14px; right: -14px;
-    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    box-shadow: var(--e3); max-height: 320px; overflow-y: auto;
-    z-index: 30; padding: 6px;
-  }
-  .suggest-item {
-    display: flex; align-items: baseline; gap: var(--sp-2); padding: 12px 10px; border-radius: 8px; cursor: pointer; min-height: 44px;
-  }
-  .suggest-item.active, .suggest-item:hover { background: var(--navy-light); }
-  .suggest-item .sde { font-weight: 700; color: var(--navy-dark); font-size: var(--fs-md); white-space: nowrap; }
-  .suggest-item .sit { color: var(--muted); font-size: var(--fs-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-  .home { margin: 6px 0 22px; }
-  .home .eyebrow {
-    font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .07em; color: var(--muted);
-    margin: 4px 0 10px; font-weight: 600;
-  }
-  .today-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--sp-25); }
-  .today-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px 15px; cursor: pointer; transition: box-shadow .15s, border-color .15s, transform .15s;
-    box-shadow: var(--e1);
-  }
-  .today-card:hover, .today-card:focus-visible { box-shadow: var(--e2); border-color: var(--navy); outline: none; transform: translateY(-1px); }
-  .today-card:active { transform: translateY(0); }
-  .today-card .cardlabel {
-    font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
-    margin-bottom: 8px; font-weight: 600;
-  }
-  .today-card h3 { margin: 6px 0 3px; font-size: var(--fs-xl); color: var(--navy-dark); }
-  .today-card .it { color: var(--muted); font-size: var(--fs-sm); }
-  .today-card .extra { font-size: var(--fs-xs); color: var(--muted); margin-top: 8px; font-style: italic; border-top: 1px dashed var(--border); padding-top: 8px; }
-
-  .date-strip {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 1px; background: var(--border);
-    border: 1px solid var(--border); border-radius: 12px;
-    overflow: hidden; margin: 4px 0 20px;
-  }
-  .date-cell { background: var(--card); text-align: center; padding: 14px 8px; }
-  .date-it {
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-    font-size: clamp(0.9375rem, 4.6vw, 1.375rem); font-weight: 700; color: var(--navy-dark);
-    line-height: 1.15; overflow-wrap: break-word; hyphens: auto;
-  }
-  .date-de {
-    font-size: var(--fs-2xs); color: var(--accent); text-transform: uppercase; letter-spacing: .04em;
-    font-weight: 600; margin-top: 5px; overflow-wrap: break-word;
-  }
-
-  .filters { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-bottom: 18px; align-items: center; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
-  .chip {
-    border: 1px solid var(--border); background: var(--card); border-radius: 999px; padding: 9px 15px;
-    font-size: var(--fs-sm); cursor: pointer; color: var(--muted); font-weight: 500; flex-shrink: 0;
-    min-height: 44px; transition: box-shadow .15s, background .15s, color .15s;
-  }
-  .chip.active { background: var(--fill-active); color: #fff; border-color: var(--fill-active); box-shadow: var(--e1); }
-  .filters select {
-    padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: var(--fs-xs); background: var(--card); color: var(--text);
-    margin-left: auto; min-height: 44px;
-  }
-
-  .entry {
-    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-    margin-bottom: 8px; overflow: hidden; box-shadow: var(--e1); transition: box-shadow .15s;
-  }
-  .entry.open { box-shadow: var(--e2); }
-  .entry-head {
-    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-25);
-    padding: 14px 15px; cursor: pointer; min-height: 26px;
-  }
-  .entry-head:hover { background: var(--surface-alt); }
-  .entry-head .left { display: flex; align-items: baseline; gap: var(--sp-25); flex-wrap: wrap; min-width: 0; }
-  .entry-head .de {
-    font-size: var(--fs-lg); font-weight: 700; color: var(--navy-dark); white-space: nowrap;
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-  }
-  .entry-head .it { color: var(--muted); font-size: var(--fs-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .badge {
-    font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .04em; padding: 3px 8px; border-radius: 999px;
-    white-space: nowrap; font-weight: 600;
-  }
-  .badge.verbo { background: var(--navy-light); color: var(--navy-dark); }
-  .badge.sostantivo { background: var(--amber-light); color: var(--amber); }
-  .badge.aggettivo { background: var(--plum-light); color: var(--plum); }
-  .badge.grammatica { background: var(--slate-light); color: var(--slate); }
-  .badge.frase { background: var(--indigo-light); color: var(--indigo); }
-  .badge.detto { background: var(--accent-light); color: var(--accent); }
-  .chev { color: var(--muted); font-size: var(--fs-xs); transition: transform .15s; flex-shrink: 0; }
-  .entry.open .chev { transform: rotate(90deg); }
-
-  .entry-body { display: none; padding: 0 15px 16px; border-top: 1px solid var(--border); }
-  .entry.open .entry-body { display: block; }
-
-  .fields { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: 12px 0; }
-  .field {
-    background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: var(--fs-xs);
-  }
-  .field b { display: block; font-size: var(--fs-md); color: var(--navy-dark); margin-top: 2px; }
-  .field .k { font-size: var(--fs-2xs); text-transform: uppercase; color: var(--muted); letter-spacing: .03em; }
-
-  /* ---- Regole di grammatica (v45): un blocco per regola ----
-     titolo (italiano) → esempi (tedesco corsivo + traduzione) → consiglio */
-  .rules { margin: 14px 0; display: flex; flex-direction: column; gap: var(--sp-25); }
-  .rule {
-    padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
-    background: var(--surface-alt); font-size: var(--fs-sm); line-height: 1.5;
-  }
-  .rule-title { font-weight: 700; color: var(--navy-dark); font-size: var(--fs-md); line-height: 1.35; }
-  .rule-txt { margin-top: 6px; color: var(--text); }
-  .rule-txt .sep { color: var(--muted); margin: 0 .5em; }
-  .rule-ex { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 3px solid var(--accent); display: flex; flex-direction: column; gap: 8px; }
-  .rx { display: flex; flex-direction: column; }
-  .rx-de {
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-    font-style: italic; font-size: var(--fs-md); color: var(--text); line-height: 1.4;
-  }
-  .rx-tr { color: var(--muted); font-size: var(--fs-sm); }
-  .rx-arrow { font-style: normal; color: var(--accent); font-weight: 700; margin: 0 .2em; }
-  .rx-wrong .rx-de { text-decoration: line-through; text-decoration-color: var(--amber); color: var(--muted); }
-  .rx-mark { display: inline-block; font-style: normal; font-weight: 800; color: var(--amber); margin-right: .4em; text-decoration: none; }
-  .hl-de { font-weight: 700; font-style: italic; color: var(--accent); }
-  .rule-tip { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); color: var(--muted); font-size: var(--fs-sm); }
-  .rule-tip::before { content: "→ "; color: var(--accent); font-weight: 700; }
-  .rule-star { background: var(--amber-light); border-color: var(--note-border); border-left: 4px solid var(--amber); }
-  .rule-star .rule-ex { border-left-color: var(--amber); }
-  .rule-flag {
-    display: inline-flex; align-items: center; gap: 5px; margin-bottom: 4px;
-    font-size: var(--fs-2xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--amber);
-  }
-  /* parola tedesca dentro un testo italiano: corsivo + colore, così "es" non si perde */
-  .de-w { font-style: italic; font-weight: 700; color: var(--navy); }
-  .rule-title .de-w { color: var(--accent); }
-  .sec-h { font-size: var(--fs-2xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-  .note-rule { font-size: var(--fs-sm); color: var(--text); padding: 10px 14px; }
-  .note-rule p { margin: 0 0 6px; }
-  .note-rule p:last-child { margin-bottom: 0; }
-
-  .examples { margin-top: 10px; }
-  .example { font-size: var(--fs-sm); padding: 8px 10px; background: var(--surface-alt); border-left: 3px solid var(--accent); border-radius: 4px; margin-bottom: 6px; }
-  .example .de-ex { font-style: italic; font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-md); }
-  .example .it-ex { color: var(--muted); }
-
-  .note { margin-top: 10px; font-size: var(--fs-xs); color: var(--muted); background: var(--note-bg); border: 1px solid var(--note-border); border-radius: 8px; padding: 8px 10px; }
-
-  .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
-
-  footer.note2 { margin-top: 26px; font-size: var(--fs-xs); color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px; }
-  footer.note2 a { color: var(--accent); }
-  /* Badge versione: serve a distinguere subito una pubblicazione nuova dalla cache */
-  .app-version { margin: 10px 0 4px; text-align: center; font-size: var(--fs-2xs); color: var(--muted); opacity: .8; letter-spacing: .3px; }
-
-  /* ---------- PULSANTE "TUTTE LE CONIUGAZIONI" ---------- */
-  .conj-btn {
-    display: flex; align-items: center; gap: 7px; margin-top: 12px;
-    background: var(--fill-active); color: #fff; border: none; border-radius: 10px;
-    padding: 11px 16px; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; min-height: 44px;
-    box-shadow: var(--e1); transition: box-shadow .15s, transform .15s; width: 100%;
-    justify-content: center;
-  }
-  .conj-btn:hover { box-shadow: var(--e2); }
-  .conj-btn:active { transform: translateY(1px); }
-  .conj-btn-ic { font-size: var(--fs-md); }
-
-  /* ---------- PANNELLO CONIUGAZIONI (bottom sheet mobile-first) ---------- */
-  .conj-overlay {
-    position: fixed; inset: 0; z-index: 100; display: none;
-    background: rgba(10,14,25,.5); backdrop-filter: blur(2px);
-  }
-  .conj-overlay.open { display: block; }
-  .conj-sheet {
-    position: absolute; left: 0; right: 0; bottom: 0; top: 6vh;
-    background: var(--bg); border-radius: 20px 20px 0 0;
-    box-shadow: var(--e3); display: flex; flex-direction: column;
-    padding-bottom: env(safe-area-inset-bottom);
-    animation: conj-slide-up .22s ease-out;
-  }
-  @keyframes conj-slide-up {
-    from { transform: translateY(24px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  .conj-sheet-handle {
-    width: 40px; height: 4px; border-radius: 999px; background: var(--border);
-    margin: 10px auto 2px; flex-shrink: 0;
-  }
-  .conj-sheet-header {
-    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-25);
-    padding: 10px 18px; flex-shrink: 0; border-bottom: 1px solid var(--border);
-  }
-  .conj-sheet-header h2 { margin: 0; font-size: var(--fs-lg); color: var(--navy-dark); }
-  .conj-close {
-    border: none; background: var(--surface-alt); color: var(--muted); font-size: var(--fs-2xl); line-height: 1;
-    cursor: pointer; width: 44px; height: 44px; border-radius: 999px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .conj-close:hover { background: var(--navy-light); color: var(--navy-dark); }
-  .conj-sheet-body { overflow-y: auto; padding: 14px 16px 28px; -webkit-overflow-scrolling: touch; }
-
-  .conj-verbhead { display: flex; align-items: baseline; gap: var(--sp-25); flex-wrap: wrap; margin-bottom: 14px; }
-  .conj-verbhead .de {
-    font-size: var(--fs-2xl); font-weight: 700; color: var(--navy-dark);
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-  }
-  .conj-verbhead .it { color: var(--muted); font-size: var(--fs-md); }
-
-  .conj-section { margin-bottom: 20px; }
-  .conj-sectitle {
-    font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; font-weight: 700;
-    color: #fff; background: var(--fill-active); display: inline-block;
-    padding: 6px 14px; border-radius: 999px; margin: 0 0 10px;
-  }
-  .conj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--sp-25); }
-  .conj-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 12px 14px; box-shadow: var(--e1);
-  }
-  .conj-card h4 {
-    margin: 0 0 8px; font-size: var(--fs-xs); color: var(--muted); text-transform: uppercase;
-    letter-spacing: .03em; font-weight: 700;
-  }
-  .conj-row { display: flex; gap: var(--sp-2); padding: 4px 0; font-size: var(--fs-sm); align-items: baseline; }
-  .conj-p { min-width: 62px; flex-shrink: 0; color: var(--muted); font-size: var(--fs-xs); }
-  .conj-f { color: var(--text); font-weight: 600; }
-  .conj-note { font-size: var(--fs-xs); color: var(--muted); font-style: italic; }
-
-  @media (min-width: 640px){
-    .conj-sheet { left: 50%; right: auto; top: 4vh; bottom: 4vh; width: min(680px, 92vw);
-      transform: translateX(-50%); border-radius: 20px; }
-  }
-
-  /* ================= V2 — UX/UI ================= */
-
-  /* Contatori nei filtri */
-  .chip { display: inline-flex; align-items: center; gap: var(--sp-15); }
-  .chip-n {
-    font-size: var(--fs-2xs); font-weight: 700; padding: 1px 7px; border-radius: 999px;
-    background: var(--surface-alt); color: var(--muted); border: 1px solid var(--border);
-  }
-  .chip.active .chip-n { background: rgba(255,255,255,.18); color: #fff; border-color: transparent; }
-  .chip-fav { color: var(--amber); border-color: var(--amber-light); }
-  .chip-fav.active { background: var(--amber); border-color: var(--amber); color: #fff; }
-
-  /* Stella preferiti */
-  .fav-btn {
-    border: none; background: transparent; cursor: pointer; flex-shrink: 0;
-    font-size: 1.1875rem; line-height: 1; color: var(--muted); padding: 6px 8px;
-    border-radius: 999px; transition: transform .15s, color .15s;
-  }
-  .fav-btn:hover { color: var(--amber); }
-  .fav-btn.on { color: var(--amber); }
-  .fav-btn:active { transform: scale(1.25); }
-
-  /* Tag "imparata" */
-  .learned-tag {
-    font-size: var(--fs-2xs); font-weight: 700; color: var(--accent);
-    background: var(--accent-light); border-radius: 999px; padding: 2px 7px;
-  }
-
-  /* Articolo colorato per genere */
-  .genus {
-    font-size: .78em; font-weight: 700; padding: 1px 7px 2px; border-radius: 6px;
-    vertical-align: 2px; letter-spacing: .01em;
-    font-family: 'Istok Web', -apple-system, sans-serif;
-  }
-  .genus-der { background: var(--g-m-bg); color: var(--g-m); }
-  .genus-die { background: var(--g-f-bg); color: var(--g-f); }
-  .genus-das { background: var(--g-n-bg); color: var(--g-n); }
-
-  /* Card progresso + pulsante ripassa */
-  .progress-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px 15px; margin: 0 0 20px; box-shadow: var(--e1);
-  }
-  .progress-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: 10px; }
-  .progress-label { font-size: var(--fs-sm); color: var(--text); font-weight: 600; }
-  .review-btn {
-    border: none; border-radius: 999px; background: var(--fill-active); color: #fff;
-    font-size: var(--fs-xs); font-weight: 700; padding: 12px 18px; cursor: pointer; min-height: 44px;
-    box-shadow: var(--e1); transition: box-shadow .15s, transform .15s;
-  }
-  .review-btn:hover { box-shadow: var(--e2); }
-  .review-btn:active { transform: translateY(1px); }
-  .progress-track { height: 6px; border-radius: 999px; background: var(--surface-alt); border: 1px solid var(--border); overflow: hidden; }
-  .progress-fill { height: 100%; border-radius: 999px; background: var(--accent); transition: width .4s ease; }
-
-  /* Recenti */
-  .recent-strip { display: flex; gap: var(--sp-2); overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; margin-bottom: 18px; }
-  .recent-chip {
-    flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
-    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-    padding: 8px 12px; cursor: pointer; box-shadow: var(--e1); max-width: 180px; min-height: 44px; justify-content: center;
-    transition: border-color .15s, box-shadow .15s;
-  }
-  .recent-chip:hover { border-color: var(--navy); box-shadow: var(--e2); }
-  .rc-de { font-weight: 700; font-size: var(--fs-sm); color: var(--navy-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; }
-  .rc-it { font-size: var(--fs-2xs); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
-
-  /* Apertura scheda: piccola transizione */
-  .entry-body { animation: none; }
-  .entry.open .entry-body { animation: body-in .18s ease-out; }
-  @keyframes body-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
-
-  /* Stato vuoto */
-  .empty-ic { font-size: var(--fs-display); margin-bottom: 10px; opacity: .5; }
-
-  /* Torna su */
-  .back-top {
-    position: fixed; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 60;
-    width: 44px; height: 44px; border-radius: 999px; border: none; cursor: pointer;
-    background: var(--fill-active); color: #fff; font-size: var(--fs-xl); box-shadow: var(--e2);
-    transition: transform .15s;
-  }
-  .back-top:active { transform: scale(.92); }
-
-  /* ---------- FLASHCARD ---------- */
-  .flash-body { display: flex; flex-direction: column; }
-  .flash-progress { height: 4px; border-radius: 999px; background: var(--surface-alt); overflow: hidden; margin-bottom: 16px; flex-shrink: 0; }
-  .flash-progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
-
-  .flash-card {
-    perspective: 1200px; cursor: pointer; outline: none;
-    min-height: 300px; flex: 1; display: flex; margin-bottom: 16px;
-  }
-  .flash-inner {
-    position: relative; width: 100%; transform-style: preserve-3d;
-    transition: transform .45s cubic-bezier(.2,.7,.3,1); display: flex;
-  }
-  .flash-card.flipped .flash-inner { transform: rotateY(180deg); }
-  .flash-face {
-    position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-3);
-    background: var(--card); border: 1.5px solid var(--border); border-radius: 18px;
-    box-shadow: var(--e2); padding: 24px; text-align: center;
-  }
-  .flash-back { transform: rotateY(180deg); border-color: var(--accent); }
-  .flash-word {
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-    font-size: clamp(1.625rem, 7vw, 2.375rem); font-weight: 700; color: var(--navy-dark); line-height: 1.2;
-    overflow-wrap: anywhere;
-  }
-  .flash-word .genus { vertical-align: 6px; }
-  .flash-hint { font-size: var(--fs-xs); color: var(--muted); font-style: italic; }
-  .flash-word-sm {
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-    font-size: var(--fs-lg); font-weight: 700; color: var(--muted);
-  }
-  .flash-tr { font-size: clamp(1.25rem, 5.5vw, 1.75rem); font-weight: 600; color: var(--accent); overflow-wrap: anywhere; }
-  .flash-ex { font-size: var(--fs-sm); color: var(--text); font-style: italic; margin-top: 6px; }
-  .flash-ex span { color: var(--muted); font-style: normal; }
-
-  .flash-actions { display: flex; gap: var(--sp-25); flex-shrink: 0; }
-  .flash-actions.hidden { visibility: hidden; }
-  .flash-btn {
-    flex: 1; border: none; border-radius: 12px; padding: 14px 10px; font-size: var(--fs-md);
-    font-weight: 700; cursor: pointer; box-shadow: var(--e1); min-height: 48px;
-    transition: box-shadow .15s, transform .15s;
-  }
-  .flash-btn:active { transform: translateY(1px); }
-  .flash-yes { background: var(--accent); color: #fff; }
-  .flash-no { background: var(--amber-light); color: var(--amber); border: 1px solid var(--amber); }
-
-  .flash-done { text-align: center; padding: 30px 10px; }
-  .flash-done-ic { font-size: var(--fs-hero); margin-bottom: 8px; }
-  .flash-done h3 { margin: 0 0 6px; font-size: var(--fs-2xl); color: var(--navy-dark); }
-  .flash-done p { margin: 0 0 20px; color: var(--muted); }
-  .flash-done .flash-actions { flex-direction: column; }
-  .flash-secondary {
-    border: 1px solid var(--border); background: var(--card); color: var(--muted);
-    border-radius: 10px; padding: 11px 16px; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; min-height: 44px;
-  }
-
-  /* Focus visibile per tastiera */
-  .chip:focus-visible, .fav-btn:focus-visible, .review-btn:focus-visible, .recent-chip:focus-visible,
-  .flash-btn:focus-visible, .flash-card:focus-visible, .back-top:focus-visible, .today-card:focus-visible {
-    outline: 2px solid var(--navy); outline-offset: 2px;
-  }
-
-  /* Riduzione movimento */
-  @media (prefers-reduced-motion: reduce) {
-    .flash-inner, .progress-fill, .flash-progress-fill, .entry-body { transition: none !important; animation: none !important; }
-  }
-
-  /* ---------- FLASHCARD: direzione DE→IT / IT→DE ---------- */
-  .flash-topbar { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: 16px; flex-shrink: 0; }
-  .flash-topbar .flash-progress { flex: 1; margin-bottom: 0; }
-  .flash-dir {
-    display: flex; flex-shrink: 0; border: 1.5px solid var(--border); border-radius: 999px;
-    background: var(--card); padding: 2px; box-shadow: var(--e1);
-  }
-  .flash-dir-opt {
-    border: none; background: transparent; cursor: pointer; border-radius: 999px;
-    padding: 6px 11px; font-size: var(--fs-2xs); font-weight: 700; color: var(--muted);
-    transition: background .15s, color .15s; white-space: nowrap;
-  }
-  .flash-dir-opt.active { background: var(--fill-active); color: #fff; }
-  .flash-dir-opt:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
-  /* fronte in modalità IT→DE: la traduzione è la domanda */
-  .flash-word-tr { color: var(--accent); }
-  /* retro in modalità IT→DE: la risposta tedesca, grande e navy */
-  .flash-tr-de { color: var(--navy-dark); font-weight: 700;
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; }
-  .flash-tr-de .genus { vertical-align: 4px; }
-
-  /* ================= V3 — SRS, audio, quiz genere, Bignami ================= */
-
-  /* Azioni nella card progresso */
-  .progress-actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: 12px; align-items: center; }
-  .due-btn { background: var(--amber); }
-  .due-done { font-size: var(--fs-xs); color: var(--accent); font-weight: 600; }
-  .genus-quiz-btn { background: var(--card); color: var(--navy-dark); border: 1.5px solid var(--border); }
-
-  /* Pulsante audio */
-  .speak-btn {
-    border: none; background: transparent; cursor: pointer; flex-shrink: 0;
-    font-size: var(--fs-base); line-height: 1; padding: 6px; border-radius: 999px;
-    opacity: .65; transition: opacity .15s, transform .15s;
-  }
-  .speak-btn:hover { opacity: 1; }
-  .speak-btn:active { transform: scale(1.2); }
-  .flash-speak { font-size: var(--fs-2xl); opacity: .8; }
-
-  /* Pulsante audio dentro i quiz: nei quiz la pronuncia NON parte più da sola,
-     quindi qui l'icona deve leggersi come un comando, non come una decorazione.
-     Cerchietto con bordo + target 44px (senza ::after, che qui non basterebbe). */
-  .quiz-speak {
-    display: inline-flex; align-items: center; justify-content: center;
-    /* min-height e non solo height: più avanti nel foglio c'è
-       `.speak-btn, .fav-btn, .icon-spacer { width:34px; height:34px }`
-       che, essendo successiva e di pari specificità, vincerebbe su height. */
-    width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0;
-    margin-left: var(--sp-15); vertical-align: middle;
-    border: 1.5px solid var(--border); border-radius: 999px;
-    background: var(--card); color: var(--accent); opacity: 1;
-  }
-  .quiz-speak::after { content: none; }   /* il bottone è già 44px */
-  .quiz-speak .ic { width: 19px; height: 19px; }
-  .quiz-speak:hover { border-color: var(--accent); }
-  .quiz-speak:active { transform: scale(1.08); }
-
-  /* Stato del ripasso sul retro della flashcard.
-     Era una fila di 5 pallini ●○○○○ (letter-spacing 3px): sembrava
-     l'indicatore di un carosello, quindi ora è una frase in chiaro. */
-  .srs-lv {
-    display: inline-flex; align-items: center; gap: 5px; margin-top: 10px;
-    font-size: var(--fs-2xs); color: var(--muted);
-  }
-  .srs-lv .ic { stroke-width: 1.9; opacity: .8; }
-
-  /* Link alla scheda del Bignami */
-  .bignami-link {
-    display: inline-flex; align-items: center; gap: var(--sp-15); margin-top: 12px;
-    min-height: 44px; font-size: var(--fs-xs); font-weight: 600; color: var(--navy); text-decoration: none;
-    border: 1.5px solid var(--navy-light); background: var(--navy-light);
-    border-radius: 999px; padding: 8px 14px; transition: box-shadow .15s;
-  }
-  .bignami-link:hover { box-shadow: var(--e1); text-decoration: underline; }
-
-  /* Quiz der/die/das */
-  .genus-question {
-    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: var(--sp-25); text-align: center; background: var(--card); border: 1.5px solid var(--border);
-    border-radius: 18px; box-shadow: var(--e2); padding: 24px; margin-bottom: 16px; min-height: 220px;
-  }
-  .genus-word {
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-    font-size: clamp(1.625rem, 7vw, 2.375rem); font-weight: 700; color: var(--navy-dark); overflow-wrap: anywhere;
-    /* Il pulsante audio si affianca alla parola dopo la risposta: flex con
-       wrap così sulle parole lunghe va a capo invece di uscire dalla card. */
-    display: flex; align-items: center; justify-content: center;
-    flex-wrap: wrap; gap: var(--sp-25);
-  }
-  /* Nella parola grande l'icona è un filo più grande, per stare in proporzione */
-  .genus-word .quiz-speak .ic { width: 21px; height: 21px; }
-  .genus-hint { font-size: var(--fs-xs); color: var(--muted); font-style: italic; }
-  .genus-answer { min-height: 48px; font-size: var(--fs-base); color: var(--text); opacity: 0; transition: opacity .2s; }
-  .genus-answer.show { opacity: 1; }
-  .genus-answer .genus { font-size: var(--fs-sm); }
-  .genus-pl { color: var(--muted); font-size: var(--fs-sm); }
-  .genus-btns { display: flex; gap: var(--sp-25); flex-shrink: 0; }
-  /* Riga di navigazione del quiz: Indietro (rivedi la domanda prima) + Avanti */
-  .genus-nav { display: flex; gap: var(--sp-25); margin-top: var(--sp-35); }
-  .genus-nav:empty { display: none; }
-  .genus-nav .genus-next { flex: 1; margin: 0; justify-content: center; }
-  .genus-nav .genus-back { flex: 0 0 auto; }
-  .genus-opt {
-    flex: 1; border-radius: 12px; padding: 16px 8px; font-size: var(--fs-xl); font-weight: 700;
-    cursor: pointer; min-height: 54px; box-shadow: var(--e1); border: 2px solid transparent;
-    font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
-    transition: transform .12s, box-shadow .15s;
-  }
-  .genus-opt:active { transform: translateY(1px); }
-  .genus-opt-der { background: var(--g-m-bg); color: var(--g-m); }
-  .genus-opt-die { background: var(--g-f-bg); color: var(--g-f); }
-  .genus-opt-das { background: var(--g-n-bg); color: var(--g-n); }
-  .genus-opt.right { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
-  .genus-opt.wrong { opacity: .45; border-color: var(--border); }
-  .genus-opt:disabled { cursor: default; }
-  .genus-opt:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
-
-  /* ---------- FIX ALLINEAMENTO ICONE (🔊 e ★ in colonne fisse) ---------- */
-  .entry-head { justify-content: flex-start; gap: 4px; }
-  .entry-head .left { flex: 1; min-width: 0; }   /* il testo assorbe lo spazio, le icone restano a destra */
-  .speak-btn, .fav-btn, .icon-spacer {
-    width: 34px; height: 34px; padding: 0; flex-shrink: 0;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .entry-head .chev { width: 16px; text-align: center; }
-
-  /* Rinforzo allineamento: la prima icona spinge tutto il gruppo a destra,
-     qualunque sia la larghezza del testo (funziona anche con space-between) */
-  .entry-head .speak-btn, .entry-head .icon-spacer { margin-left: auto; }
-  .entry-head .left + .fav-btn { margin-left: auto; } /* fallback se manca l'audio */
-
-/* ============ v3: tab bar, esercizi, streak, backup, quiz di coniugazione ============ */
-
-/* La tab bar occupa il bordo inferiore: le azioni frequenti restano nella zona del pollice. */
-body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
-.tabbar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
-  display: flex; gap: var(--sp-05);
-  background: var(--card); border-top: 1px solid var(--border);
-  padding: 6px max(10px, env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-right));
-  box-shadow: 0 -2px 12px rgba(15,23,42,.08);
-}
-.tabbar .tab {
-  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-05);
-  min-height: 44px;
-  background: none; border: none; cursor: pointer; font: inherit;
-  font-size: var(--fs-2xs); font-weight: 600; color: var(--muted);
-  padding: 4px 0 3px; border-radius: 12px;
-}
-.tabbar .tab .tab-ic { font-size: var(--fs-2xl); line-height: 1.2; }
-.tabbar .tab .tab-lb { line-height: 1.1; letter-spacing: .1px; }
-.tabbar .tab.active { color: var(--navy); background: var(--navy-light); font-weight: 800; }
-.tabbar .tab:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
-.back-top { bottom: calc(84px + env(safe-area-inset-bottom)); }
-
-/* Streak */
-.progress-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; }
-.streak-chip {
-  font-size: var(--fs-xs); font-weight: 700; color: var(--amber);
-  background: var(--amber-light); border-radius: 999px; padding: 4px 10px; white-space: nowrap;
+  /* Spaziature: passo 4px, con mezzi passi dove servono */
+  --sp-05: 2px;
+  --sp-1: 4px;
+  --sp-15: 6px;
+  --sp-2: 8px;
+  --sp-25: 10px;
+  --sp-3: 12px;
+  --sp-35: 14px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
 }
 
-/* Tab Esercizi */
-.exercises { margin-top: 6px; }
-.ex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--sp-25); }
-.ex-card {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
-  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-  padding: 14px; cursor: pointer; font: inherit; text-align: left;
-  box-shadow: var(--e1); transition: box-shadow .15s, transform .05s;
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --navy: #aab4f2;
+  --navy-dark: #c9d1f7;
+  --navy-light: #1d2440;
+  --accent: #8fd6c8;
+  --accent-light: #152c27;
+  --amber: #f2b273;
+  --amber-light: #33260f;
+  --plum: #d4aef0;
+  --plum-light: #2a2138;
+  --g-m: #9cc8f5;  --g-m-bg: #16273b;
+  --g-f: #f3a7c4;  --g-f-bg: #3a1a28;
+  --g-n: #9fd8a3;  --g-n-bg: #15301a;
+  --g-pl: #f6b679; --g-pl-bg: #3a2610;
+  --g-x: #c2ccd2;  --g-x-bg: #232a2f;
+  --slate: #aab6d4;
+  --slate-light: #232838;
+  --indigo: #a7b6e8;
+  --indigo-light: #222a44;
+  --border: #2a3348;
+  --bg: #10141c;
+  --card: #171d2b;
+  --text: #e7ebf4;
+  --muted: #93a0b8;
+  --fill-active: #4d63a8;
+  --surface-alt: #1c2333;
+  --note-bg: #2c2712;
+  --note-border: #5c4a1a;
+  /* Barre delle sezioni: fondo scuro e testo colorato (contrasto AA verificato) */
+  --bar-a-bg: #1d2440; --bar-a-fg: #aab4f2; --bar-a-line: #aab4f2;
+  --bar-b-bg: #152c27; --bar-b-fg: #8fd6c8; --bar-b-line: #8fd6c8;
+  --bar-c-bg: #33260f; --bar-c-fg: #f2b273; --bar-c-line: #f2b273;
+  --bar-d-bg: #2a2138; --bar-d-fg: #d4aef0; --bar-d-line: #d4aef0;
+  --bar-ap-bg: #232b30; --bar-ap-fg: #b0bec5; --bar-ap-line: #b0bec5;
+  --e1: 0 1px 2px rgba(0,0,0,.35), 0 1px 1px rgba(0,0,0,.2);
+  --e2: 0 4px 14px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+  --e3: 0 20px 60px rgba(0,0,0,.65), 0 6px 20px rgba(0,0,0,.4);
 }
-.ex-card:hover { box-shadow: var(--e2); }
-.ex-card:active { transform: translateY(1px); }
-.ex-card .ex-ic { font-size: var(--fs-4xl); }
-.ex-card .ex-name { font-weight: 800; color: var(--text); }
-.ex-card .ex-desc { font-size: var(--fs-xs); color: var(--muted); }
-.ex-card.ex-hot { border-color: var(--amber); background: var(--amber-light); }
-.ex-card:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
 
-/* Backup progressi (in home) */
-.backup-card {
-  margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap;
-  background: var(--surface-alt); border: 1px dashed var(--border); border-radius: 14px; padding: 12px 14px;
+
+/* ============ 2. CARATTERI ============
+   File WOFF2 locali (l'app si vede uguale su ogni dispositivo, anche offline).
+   font-display: swap → il testo si legge subito col font di sistema.
+   Licenze SIL OFL in fonts/. */
+
+/* Istok Web — testo */
+@font-face {
+  font-family: 'Istok Web'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('fonts/IstokWeb-Regular.woff2') format('woff2');
 }
-.backup-info { display: flex; flex-direction: column; gap: var(--sp-05); font-size: var(--fs-sm); color: var(--text); }
-.backup-info span { color: var(--muted); font-size: var(--fs-xs); max-width: 420px; }
-.backup-btns { display: flex; gap: var(--sp-2); }
-.backup-btns button {
-  font: inherit; font-size: var(--fs-sm); font-weight: 700; cursor: pointer;
-  background: var(--card); color: var(--navy); border: 1px solid var(--border);
-  border-radius: 10px; padding: 8px 12px; box-shadow: var(--e1); min-height: 44px;
+@font-face {
+  font-family: 'Istok Web'; font-style: italic; font-weight: 400; font-display: swap;
+  src: url('fonts/IstokWeb-Italic.woff2') format('woff2');
 }
-.backup-btns button:hover { box-shadow: var(--e2); }
-.backup-btns button:active { transform: translateY(1px); }
-.backup-btns button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
-
-/* Quiz di coniugazione (niente rossi: l'errore usa l'ambra, come nel resto dell'app) */
-.cq-question { display: flex; flex-direction: column; gap: var(--sp-25); padding: 8px 2px 4px; }
-.cq-verb { font-size: var(--fs-3xl); font-weight: 800; color: var(--text); }
-.cq-verb .cq-it { font-size: var(--fs-md); font-weight: 500; color: var(--muted); margin-left: 8px; }
-.cq-task { font-size: var(--fs-base); color: var(--text); }
-.cq-input {
-  font: inherit; font-size: var(--fs-xl); padding: 12px 14px; width: 100%; box-sizing: border-box;
-  border: 2px solid var(--border); border-radius: 12px;
-  background: var(--card); color: var(--text);
+@font-face {
+  font-family: 'Istok Web'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('fonts/IstokWeb-Bold.woff2') format('woff2');
 }
-.cq-input:focus { outline: none; border-color: var(--navy); }
-.cq-input:disabled { opacity: .7; }
-/* min-height 48px: lo spazio del pulsante audio è riservato fin dall'inizio,
-   così alla risposta il blocco non "salta" spingendo giù i bottoni sotto. */
-.cq-feedback { min-height: 48px; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; font-size: var(--fs-base); visibility: hidden; }
-.cq-feedback.show { visibility: visible; }
-.cq-feedback.ok .cq-right { color: var(--accent); font-weight: 700; }
-.cq-feedback.ko .cq-wrong { color: var(--amber); font-weight: 700; }
+@font-face {
+  font-family: 'Istok Web'; font-style: italic; font-weight: 700; font-display: swap;
+  src: url('fonts/IstokWeb-BoldItalic.woff2') format('woff2');
+}
 
-/* ============ ICONE (stile SF Symbols: tratto, monocrome, currentColor) ============ */
+/* Poltawski Nowy — titoli e parole tedesche. Variabile: un file per i pesi 400–700. */
+@font-face {
+  font-family: 'Poltawski Nowy'; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url('fonts/PoltawskiNowy-Variable.woff2') format('woff2-variations'),
+       url('fonts/PoltawskiNowy-Variable.woff2') format('woff2');
+}
+/* Corsivo: usato dagli esempi tedeschi delle schede di grammatica. */
+@font-face {
+  font-family: 'Poltawski Nowy'; font-style: italic; font-weight: 400 700; font-display: swap;
+  src: url('fonts/PoltawskiNowy-Italic-Variable.woff2') format('woff2-variations'),
+       url('fonts/PoltawskiNowy-Italic-Variable.woff2') format('woff2');
+}
 
-/* Base: nessun riempimento, solo tratto che eredita il colore del testo.
-   `vertical-align:-.18em` allinea l'icona alla linea di base del testo accanto. */
+
+/* ============ 3. BASE ============ */
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  /* in basso lascia spazio alla tab bar fissa */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Istok Web', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  transition: background-color .2s ease, color .2s ease;
+}
+body.conj-lock { overflow: hidden; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+  font-weight: 600;
+}
+.wrap { max-width: 900px; margin: 0 auto; padding: 16px 16px 60px; }
+@media (min-width: 560px){ .wrap { padding: 22px 20px 60px; } }
+
+/* Icone SVG (stile SF Symbols): solo tratto, prendono il colore del testo.
+   vertical-align: -.18em le allinea alla linea di base del testo accanto. */
 .ic {
   width: 1.25em; height: 1.25em;
   flex-shrink: 0;
@@ -814,66 +208,419 @@ body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 }
 .ic-sm { width: 1.05em; height: 1.05em; stroke-width: 1.8; }
 
-/* --- tab bar --- */
-.tabbar .tab .tab-ic { display: block; height: 24px; }
-.tabbar .tab .tab-ic .ic { width: 24px; height: 24px; vertical-align: top; }
-/* iOS ispessisce l'icona della scheda attiva invece di cambiarne la forma */
-.tabbar .tab.active .tab-ic .ic { stroke-width: 2.1; }
 
-/* --- pulsanti icona --- */
+/* ============ 4. INTESTAZIONE ============ */
+
+header.top { margin-bottom: 14px; }
+header.top h1 { margin: 0 0 2px; font-size: clamp(1.1875rem, 5.5vw, 1.375rem); color: var(--navy-dark); }
+header.top p.sub { margin: 0; color: var(--muted); font-size: var(--fs-xs); }
+.header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-25); }
+.toggles { display: flex; gap: var(--sp-15); flex-shrink: 0; margin-top: 2px; }
+
+/* Interruttori lingua (IT/EN) e tema (sole/luna) */
+.lang-toggle, .theme-toggle {
+  display: flex; flex-shrink: 0; border: 1.5px solid var(--border); border-radius: 999px;
+  cursor: pointer; background: var(--card); padding: 2px;
+  box-shadow: var(--e1);
+}
+.lang-toggle .lang-opt, .theme-toggle .lang-opt {
+  padding: 8px 12px; font-size: var(--fs-xs); font-weight: 700; color: var(--muted); border-radius: 999px;
+  transition: background .15s, color .15s; display: flex; align-items: center; justify-content: center;
+  min-height: 20px;
+}
+.theme-toggle .lang-opt {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: var(--fs-md); line-height: 1;
+}
+.lang-toggle .lang-opt.active, .theme-toggle .lang-opt.active { background: var(--fill-active); color: #fff; }
+.theme-toggle .lang-opt .ic { width: 15px; height: 15px; vertical-align: 0; }
+
+
+/* ============ 5. RICERCA, SUGGERIMENTI E FILTRI ============ */
+
+.searchbar {
+  display: flex; align-items: center; gap: var(--sp-25);
+  background: var(--card); border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; margin: 14px 0 12px;
+  box-shadow: var(--e1);
+  position: sticky; top: max(env(safe-area-inset-top), 8px); z-index: 25;
+  transition: box-shadow .15s, border-color .15s;
+}
+.searchbar:focus-within { border-color: var(--navy); box-shadow: var(--e2); }
+.search-input-wrap { position: relative; flex: 1; display: flex; align-items: center; min-width: 0; }
+.search-input-wrap input {
+  /* 1rem = 16px: sotto i 16px iOS fa lo zoom sul campo */
+  width: 100%; border: none; outline: none; font-size: 1rem; background: transparent; color: var(--text);
+}
+.clear-btn {
+  display: inline-flex; align-items: center;
+  border: none; background: transparent; color: var(--muted); font-size: var(--fs-2xl); line-height: 1;
+  cursor: pointer; padding: 2px 4px; flex-shrink: 0;
+}
+.clear-btn:hover { color: var(--navy-dark); }
+.clear-btn .ic { width: 17px; height: 17px; stroke-width: 2; }
+.searchbar .count { font-size: var(--fs-xs); color: var(--muted); white-space: nowrap; }
+
+/* Tendina dei suggerimenti */
+.suggest-list {
+  position: absolute; top: calc(100% + 10px); left: -14px; right: -14px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: var(--e3); max-height: 320px; overflow-y: auto;
+  z-index: 30; padding: 6px;
+}
+.suggest-item {
+  display: flex; align-items: baseline; gap: var(--sp-2); padding: 12px 10px; border-radius: 8px; cursor: pointer; min-height: 44px;
+}
+.suggest-item.active, .suggest-item:hover { background: var(--navy-light); }
+.suggest-item .sde { font-weight: 700; color: var(--navy-dark); font-size: var(--fs-md); white-space: nowrap; }
+.suggest-item .sit { color: var(--muted); font-size: var(--fs-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Filtri per tipo (chip con contatore) e ordinamento */
+.filters { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-bottom: 18px; align-items: center; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+.chip {
+  display: inline-flex; align-items: center; gap: var(--sp-15);
+  border: 1px solid var(--border); background: var(--card); border-radius: 999px; padding: 9px 15px;
+  font-size: var(--fs-sm); cursor: pointer; color: var(--muted); font-weight: 500; flex-shrink: 0;
+  min-height: 44px; transition: box-shadow .15s, background .15s, color .15s;
+}
+.chip.active { background: var(--fill-active); color: #fff; border-color: var(--fill-active); box-shadow: var(--e1); }
+.chip-n {
+  font-size: var(--fs-2xs); font-weight: 700; padding: 1px 7px; border-radius: 999px;
+  background: var(--surface-alt); color: var(--muted); border: 1px solid var(--border);
+}
+.chip.active .chip-n { background: rgba(255,255,255,.18); color: #fff; border-color: transparent; }
+.chip-fav { color: var(--amber); border-color: var(--amber-light); }
+.chip-fav.active { background: var(--amber); border-color: var(--amber); color: #fff; }
+.filters select {
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: var(--fs-xs); background: var(--card); color: var(--text);
+  margin-left: auto; min-height: 44px;
+}
+
+
+/* ============ 6. CASA ============ */
+
+.home { margin: 6px 0 22px; }
+.home .eyebrow {
+  font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .07em; color: var(--muted);
+  margin: 4px 0 10px; font-weight: 600;
+}
+
+/* Data di oggi in tedesco */
+.date-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; margin: 4px 0 20px;
+}
+.date-cell { background: var(--card); text-align: center; padding: 14px 8px; }
+.date-it {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+  font-size: clamp(0.9375rem, 4.6vw, 1.375rem); font-weight: 700; color: var(--navy-dark);
+  line-height: 1.15; overflow-wrap: break-word; hyphens: auto;
+}
+.date-de {
+  font-size: var(--fs-2xs); color: var(--accent); text-transform: uppercase; letter-spacing: .04em;
+  font-weight: 600; margin-top: 5px; overflow-wrap: break-word;
+}
+
+/* Card "Oggi": ripasso, serie di giorni, XP, riprendi da dove eri */
+.progress-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 15px; margin: 0 0 20px; box-shadow: var(--e1);
+}
+.progress-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; margin-bottom: 10px; }
+.progress-label { font-size: var(--fs-sm); color: var(--text); font-weight: 600; }
+.progress-track { height: 6px; border-radius: 999px; background: var(--surface-alt); border: 1px solid var(--border); overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 999px; background: var(--accent); transition: width .4s ease; }
+.progress-actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: 12px; align-items: center; }
+.review-btn {
+  display: inline-flex; align-items: center;
+  border: none; border-radius: 999px; background: var(--fill-active); color: #fff;
+  font-size: var(--fs-xs); font-weight: 700; padding: 12px 18px; cursor: pointer; min-height: 44px;
+  box-shadow: var(--e1); transition: box-shadow .15s, transform .15s;
+}
+.review-btn:hover { box-shadow: var(--e2); }
+.review-btn:active { transform: translateY(1px); }
+.due-btn { background: var(--amber); }
+.due-done { display: inline-flex; align-items: center; font-size: var(--fs-xs); color: var(--accent); font-weight: 600; }
+.streak-chip {
+  display: inline-flex; align-items: center;
+  font-size: var(--fs-xs); font-weight: 700; color: var(--amber);
+  background: var(--amber-light); border-radius: 999px; padding: 4px 10px; white-space: nowrap;
+}
+.today-panel-title {
+  display: inline-flex; align-items: center; gap: var(--sp-15);
+  font-weight: 800; color: var(--navy-dark); font-size: var(--fs-base);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.today-panel .progress-label { display: block; margin-top: var(--sp-15); font-size: var(--fs-xs); color: var(--muted); }
+.today-panel-chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: center; }
+.resume-row { margin-top: var(--sp-3); padding-top: var(--sp-3); border-top: 1px dashed var(--border); }
+.resume-label {
+  display: block; font-size: var(--fs-2xs); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
+  margin-bottom: var(--sp-15);
+}
+
+/* Voci aperte di recente */
+.recent-strip { display: flex; gap: var(--sp-2); overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; margin-bottom: 18px; }
+.resume-row .recent-strip { margin-top: 0; }
+.recent-chip {
+  flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 12px; cursor: pointer; box-shadow: var(--e1); max-width: 180px; min-height: 44px; justify-content: center;
+  transition: border-color .15s, box-shadow .15s;
+}
+.recent-chip:hover { border-color: var(--navy); box-shadow: var(--e2); }
+.rc-de { font-weight: 700; font-size: var(--fs-sm); color: var(--navy-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; }
+.rc-it { font-size: var(--fs-2xs); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+
+/* Carte del giorno */
+.today-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--sp-25); }
+.today-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 15px; cursor: pointer; transition: box-shadow .15s, border-color .15s, transform .15s;
+  box-shadow: var(--e1);
+}
+.today-card:hover, .today-card:focus-visible { box-shadow: var(--e2); border-color: var(--navy); outline: none; transform: translateY(-1px); }
+.today-card:active { transform: translateY(0); }
+.today-card .cardlabel {
+  font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  margin-bottom: 8px; font-weight: 600;
+}
+.today-card h3 { margin: 6px 0 3px; font-size: var(--fs-xl); color: var(--navy-dark); }
+.today-card .it { color: var(--muted); font-size: var(--fs-sm); }
+.today-card .extra { font-size: var(--fs-xs); color: var(--muted); margin-top: 8px; font-style: italic; border-top: 1px dashed var(--border); padding-top: 8px; }
+
+/* Backup dei progressi */
+.backup-card {
+  margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap;
+  background: var(--surface-alt); border: 1px dashed var(--border); border-radius: 14px; padding: 12px 14px;
+}
+.backup-info { display: flex; flex-direction: column; gap: var(--sp-05); font-size: var(--fs-sm); color: var(--text); }
+.backup-info span { color: var(--muted); font-size: var(--fs-xs); max-width: 420px; }
+.backup-btns { display: flex; gap: var(--sp-2); }
+.backup-btns button {
+  display: inline-flex; align-items: center;
+  font: inherit; font-size: var(--fs-sm); font-weight: 700; cursor: pointer;
+  background: var(--card); color: var(--navy); border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px 12px; box-shadow: var(--e1); min-height: 44px;
+}
+.backup-btns button:hover { box-shadow: var(--e2); }
+.backup-btns button:active { transform: translateY(1px); }
+.backup-btns button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+
+/* ============ 7. SCHEDE ============ */
+
+.entry {
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  margin-bottom: 8px; overflow: hidden; box-shadow: var(--e1); transition: box-shadow .15s;
+}
+.entry.open { box-shadow: var(--e2); }
+
+/* Riga del titolo: testo a sinistra, icone (audio · stella · freccia) in colonne fisse a destra */
+.entry-head {
+  display: flex; align-items: center; justify-content: flex-start; gap: 4px;
+  padding: 14px 15px; cursor: pointer; min-height: 26px;
+}
+.entry-head:hover { background: var(--surface-alt); }
+.entry-head .left { display: flex; align-items: baseline; gap: var(--sp-25); flex-wrap: wrap; flex: 1; min-width: 0; }
+.entry-head .de {
+  font-size: var(--fs-lg); font-weight: 700; color: var(--navy-dark); white-space: nowrap;
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+}
+.entry-head .it { color: var(--muted); font-size: var(--fs-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chev { color: var(--muted); font-size: var(--fs-xs); transition: transform .15s; flex-shrink: 0; }
+.chev .ic { width: 14px; height: 14px; stroke-width: 2; }
+.entry-head .chev { width: 16px; text-align: center; }
+.entry.open .chev { transform: rotate(90deg); }
+
+/* Badge del tipo di voce */
+.badge {
+  font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .04em; padding: 3px 8px; border-radius: 999px;
+  white-space: nowrap; font-weight: 600;
+}
+.badge.verbo { background: var(--navy-light); color: var(--navy-dark); }
+.badge.sostantivo { background: var(--amber-light); color: var(--amber); }
+.badge.aggettivo { background: var(--plum-light); color: var(--plum); }
+.badge.grammatica { background: var(--slate-light); color: var(--slate); }
+.badge.frase { background: var(--indigo-light); color: var(--indigo); }
+.badge.detto { background: var(--accent-light); color: var(--accent); }
+
+/* Articolo colorato per genere: aiuta a memorizzare der / die / das */
+.genus {
+  font-size: .78em; font-weight: 700; padding: 1px 7px 2px; border-radius: 6px;
+  vertical-align: 2px; letter-spacing: .01em;
+  font-family: 'Istok Web', -apple-system, sans-serif;
+}
+.genus-der { background: var(--g-m-bg); color: var(--g-m); }
+.genus-die { background: var(--g-f-bg); color: var(--g-f); }
+.genus-das { background: var(--g-n-bg); color: var(--g-n); }
+
+/* Pulsanti audio e preferiti */
+.fav-btn {
+  border: none; background: transparent; cursor: pointer; flex-shrink: 0;
+  font-size: 1.1875rem; line-height: 1; color: var(--muted); padding: 6px 8px;
+  border-radius: 999px; transition: transform .15s, color .15s;
+}
+.fav-btn:hover { color: var(--amber); }
+.fav-btn.on { color: var(--amber); }
+.fav-btn:active { transform: scale(1.25); }
+.speak-btn {
+  border: none; background: transparent; cursor: pointer; flex-shrink: 0;
+  font-size: var(--fs-base); line-height: 1; padding: 6px; border-radius: 999px;
+  opacity: .65; transition: opacity .15s, transform .15s;
+}
+.speak-btn:hover { opacity: 1; }
+.speak-btn:active { transform: scale(1.2); }
+.flash-speak { font-size: var(--fs-2xl); opacity: .8; }
+/* Colonne fisse: stessa misura per audio, stella e spazio vuoto (schede senza audio) */
+.speak-btn, .fav-btn, .icon-spacer {
+  width: 34px; height: 34px; padding: 0; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+/* la prima icona spinge tutto il gruppo a destra, qualunque sia la larghezza del testo */
+.entry-head .speak-btn, .entry-head .icon-spacer { margin-left: auto; }
+.entry-head .left + .fav-btn { margin-left: auto; } /* se manca l'audio */
 .speak-btn .ic { width: 17px; height: 17px; }
 .fav-btn .ic   { width: 18px; height: 18px; }
 .fav-btn.on .ic { stroke: var(--amber); }
-.chev .ic      { width: 14px; height: 14px; stroke-width: 2; }
-.clear-btn { display: inline-flex; align-items: center; }
-.clear-btn .ic { width: 17px; height: 17px; stroke-width: 2; }
-.conj-close { display: inline-flex; align-items: center; justify-content: center; }
-.conj-close .ic { width: 18px; height: 18px; stroke-width: 2; }
-.back-top { display: inline-flex; align-items: center; justify-content: center; }
-.back-top .ic { width: 20px; height: 20px; stroke-width: 2; }
-.theme-toggle .lang-opt { display: inline-flex; align-items: center; justify-content: center; }
-.theme-toggle .lang-opt .ic { width: 15px; height: 15px; vertical-align: 0; }
 
-/* --- icone dentro etichette e pulsanti di testo --- */
+/* Tag "imparata" */
+.learned-tag {
+  display: inline-flex; align-items: center;
+  font-size: var(--fs-2xs); font-weight: 700; color: var(--accent);
+  background: var(--accent-light); border-radius: 999px; padding: 2px 7px;
+}
+.learned-tag .ic { width: 13px; height: 13px; stroke-width: 2.4; }
+
+/* Corpo della scheda */
+.entry-body { display: none; padding: 0 15px 16px; border-top: 1px solid var(--border); animation: none; }
+.entry.open .entry-body { display: block; animation: body-in .18s ease-out; }
+@keyframes body-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* Campi (paradigma del verbo, plurale…) */
+.fields { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: 12px 0; }
+.field {
+  background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: var(--fs-xs);
+}
+.field b { display: block; font-size: var(--fs-md); color: var(--navy-dark); margin-top: 2px; }
+.field .k { font-size: var(--fs-2xs); text-transform: uppercase; color: var(--muted); letter-spacing: .03em; }
+
+/* Regole di grammatica: un blocco per regola.
+   titolo (italiano) → esempi (tedesco corsivo + traduzione) → consiglio */
+.rules { margin: 14px 0; display: flex; flex-direction: column; gap: var(--sp-25); }
+.rule {
+  padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface-alt); font-size: var(--fs-sm); line-height: 1.5;
+}
+.rule-title { font-weight: 700; color: var(--navy-dark); font-size: var(--fs-md); line-height: 1.35; }
+.rule-txt { margin-top: 6px; color: var(--text); }
+.rule-txt .sep { color: var(--muted); margin: 0 .5em; }
+.rule-ex { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 3px solid var(--accent); display: flex; flex-direction: column; gap: 8px; }
+.rx { display: flex; flex-direction: column; }
+.rx-de {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+  font-style: italic; font-size: var(--fs-md); color: var(--text); line-height: 1.4;
+}
+.rx-tr { color: var(--muted); font-size: var(--fs-sm); }
+.rx-arrow { font-style: normal; color: var(--accent); font-weight: 700; margin: 0 .2em; }
+.rx-wrong .rx-de { text-decoration: line-through; text-decoration-color: var(--amber); color: var(--muted); }
+.rx-mark { display: inline-block; font-style: normal; font-weight: 800; color: var(--amber); margin-right: .4em; text-decoration: none; }
+.hl-de { font-weight: 700; font-style: italic; color: var(--accent); }
+.rule-tip { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); color: var(--muted); font-size: var(--fs-sm); }
+.rule-tip::before { content: "→ "; color: var(--accent); font-weight: 700; }
+.rule-star { background: var(--amber-light); border-color: var(--note-border); border-left: 4px solid var(--amber); }
+.rule-star .rule-ex { border-left-color: var(--amber); }
+.rule-flag {
+  display: inline-flex; align-items: center; gap: 5px; margin-bottom: 4px;
+  font-size: var(--fs-2xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--amber);
+}
+/* parola tedesca dentro un testo italiano: corsivo + colore, così "es" non si perde */
+.de-w { font-style: italic; font-weight: 700; color: var(--navy); }
+.rule-title .de-w { color: var(--accent); }
+.sec-h { font-size: var(--fs-2xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+
+/* Esempi in fondo alla scheda */
+.examples { margin-top: 10px; }
+.example { font-size: var(--fs-sm); padding: 8px 10px; background: var(--surface-alt); border-left: 3px solid var(--accent); border-radius: 4px; margin-bottom: 6px; }
+.example .de-ex { font-style: italic; font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-md); }
+.example .it-ex { color: var(--muted); }
+
+/* Nota ("In breve" nelle schede di grammatica) */
+.note { margin-top: 10px; font-size: var(--fs-xs); color: var(--muted); background: var(--note-bg); border: 1px solid var(--note-border); border-radius: 8px; padding: 8px 10px; }
+.note-rule p { margin: 0 0 6px; }
+.note-rule p:last-child { margin-bottom: 0; }
+
+/* Link alla pagina del Bignami */
+.bignami-link {
+  display: inline-flex; align-items: center; gap: var(--sp-15); margin-top: 12px;
+  min-height: 44px; font-size: var(--fs-xs); font-weight: 600; color: var(--navy); text-decoration: none;
+  border: 1.5px solid var(--navy-light); background: var(--navy-light);
+  border-radius: 999px; padding: 8px 14px; transition: box-shadow .15s;
+}
+.bignami-link:hover { box-shadow: var(--e1); text-decoration: underline; }
+
+/* Pulsante "Tutte le coniugazioni" / "Esercizi" */
+.conj-btn {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
+  background: var(--fill-active); color: #fff; border: none; border-radius: 10px;
+  padding: 11px 16px; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; min-height: 44px;
+  box-shadow: var(--e1); transition: box-shadow .15s, transform .15s; width: 100%;
+  justify-content: center;
+}
+.conj-btn:hover { box-shadow: var(--e2); }
+.conj-btn:active { transform: translateY(1px); }
+
+/* Icone dentro etichette e pulsanti di testo */
 .chip .ic, .review-btn .ic, .due-done .ic, .streak-chip .ic,
 .backup-btns button .ic, .bignami-link .ic, .conj-btn .ic {
   margin-right: 5px;
 }
-.streak-chip, .due-done, .bignami-link { display: inline-flex; align-items: center; }
-.chip, .review-btn, .backup-btns button, .conj-btn { display: inline-flex; align-items: center; }
-.learned-tag { display: inline-flex; align-items: center; }
-.learned-tag .ic { width: 13px; height: 13px; stroke-width: 2.4; }
 
-/* --- illustrazioni (stati vuoti, schermate di fine quiz) --- */
-.empty-ic, .flash-done-ic { line-height: 0; }
-.empty-ic .ic      { width: 40px; height: 40px; stroke-width: 1.4; }
-.flash-done-ic .ic { width: 52px; height: 52px; stroke-width: 1.4; }
-
-/* --- card degli esercizi --- */
-.ex-card .ex-ic { line-height: 0; color: var(--navy); }
-.ex-card .ex-ic .ic { width: 26px; height: 26px; vertical-align: top; }
-.ex-card.ex-hot .ex-ic { color: var(--amber); }
-.flash-btn { display: inline-flex; align-items: center; justify-content: center; }
-.flash-btn .ic { margin-right: 6px; }
-.cq-feedback .cq-right .ic, .cq-feedback .cq-wrong .ic { margin-right: 4px; }
-
-/* ---------- SEZIONI GRAMMATICA A-F (stessi colori dell'indice del Bignami) ----------
-   Tema chiaro: barra piena con testo bianco, come nel PDF.
-   Tema scuro: fondo pastello scuro con testo colorato (contrasto AA verificato). */
-:root {
-  --bar-a-bg: #2a3490; --bar-a-fg: #ffffff; --bar-a-line: #2a3490;
-  --bar-b-bg: #0c6b5e; --bar-b-fg: #ffffff; --bar-b-line: #0c6b5e;
-  --bar-c-bg: #b3540a; --bar-c-fg: #ffffff; --bar-c-line: #b3540a;
-  --bar-d-bg: #6a1b9a; --bar-d-fg: #ffffff; --bar-d-line: #6a1b9a;
-  --bar-ap-bg: #37474f; --bar-ap-fg: #ffffff; --bar-ap-line: #37474f;
+/* Tabelle casi × genere (modello del Bignami): righe = casi,
+   colonne = der · die · das · Plural, ognuna col colore del suo genere (--g-*) */
+.gtable-cap { margin: var(--sp-35) 0 var(--sp-1); font-size: var(--fs-xs); font-weight: 700;
+  color: var(--navy-dark); letter-spacing: .02em; }
+.gtable-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--sp-2) 0 var(--sp-3);
+  border-radius: 10px; }
+.gtable { border-collapse: separate; border-spacing: 2px; width: 100%; min-width: 100%;
+  font-size: var(--fs-sm); }
+.gtable th, .gtable td { padding: 7px 8px; text-align: center; border-radius: 5px; white-space: nowrap; }
+.gtable thead th { font-weight: 700; font-size: var(--fs-xs); color: #fff; }
+.gtable thead th.g-k { background: var(--navy-dark); color: var(--bg, #fff); text-align: left; }
+.gtable thead th.g-m { background: var(--g-m); }
+.gtable thead th.g-f { background: var(--g-f); }
+.gtable thead th.g-n { background: var(--g-n); }
+.gtable thead th.g-pl { background: var(--g-pl); }
+.gtable thead th.g-x { background: var(--g-x); }
+:root[data-theme="dark"] .gtable thead th:not(.g-k) { color: #10151a; }
+.gtable tbody th { text-align: left; font-weight: 700; color: var(--navy-dark); background: var(--g-x-bg); }
+.gtable tbody th .gq { display: block; font-weight: 400; font-style: italic; font-size: var(--fs-2xs);
+  color: var(--muted); }
+.gtable td { color: var(--text); }
+.gtable td.g-m { background: var(--g-m-bg); }
+.gtable td.g-f { background: var(--g-f-bg); }
+.gtable td.g-n { background: var(--g-n-bg); }
+.gtable td.g-pl { background: var(--g-pl-bg); }
+.gtable td.g-x { background: var(--g-x-bg); }
+.gtable td b.hl { font-weight: 700; }
+.gtable td.g-m b.hl { color: var(--g-m); }
+.gtable td.g-f b.hl { color: var(--g-f); }
+.gtable td.g-n b.hl { color: var(--g-n); }
+.gtable td.g-pl b.hl { color: var(--g-pl); }
+.gtable td.g-x b.hl { color: var(--navy); }
+@media (max-width: 520px) {
+  .gtable { font-size: var(--fs-xs); }
+  .gtable th, .gtable td { padding: 6px 5px; }
 }
-:root[data-theme="dark"] {
-  --bar-a-bg: #1d2440; --bar-a-fg: #aab4f2; --bar-a-line: #aab4f2;
-  --bar-b-bg: #152c27; --bar-b-fg: #8fd6c8; --bar-b-line: #8fd6c8;
-  --bar-c-bg: #33260f; --bar-c-fg: #f2b273; --bar-c-line: #f2b273;
-  --bar-d-bg: #2a2138; --bar-d-fg: #d4aef0; --bar-d-line: #d4aef0;
-  --bar-ap-bg: #232b30; --bar-ap-fg: #b0bec5; --bar-ap-line: #b0bec5;
-}
+/* tabelle larghe (es. Modalverben): la colonna dei casi resta ferma mentre si scorre */
+.gtable thead th.g-k, .gtable tbody th { position: sticky; left: 0; z-index: 1; }
+.gtable tbody th { box-shadow: 2px 0 0 var(--card, #fff); }
+
+/* Sezioni A–F della grammatica (stessi colori dell'indice del Bignami) */
 .gsec-group { margin-bottom: var(--sp-4); }
 .gsec {
   display: flex; align-items: center; gap: var(--sp-25);
@@ -894,15 +641,255 @@ body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 }
 .gsec-title { text-transform: uppercase; }
 .gsec-n { margin-left: auto; font-size: var(--fs-2xs); opacity: .85; }
-/* Filo colorato sul bordo sinistro delle schede: lega la scheda alla sua sezione */
+/* Filo colorato a sinistra: lega la scheda alla sua sezione */
 .gsec-group-a .entry { border-left: 3px solid var(--bar-a-line); }
 .gsec-group-b .entry { border-left: 3px solid var(--bar-b-line); }
 .gsec-group-c .entry { border-left: 3px solid var(--bar-c-line); }
 .gsec-group-d .entry { border-left: 3px solid var(--bar-d-line); }
 .gsec-group-ap .entry { border-left: 3px solid var(--bar-ap-line); }
 
-/* ---------- Quiz wurde · würde · werden ---------- */
-/* Colori per "anima" come nelle card del Bignami: fatto teal, ipotesi prugna, presente/futuro navy */
+
+/* ============ 8. PANNELLO A COMPARSA ============
+   Un "bottom sheet" su telefono, una finestra centrata da 640px in su.
+   Lo usano il pannello coniugazioni e tutti i quiz. */
+
+.conj-overlay {
+  position: fixed; inset: 0; z-index: 100; display: none;
+  background: rgba(10,14,25,.5); backdrop-filter: blur(2px);
+}
+.conj-overlay.open { display: block; }
+.conj-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; top: 6vh;
+  background: var(--bg); border-radius: 20px 20px 0 0;
+  box-shadow: var(--e3); display: flex; flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom);
+  animation: conj-slide-up .22s ease-out;
+}
+@keyframes conj-slide-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@media (min-width: 640px){
+  .conj-sheet { left: 50%; right: auto; top: 4vh; bottom: 4vh; width: min(680px, 92vw);
+    transform: translateX(-50%); border-radius: 20px; }
+}
+.conj-sheet-handle {
+  width: 40px; height: 4px; border-radius: 999px; background: var(--border);
+  margin: 10px auto 2px; flex-shrink: 0;
+}
+.conj-sheet-header {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-25);
+  padding: 10px 18px; flex-shrink: 0; border-bottom: 1px solid var(--border);
+}
+.conj-sheet-header h2 { margin: 0; font-size: var(--fs-lg); color: var(--navy-dark); }
+.conj-close {
+  border: none; background: var(--surface-alt); color: var(--muted); font-size: var(--fs-2xl); line-height: 1;
+  cursor: pointer; width: 44px; height: 44px; border-radius: 999px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.conj-close:hover { background: var(--navy-light); color: var(--navy-dark); }
+.conj-close .ic { width: 18px; height: 18px; stroke-width: 2; }
+.conj-sheet-body { overflow-y: auto; padding: 14px 16px 28px; -webkit-overflow-scrolling: touch; }
+
+/* Contenuto: tutte le coniugazioni di un verbo */
+.conj-verbhead { display: flex; align-items: baseline; gap: var(--sp-25); flex-wrap: wrap; margin-bottom: 14px; }
+.conj-verbhead .de {
+  font-size: var(--fs-2xl); font-weight: 700; color: var(--navy-dark);
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+}
+.conj-verbhead .it { color: var(--muted); font-size: var(--fs-md); }
+.conj-section { margin-bottom: 20px; }
+.conj-sectitle {
+  font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; font-weight: 700;
+  color: #fff; background: var(--fill-active); display: inline-block;
+  padding: 6px 14px; border-radius: 999px; margin: 0 0 10px;
+}
+.conj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--sp-25); }
+.conj-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; box-shadow: var(--e1);
+}
+.conj-card h4 {
+  margin: 0 0 8px; font-size: var(--fs-xs); color: var(--muted); text-transform: uppercase;
+  letter-spacing: .03em; font-weight: 700;
+}
+.conj-row { display: flex; gap: var(--sp-2); padding: 4px 0; font-size: var(--fs-sm); align-items: baseline; }
+.conj-p { min-width: 62px; flex-shrink: 0; color: var(--muted); font-size: var(--fs-xs); }
+.conj-f { color: var(--text); font-weight: 600; }
+.conj-note { font-size: var(--fs-xs); color: var(--muted); font-style: italic; }
+
+
+/* ============ 9. FLASHCARD ============ */
+
+.flash-body { display: flex; flex-direction: column; }
+.flash-topbar { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: 16px; flex-shrink: 0; }
+.flash-progress { height: 4px; border-radius: 999px; background: var(--surface-alt); overflow: hidden; margin-bottom: 16px; flex-shrink: 0; }
+.flash-progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
+.flash-topbar .flash-progress { flex: 1; margin-bottom: 0; }
+
+/* Direzione DE→IT / IT→DE */
+.flash-dir {
+  display: flex; flex-shrink: 0; border: 1.5px solid var(--border); border-radius: 999px;
+  background: var(--card); padding: 2px; box-shadow: var(--e1);
+}
+.flash-dir-opt {
+  border: none; background: transparent; cursor: pointer; border-radius: 999px;
+  padding: 6px 11px; font-size: var(--fs-2xs); font-weight: 700; color: var(--muted);
+  transition: background .15s, color .15s; white-space: nowrap;
+}
+.flash-dir-opt.active { background: var(--fill-active); color: #fff; }
+.flash-dir-opt:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+/* La carta: fronte e retro, girata in 3D */
+.flash-card {
+  perspective: 1200px; cursor: pointer; outline: none;
+  min-height: 300px; flex: 1; display: flex; margin-bottom: 16px;
+}
+.flash-inner {
+  position: relative; width: 100%; transform-style: preserve-3d;
+  transition: transform .45s cubic-bezier(.2,.7,.3,1); display: flex;
+}
+.flash-card.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-3);
+  background: var(--card); border: 1.5px solid var(--border); border-radius: 18px;
+  box-shadow: var(--e2); padding: 24px; text-align: center;
+}
+.flash-back { transform: rotateY(180deg); border-color: var(--accent); }
+.flash-word {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+  font-size: clamp(1.625rem, 7vw, 2.375rem); font-weight: 700; color: var(--navy-dark); line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.flash-word .genus { vertical-align: 6px; }
+.flash-word-tr { color: var(--accent); }       /* fronte IT→DE: la domanda è la traduzione */
+.flash-hint { font-size: var(--fs-xs); color: var(--muted); font-style: italic; }
+.flash-word-sm {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+  font-size: var(--fs-lg); font-weight: 700; color: var(--muted);
+}
+.flash-tr { font-size: clamp(1.25rem, 5.5vw, 1.75rem); font-weight: 600; color: var(--accent); overflow-wrap: anywhere; }
+.flash-tr-de { color: var(--navy-dark); font-weight: 700;       /* retro IT→DE: la risposta tedesca */
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; }
+.flash-tr-de .genus { vertical-align: 4px; }
+.flash-ex { font-size: var(--fs-sm); color: var(--text); font-style: italic; margin-top: 6px; }
+.flash-ex span { color: var(--muted); font-style: normal; }
+/* Livello di ripasso, scritto in chiaro ("Livello 3 di 5 · la rivedrai tra 7 giorni") */
+.srs-lv {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 10px;
+  font-size: var(--fs-2xs); color: var(--muted);
+}
+.srs-lv .ic { stroke-width: 1.9; opacity: .8; }
+
+/* Pulsanti "La sapevo" / "Da ripassare" */
+.flash-actions { display: flex; gap: var(--sp-25); flex-shrink: 0; }
+.flash-actions.hidden { visibility: hidden; }
+.flash-btn {
+  flex: 1; border: none; border-radius: 12px; padding: 14px 10px; font-size: var(--fs-md);
+  font-weight: 700; cursor: pointer; box-shadow: var(--e1); min-height: 48px;
+  transition: box-shadow .15s, transform .15s;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.flash-btn:active { transform: translateY(1px); }
+.flash-btn .ic { margin-right: 6px; }
+.flash-yes { background: var(--accent); color: #fff; }
+.flash-no { background: var(--amber-light); color: var(--amber); border: 1px solid var(--amber); }
+
+/* Fine sessione (usata anche dai quiz) */
+.flash-done { text-align: center; padding: 30px 10px; }
+.flash-done-ic { font-size: var(--fs-hero); margin-bottom: 8px; line-height: 0; }
+.flash-done-ic .ic { width: 52px; height: 52px; stroke-width: 1.4; }
+.flash-done h3 { margin: 0 0 6px; font-size: var(--fs-2xl); color: var(--navy-dark); }
+.flash-done p { margin: 0 0 20px; color: var(--muted); }
+.flash-done .flash-actions { flex-direction: column; }
+.flash-secondary {
+  border: 1px solid var(--border); background: var(--card); color: var(--muted);
+  border-radius: 10px; padding: 11px 16px; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; min-height: 44px;
+}
+
+
+/* ============ 10. QUIZ ============ */
+
+/* Pulsante audio dentro i quiz: la pronuncia parte solo su comando, quindi
+   l'icona deve sembrare un pulsante. Cerchio con bordo, 44px reali.
+   min-width/min-height perché .speak-btn (34px, stessa specificità) viene prima. */
+.quiz-speak {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0;
+  margin-left: var(--sp-15); vertical-align: middle;
+  border: 1.5px solid var(--border); border-radius: 999px;
+  background: var(--card); color: var(--accent); opacity: 1;
+}
+.quiz-speak:hover { border-color: var(--accent); }
+.quiz-speak:active { transform: scale(1.08); }
+
+/* Quiz der / die / das */
+.genus-question {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--sp-25); text-align: center; background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 18px; box-shadow: var(--e2); padding: 24px; margin-bottom: 16px; min-height: 220px;
+}
+.genus-word {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+  font-size: clamp(1.625rem, 7vw, 2.375rem); font-weight: 700; color: var(--navy-dark); overflow-wrap: anywhere;
+  /* dopo la risposta il pulsante audio si affianca alla parola: con wrap va a capo sulle parole lunghe */
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: var(--sp-25);
+}
+.genus-word .quiz-speak .ic { width: 21px; height: 21px; }
+.genus-hint { font-size: var(--fs-xs); color: var(--muted); font-style: italic; }
+.genus-answer { min-height: 48px; font-size: var(--fs-base); color: var(--text); opacity: 0; transition: opacity .2s; }
+.genus-answer.show { opacity: 1; }
+.genus-answer .genus { font-size: var(--fs-sm); }
+.genus-pl { color: var(--muted); font-size: var(--fs-sm); }
+.genus-btns { display: flex; gap: var(--sp-25); flex-shrink: 0; }
+.genus-opt {
+  flex: 1; border-radius: 12px; padding: 16px 8px; font-size: var(--fs-xl); font-weight: 700;
+  cursor: pointer; min-height: 54px; box-shadow: var(--e1); border: 2px solid transparent;
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif;
+  transition: transform .12s, box-shadow .15s;
+}
+.genus-opt:active { transform: translateY(1px); }
+.genus-opt-der { background: var(--g-m-bg); color: var(--g-m); }
+.genus-opt-die { background: var(--g-f-bg); color: var(--g-f); }
+.genus-opt-das { background: var(--g-n-bg); color: var(--g-n); }
+.genus-opt.right { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+.genus-opt.wrong { opacity: .45; border-color: var(--border); }
+.genus-opt:disabled { cursor: default; }
+.genus-opt:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+/* Navigazione: ← Indietro (rivedi la domanda prima) · Avanti → */
+.genus-nav { display: flex; gap: var(--sp-25); margin-top: var(--sp-35); }
+.genus-nav:empty { display: none; }
+.genus-nav .genus-next { flex: 1; margin: 0; justify-content: center; }
+.genus-nav .genus-back { flex: 0 0 auto; }
+/* La regola della desinenza, mostrata dopo la risposta */
+.genus-rule { margin-top: var(--sp-2); font-size: var(--fs-sm); color: var(--muted);
+  display: flex; gap: 6px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.genus-rule.is-exc { color: var(--amber); }
+
+/* Quiz di coniugazione (si scrive la forma) */
+.cq-question { display: flex; flex-direction: column; gap: var(--sp-25); padding: 8px 2px 4px; }
+.cq-verb { font-size: var(--fs-3xl); font-weight: 800; color: var(--text); }
+.cq-verb .cq-it { font-size: var(--fs-md); font-weight: 500; color: var(--muted); margin-left: 8px; }
+.cq-task { font-size: var(--fs-base); color: var(--text); }
+.cq-input {
+  font: inherit; font-size: var(--fs-xl); padding: 12px 14px; width: 100%; box-sizing: border-box;
+  border: 2px solid var(--border); border-radius: 12px;
+  background: var(--card); color: var(--text);
+}
+.cq-input:focus { outline: none; border-color: var(--navy); }
+.cq-input:disabled { opacity: .7; }
+/* min-height 48px: lo spazio per il pulsante audio c'è già prima della risposta,
+   così il blocco non "salta" quando compare */
+.cq-feedback { min-height: 48px; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; font-size: var(--fs-base); visibility: hidden; }
+.cq-feedback.show { visibility: visible; }
+.cq-feedback.ok .cq-right { color: var(--accent); font-weight: 700; }
+.cq-feedback.ko .cq-wrong { color: var(--amber); font-weight: 700; }
+.cq-feedback .cq-right .ic, .cq-feedback .cq-wrong .ic { margin-right: 4px; }
+
+/* Quiz wurde · würde · werden — colori per "anima" come nel Bignami:
+   fatto teal, ipotesi prugna, presente/futuro navy */
 .ww-opt { font-size: var(--fs-lg); }
 .ww-teal { background: var(--accent-light); color: var(--accent); }
 .ww-plum { background: var(--plum-light); color: var(--plum); }
@@ -914,48 +901,126 @@ body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 .ww-gap { color: var(--amber); letter-spacing: 1px; }
 .ww-why { font-size: var(--fs-sm); color: var(--muted); }
 
-/* ---------- CARD "OGGI" (ripasso + serie + riprendi in un pannello solo) ---------- */
-.today-panel-title {
-  display: inline-flex; align-items: center; gap: var(--sp-15);
-  font-weight: 800; color: var(--navy-dark); font-size: var(--fs-base);
-  text-transform: uppercase; letter-spacing: .04em;
+
+/* ============ 11. ESERCIZI ============ */
+
+/* Tab Esercizi: griglia delle card */
+.exercises { margin-top: 6px; }
+.ex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--sp-25); }
+.ex-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px; cursor: pointer; font: inherit; text-align: left;
+  box-shadow: var(--e1); transition: box-shadow .15s, transform .05s;
 }
-.today-panel .progress-label { display: block; margin-top: var(--sp-15); font-size: var(--fs-xs); color: var(--muted); }
-.resume-row { margin-top: var(--sp-3); padding-top: var(--sp-3); border-top: 1px dashed var(--border); }
-.resume-label {
-  display: block; font-size: var(--fs-2xs); font-weight: 700;
-  text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
-  margin-bottom: var(--sp-15);
+.ex-card:hover { box-shadow: var(--e2); }
+.ex-card:active { transform: translateY(1px); }
+.ex-card .ex-ic { font-size: var(--fs-4xl); line-height: 0; color: var(--navy); }
+.ex-card .ex-ic .ic { width: 26px; height: 26px; vertical-align: top; }
+.ex-card .ex-name { font-weight: 800; color: var(--text); }
+.ex-card .ex-desc { font-size: var(--fs-xs); color: var(--muted); }
+.ex-card.ex-hot { border-color: var(--amber); background: var(--amber-light); }
+.ex-card.ex-hot .ex-ic { color: var(--amber); }
+.ex-card:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+/* Esercizi di grammatica: scelta dell'argomento */
+.ex-pick-hint { font-size: var(--fs-sm); color: var(--muted); margin: 0 0 var(--sp-3); }
+.ex-review-go { width: 100%; justify-content: center; margin: 0 0 var(--sp-2); }
+.ex-sec .gsec:first-child { margin-top: var(--sp-3); }
+.ex-topic {
+  display: flex; align-items: center; gap: var(--sp-25); width: 100%;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: var(--sp-2); cursor: pointer; text-align: left;
+  font: inherit; color: var(--text); box-shadow: var(--e1);
 }
-.resume-row .recent-strip { margin-top: 0; }
-
-
-/* ---------- TARGET TATTILI E FOCUS (accessibilità) ----------
-   Linee guida Apple/Android: area toccabile di almeno 44x44px.
-   Per le icone piccole non ingrandiamo il disegno: estendiamo l'area
-   di tocco con uno pseudo-elemento invisibile (::after). */
-.fav-btn, .speak-btn, .clear-btn,
-.lang-toggle .lang-opt, .theme-toggle .lang-opt { position: relative; }
-.fav-btn::after   { content: ""; position: absolute; inset: -7px; }
-.speak-btn::after { content: ""; position: absolute; inset: -9px; }
-.clear-btn::after { content: ""; position: absolute; inset: -10px; }
-.lang-toggle .lang-opt::after, .theme-toggle .lang-opt::after { content: ""; position: absolute; inset: -8px -2px; }
-
-/* Niente ritardo del doppio tap su iOS/Android: il tocco è subito un click */
-button, select, a, [role="button"], [tabindex] { touch-action: manipulation; }
-
-/* Focus visibile OVUNQUE per chi naviga da tastiera (regola generale di rete) */
-button:focus-visible, select:focus-visible, a:focus-visible,
-input:focus-visible, [tabindex]:focus-visible {
-  outline: 2px solid var(--navy); outline-offset: 2px;
+.ex-topic:active { transform: translateY(1px); }
+.ex-topic:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.ex-topic-main { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ex-topic-name { font-weight: 800; overflow-wrap: anywhere; }
+.ex-topic-meta { font-size: var(--fs-xs); color: var(--muted); }
+.ex-bar { display: block; height: 5px; border-radius: 999px; background: var(--surface-alt); overflow: hidden; border: 1px solid var(--border); }
+.ex-bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.ex-chip-now {
+  font-size: var(--fs-2xs); font-weight: 800; color: var(--amber); background: var(--amber-light);
+  border-radius: 999px; padding: 4px 9px; white-space: nowrap;
 }
 
-/* ---------- XP, TRAGUARDI, TROFEI ----------
-   Ricompensa per gli esercizi: chip nella card "Oggi" + pannello dedicato
-   (stesso pattern a "bottom sheet" degli altri overlay) + toast per i
-   messaggi di incoraggiamento (ogni 50 XP) e i trofei (ogni 200 XP). */
+/* Esercizi di grammatica: la domanda */
+.ex-topic-tag { font-size: var(--fs-sm); font-weight: 800; color: var(--navy); margin-bottom: 2px; }
+.ex-instr { font-size: var(--fs-xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: var(--sp-2); }
+.ex-ctx { font-size: var(--fs-sm); color: var(--muted); font-style: italic; margin-bottom: var(--sp-15); }
+.ex-filled { color: var(--accent); }
+/* scelta multipla */
+.ex-opts { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-3); }
+.ex-opt { flex: none; width: 100%; text-align: left; padding: 14px 16px; }
+.ex-opt.picked-wrong { border-color: var(--amber); opacity: 1; background: var(--amber-light); color: var(--amber); }
+/* metti in ordine */
+.ex-pre { font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-xl); font-weight: 700; margin-bottom: var(--sp-15); }
+.ex-line {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-15); min-height: 56px;
+  padding: 8px 4px; border-bottom: 2px dashed var(--border); margin-bottom: var(--sp-3);
+}
+.ex-line.ok { border-bottom-color: var(--accent); }
+.ex-line.bad { border-bottom-color: var(--amber); }
+.ex-post { font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-xl); font-weight: 700; }
+.ex-bank { display: flex; flex-wrap: wrap; gap: var(--sp-15); min-height: 56px; }
+.ex-tile {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-lg); font-weight: 700;
+  background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 13px; cursor: pointer; box-shadow: var(--e1); min-height: 44px;
+}
+.ex-tile.placed { background: var(--navy-light); color: var(--navy); border-color: transparent; }
+.ex-tile:disabled { cursor: default; }
+/* trova l'errore */
+.ex-words { display: flex; flex-wrap: wrap; gap: var(--sp-15); margin-bottom: var(--sp-2); }
+.ex-word {
+  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-xl); font-weight: 700;
+  background: transparent; color: var(--text); border: 2px solid var(--border); border-radius: 10px;
+  padding: 6px 10px; cursor: pointer; min-height: 44px;
+}
+.ex-word.sel { background: var(--amber-light); border-color: var(--amber); color: var(--amber); }
+.ex-word.is-bad { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+.ex-word.pick-wrong { border-color: var(--amber); opacity: .6; }
+.ex-word:disabled { cursor: default; }
+.ex-tile:focus-visible, .ex-word:focus-visible, .ex-key:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+/* scrivi la parola */
+.ex-input {
+  width: 100%; box-sizing: border-box; margin-top: var(--sp-2); padding: 12px 14px; font-size: 18px;
+  font-family: inherit; color: var(--text); background: var(--card);
+  border: 2px solid var(--border); border-radius: 12px;
+}
+.ex-input:focus { outline: none; border-color: var(--navy); }
+.ex-input.ok { border-color: var(--accent); background: var(--accent-light); }
+.ex-input.bad { border-color: var(--amber); background: var(--amber-light); }
+/* Lettere speciali (ä ö ü ß): compaiono SOLO mentre si scrive nel campo,
+   piccole e con spiegazione, così non sembrano opzioni di risposta */
+.ex-keys-box { display: none; margin-top: var(--sp-15); padding: 8px 10px; border-radius: 10px; background: var(--surface-alt); }
+.ex-field:focus-within .ex-keys-box { display: block; }
+.ex-keys-label { font-size: var(--fs-xs); color: var(--muted); line-height: 1.35; }
+.ex-keys-alt { font-size: var(--fs-2xs); color: var(--muted); margin-top: 6px; }
+.ex-keys { display: flex; gap: var(--sp-15); margin-top: 6px; }
+.ex-key {
+  width: 44px; min-height: 44px; font: inherit; font-weight: 700; font-size: var(--fs-base); cursor: pointer;
+  background: var(--card); color: var(--navy-dark); border: 1px solid var(--border); border-radius: 8px;
+}
+/* pulsanti e spiegazione dopo la risposta */
+.ex-actions { display: flex; gap: var(--sp-25); margin-top: var(--sp-3); }
+.ex-actions .ex-go { flex: 1; justify-content: center; margin: 0; }
+.ex-actions .ex-go:disabled { opacity: .45; cursor: default; }
+.ex-fb { margin-top: var(--sp-3); padding: 12px 14px; border-radius: 12px; border-left: 4px solid var(--accent); background: var(--accent-light); display: flex; flex-direction: column; gap: 6px; }
+.ex-fb-bad { border-left-color: var(--amber); background: var(--amber-light); }
+.ex-fb-title { font-weight: 800; color: var(--accent); }
+.ex-fb-bad .ex-fb-title { color: var(--amber); }
+.ex-fb-ans { font-size: var(--fs-base); color: var(--text); }
+.ex-fb-lbl { color: var(--muted); font-size: var(--fs-sm); }
+.ex-fb .bignami-link { align-self: flex-start; margin-top: 4px; }
+.ex-done-stat { font-size: var(--fs-sm); color: var(--muted); }
 
-.today-panel-chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: center; }
+
+/* ============ 12. TRAGUARDI (XP, trofei, messaggi) ============
+   Chip nella card "Oggi" + pannello dedicato + toast per i messaggi
+   (ogni 50 XP) e i trofei (ogni 200 XP). */
+
 .xp-chip {
   font: inherit; font-size: var(--fs-xs); font-weight: 700; color: var(--plum);
   background: var(--plum-light); border: none; border-radius: 999px; padding: 4px 10px;
@@ -965,8 +1030,7 @@ input:focus-visible, [tabindex]:focus-visible {
 .xp-chip:hover { box-shadow: var(--e1); }
 .xp-chip .ic { margin-right: 5px; }
 
-/* Toast (messaggio/trofeo): sempre sopra qualunque overlay aperto, perché è
-   proprio dentro i quiz che si guadagnano gli XP. */
+/* Toast: sempre sopra ogni pannello, perché gli XP si guadagnano proprio nei quiz */
 .xp-toast {
   position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 150;
   transform: translate(-50%, 12px); opacity: 0; pointer-events: none;
@@ -1016,135 +1080,78 @@ input:focus-visible, [tabindex]:focus-visible {
 }
 .xp-msg-empty { color: var(--muted); font-size: var(--fs-sm); }
 
-/* ---------- Esercizi di grammatica (v38) ---------- */
-.ex-pick-hint { font-size: var(--fs-sm); color: var(--muted); margin: 0 0 var(--sp-3); }
-.ex-review-go { width: 100%; justify-content: center; margin: 0 0 var(--sp-2); }
-.ex-sec .gsec:first-child { margin-top: var(--sp-3); }
-.ex-topic {
-  display: flex; align-items: center; gap: var(--sp-25); width: 100%;
-  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-  padding: 12px 14px; margin-bottom: var(--sp-2); cursor: pointer; text-align: left;
-  font: inherit; color: var(--text); box-shadow: var(--e1);
+
+/* ============ 13. NAVIGAZIONE ============ */
+
+/* Tab bar in basso: le azioni frequenti restano nella zona del pollice */
+.tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
+  display: flex; gap: var(--sp-05);
+  background: var(--card); border-top: 1px solid var(--border);
+  padding: 6px max(10px, env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-right));
+  box-shadow: 0 -2px 12px rgba(15,23,42,.08);
 }
-.ex-topic:active { transform: translateY(1px); }
-.ex-topic:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
-.ex-topic-main { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.ex-topic-name { font-weight: 800; overflow-wrap: anywhere; }
-.ex-topic-meta { font-size: var(--fs-xs); color: var(--muted); }
-.ex-bar { display: block; height: 5px; border-radius: 999px; background: var(--surface-alt); overflow: hidden; border: 1px solid var(--border); }
-.ex-bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
-.ex-chip-now {
-  font-size: var(--fs-2xs); font-weight: 800; color: var(--amber); background: var(--amber-light);
-  border-radius: 999px; padding: 4px 9px; white-space: nowrap;
+.tabbar .tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-05);
+  min-height: 44px;
+  background: none; border: none; cursor: pointer; font: inherit;
+  font-size: var(--fs-2xs); font-weight: 600; color: var(--muted);
+  padding: 4px 0 3px; border-radius: 12px;
 }
-.ex-instr { font-size: var(--fs-xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: var(--sp-2); }
-.ex-ctx { font-size: var(--fs-sm); color: var(--muted); font-style: italic; margin-bottom: var(--sp-15); }
-.ex-filled { color: var(--accent); }
-.ex-opts { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-3); }
-.ex-opt { flex: none; width: 100%; text-align: left; padding: 14px 16px; }
-.ex-opt.picked-wrong { border-color: var(--amber); opacity: 1; background: var(--amber-light); color: var(--amber); }
-.ex-pre { font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-xl); font-weight: 700; margin-bottom: var(--sp-15); }
-.ex-line {
-  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-15); min-height: 56px;
-  padding: 8px 4px; border-bottom: 2px dashed var(--border); margin-bottom: var(--sp-3);
+.tabbar .tab .tab-ic { display: block; height: 24px; font-size: var(--fs-2xl); line-height: 1.2; }
+.tabbar .tab .tab-ic .ic { width: 24px; height: 24px; vertical-align: top; }
+.tabbar .tab .tab-lb { line-height: 1.1; letter-spacing: .1px; }
+.tabbar .tab.active { color: var(--navy); background: var(--navy-light); font-weight: 800; }
+.tabbar .tab.active .tab-ic .ic { stroke-width: 2.1; }   /* come iOS: tratto più spesso, stessa forma */
+.tabbar .tab:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+/* Torna su (sopra la tab bar) */
+.back-top {
+  position: fixed; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom)); z-index: 60;
+  width: 44px; height: 44px; border-radius: 999px; border: none; cursor: pointer;
+  background: var(--fill-active); color: #fff; font-size: var(--fs-xl); box-shadow: var(--e2);
+  transition: transform .15s;
+  display: inline-flex; align-items: center; justify-content: center;
 }
-.ex-line.ok { border-bottom-color: var(--accent); }
-.ex-line.bad { border-bottom-color: var(--amber); }
-.ex-post { font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-xl); font-weight: 700; }
-.ex-bank { display: flex; flex-wrap: wrap; gap: var(--sp-15); min-height: 56px; }
-.ex-tile {
-  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-lg); font-weight: 700;
-  background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 10px;
-  padding: 9px 13px; cursor: pointer; box-shadow: var(--e1); min-height: 44px;
-}
-.ex-tile.placed { background: var(--navy-light); color: var(--navy); border-color: transparent; }
-.ex-tile:disabled { cursor: default; }
-.ex-tile:focus-visible, .ex-word:focus-visible, .ex-key:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
-.ex-words { display: flex; flex-wrap: wrap; gap: var(--sp-15); margin-bottom: var(--sp-2); }
-.ex-word {
-  font-family: 'Poltawski Nowy', 'Iowan Old Style', Palatino, Georgia, serif; font-size: var(--fs-xl); font-weight: 700;
-  background: transparent; color: var(--text); border: 2px solid var(--border); border-radius: 10px;
-  padding: 6px 10px; cursor: pointer; min-height: 44px;
-}
-.ex-word.sel { background: var(--amber-light); border-color: var(--amber); color: var(--amber); }
-.ex-word.is-bad { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
-.ex-word.pick-wrong { border-color: var(--amber); opacity: .6; }
-.ex-word:disabled { cursor: default; }
-.ex-input {
-  width: 100%; box-sizing: border-box; margin-top: var(--sp-2); padding: 12px 14px; font-size: 18px;
-  font-family: inherit; color: var(--text); background: var(--card);
-  border: 2px solid var(--border); border-radius: 12px;
-}
-.ex-input:focus { outline: none; border-color: var(--navy); }
-.ex-input.ok { border-color: var(--accent); background: var(--accent-light); }
-.ex-input.bad { border-color: var(--amber); background: var(--amber-light); }
-/* Lettere speciali: compaiono SOLO mentre si scrive nel campo (focus), piccole e con spiegazione,
-   così non sembrano opzioni di risposta */
-.ex-keys-box { display: none; margin-top: var(--sp-15); padding: 8px 10px; border-radius: 10px; background: var(--surface-alt); }
-.ex-field:focus-within .ex-keys-box { display: block; }
-.ex-keys-label { font-size: var(--fs-xs); color: var(--muted); line-height: 1.35; }
-.ex-keys-alt { font-size: var(--fs-2xs); color: var(--muted); margin-top: 6px; }
-.ex-keys { display: flex; gap: var(--sp-15); margin-top: 6px; }
-.ex-key {
-  width: 44px; min-height: 44px; font: inherit; font-weight: 700; font-size: var(--fs-base); cursor: pointer;
-  background: var(--card); color: var(--navy-dark); border: 1px solid var(--border); border-radius: 8px;
-}
-.ex-actions { display: flex; gap: var(--sp-25); margin-top: var(--sp-3); }
-.ex-actions .ex-go { flex: 1; justify-content: center; margin: 0; }
-.ex-actions .ex-go:disabled { opacity: .45; cursor: default; }
-.ex-fb { margin-top: var(--sp-3); padding: 12px 14px; border-radius: 12px; border-left: 4px solid var(--accent); background: var(--accent-light); display: flex; flex-direction: column; gap: 6px; }
-.ex-fb-bad { border-left-color: var(--amber); background: var(--amber-light); }
-.ex-fb-title { font-weight: 800; color: var(--accent); }
-.ex-fb-bad .ex-fb-title { color: var(--amber); }
-.ex-fb-ans { font-size: var(--fs-base); color: var(--text); }
-.ex-fb-lbl { color: var(--muted); font-size: var(--fs-sm); }
-.ex-fb .bignami-link { align-self: flex-start; margin-top: 4px; }
-.ex-done-stat { font-size: var(--fs-sm); color: var(--muted); }
-.ex-topic-tag { font-size: var(--fs-sm); font-weight: 800; color: var(--navy); margin-bottom: 2px; }
+.back-top:active { transform: scale(.92); }
+.back-top .ic { width: 20px; height: 20px; stroke-width: 2; }
+
+/* Stato vuoto (nessun risultato, nessun preferito…) */
+.empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+.empty-ic { font-size: var(--fs-display); margin-bottom: 10px; opacity: .5; line-height: 0; }
+.empty-ic .ic { width: 40px; height: 40px; stroke-width: 1.4; }
+
+/* Piè di pagina e numero di versione */
+footer.note2 { margin-top: 26px; font-size: var(--fs-xs); color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px; }
+footer.note2 a { color: var(--accent); }
+.app-version { margin: 10px 0 4px; text-align: center; font-size: var(--fs-2xs); color: var(--muted); opacity: .8; letter-spacing: .3px; }
 
 
-  /* ================= v39 — TABELLE CASI × GENERE ================= */
-  /* Modello del Bignami: righe = casi, colonne = der · die · das · Plural,
-     ogni colonna col colore del suo genere (vedi --g-*). */
-  .gtable-cap { margin: var(--sp-35) 0 var(--sp-1); font-size: var(--fs-xs); font-weight: 700;
-    color: var(--navy-dark); letter-spacing: .02em; }
-  .gtable-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--sp-2) 0 var(--sp-3);
-    border-radius: 10px; }
-  .gtable { border-collapse: separate; border-spacing: 2px; width: 100%; min-width: 100%;
-    font-size: var(--fs-sm); }
-  .gtable th, .gtable td { padding: 7px 8px; text-align: center; border-radius: 5px; white-space: nowrap; }
-  .gtable thead th { font-weight: 700; font-size: var(--fs-xs); color: #fff; }
-  .gtable thead th.g-k { background: var(--navy-dark); color: var(--bg, #fff); text-align: left; }
-  .gtable thead th.g-m { background: var(--g-m); }
-  .gtable thead th.g-f { background: var(--g-f); }
-  .gtable thead th.g-n { background: var(--g-n); }
-  .gtable thead th.g-pl { background: var(--g-pl); }
-  .gtable thead th.g-x { background: var(--g-x); }
-  :root[data-theme="dark"] .gtable thead th:not(.g-k) { color: #10151a; }
-  .gtable tbody th { text-align: left; font-weight: 700; color: var(--navy-dark); background: var(--g-x-bg); }
-  .gtable tbody th .gq { display: block; font-weight: 400; font-style: italic; font-size: var(--fs-2xs);
-    color: var(--muted); }
-  .gtable td { color: var(--text); }
-  .gtable td.g-m { background: var(--g-m-bg); }
-  .gtable td.g-f { background: var(--g-f-bg); }
-  .gtable td.g-n { background: var(--g-n-bg); }
-  .gtable td.g-pl { background: var(--g-pl-bg); }
-  .gtable td.g-x { background: var(--g-x-bg); }
-  .gtable td b.hl { font-weight: 700; }
-  .gtable td.g-m b.hl { color: var(--g-m); }
-  .gtable td.g-f b.hl { color: var(--g-f); }
-  .gtable td.g-n b.hl { color: var(--g-n); }
-  .gtable td.g-pl b.hl { color: var(--g-pl); }
-  .gtable td.g-x b.hl { color: var(--navy); }
-  @media (max-width: 520px) {
-    .gtable { font-size: var(--fs-xs); }
-    .gtable th, .gtable td { padding: 6px 5px; }
-  }
+/* ============ 14. ACCESSIBILITÀ ============ */
 
-  /* Quiz der/die/das: la regola della desinenza dopo la risposta */
-  .genus-rule { margin-top: var(--sp-2); font-size: var(--fs-sm); color: var(--muted);
-    display: flex; gap: 6px; align-items: center; justify-content: center; flex-wrap: wrap; }
-  .genus-rule.is-exc { color: var(--amber); }
-  /* tabelle larghe (es. Modalverben): la colonna dei casi resta ferma mentre si scorre */
-  .gtable thead th.g-k, .gtable tbody th { position: sticky; left: 0; z-index: 1; }
-  .gtable tbody th { box-shadow: 2px 0 0 var(--card, #fff); }
+/* Area di tocco di almeno 44×44px: per le icone piccole non si ingrandisce
+   il disegno, si allarga l'area con uno pseudo-elemento invisibile. */
+.fav-btn, .speak-btn, .clear-btn,
+.lang-toggle .lang-opt, .theme-toggle .lang-opt { position: relative; }
+.fav-btn::after   { content: ""; position: absolute; inset: -7px; }
+.speak-btn::after { content: ""; position: absolute; inset: -9px; }
+.clear-btn::after { content: ""; position: absolute; inset: -10px; }
+.lang-toggle .lang-opt::after, .theme-toggle .lang-opt::after { content: ""; position: absolute; inset: -8px -2px; }
+
+/* Niente ritardo del doppio tap su iOS/Android */
+button, select, a, [role="button"], [tabindex] { touch-action: manipulation; }
+
+/* Focus visibile per chi usa la tastiera */
+.chip:focus-visible, .fav-btn:focus-visible, .review-btn:focus-visible, .recent-chip:focus-visible,
+.flash-btn:focus-visible, .flash-card:focus-visible, .back-top:focus-visible, .today-card:focus-visible {
+  outline: 2px solid var(--navy); outline-offset: 2px;
+}
+button:focus-visible, select:focus-visible, a:focus-visible,
+input:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--navy); outline-offset: 2px;
+}
+
+/* Movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+  .flash-inner, .progress-fill, .flash-progress-fill, .entry-body { transition: none !important; animation: none !important; }
+}

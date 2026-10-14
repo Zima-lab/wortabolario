@@ -177,10 +177,30 @@
   </div>
 </div>
 
+<!-- Ordine di caricamento: versione → dati → logica. I file di js/ condividono
+     le stesse variabili, quindi l'ordine conta (avvio.js sempre per ultimo). -->
 <script src="version.js"></script>
-<script src="data.js"></script>
-<script src="esercizi.js"></script>
-<script src="app.js"></script>
+<script src="dati/verbi.js"></script>
+<script src="dati/sostantivi.js"></script>
+<script src="dati/aggettivi.js"></script>
+<script src="dati/grammatica.js"></script>
+<script src="dati/tabelle.js"></script>
+<script src="dati/frasi.js"></script>
+<script src="dati/esercizi.js"></script>
+<script src="js/coniugazione.js"></script>
+<script src="js/voci.js"></script>
+<script src="js/testi.js"></script>
+<script src="js/stato.js"></script>
+<script src="js/icone-audio.js"></script>
+<script src="js/bignami.js"></script>
+<script src="js/ricerca.js"></script>
+<script src="js/schede.js"></script>
+<script src="js/home.js"></script>
+<script src="js/navigazione.js"></script>
+<script src="js/flashcard.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/esercizi.js"></script>
+<script src="js/avvio.js"></script>
 <script>
   // Registrazione service worker: rende l'app utilizzabile offline (PWA).
   if ("serviceWorker" in navigator) {

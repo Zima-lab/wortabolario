@@ -1,1250 +1,371 @@
-/* Esercizi di grammatica — banca del pilota (v38) · + esame telc B1/B2 (v40, campo facoltativo `sec`).
-   Ogni argomento è legato a una o più schede di GRAMMATICA (campo `cards` = titolo `de` della scheda):
-   la pagina del Bignami e la sezione A–F si ricavano da lì, quindi non si ripetono qui.
-   Cinque tipi di esercizio:
-     choice  — scegli la parola giusta (q con ___; `ctx` = battuta di contesto facoltativa)
-     order   — metti le parole in ordine (pre + tessere `a` + post; `alt` = altri ordini accettati)
-     gap     — scrivi la parola mancante (`hint` = suggerimento; `alt` = altre risposte accettate)
-     fix     — tocca la parola sbagliata (`bad` = indici delle parole, `fix` = frase corretta)
-   Ogni esercizio ha un `id` stabile (non cambiarlo: i progressi sono legati all'id)
-   e una spiegazione `why` in italiano e inglese. */
-const EX_TOPICS = (() => {
-  const C = (id, q, opts, a, it, en, ctx) => ({ id, t: "choice", q, opts, a, ctx: ctx || "", why: { it, en } });
-  const O = (id, pre, a, post, it, en, alt) => ({ id, t: "order", pre, a, post, alt: alt || [], why: { it, en } });
-  const G = (id, q, hint, a, it, en, alt) => ({ id, t: "gap", q, hint, a, alt: alt || [], why: { it, en } });
-  const F = (id, q, bad, fix, it, en) => ({ id, t: "fix", q, bad, fix, why: { it, en } });
+/* Wortabolario — js/esercizi.js  (13/14)
+   Lettore degli esercizi di grammatica (la banca delle domande è in dati/esercizi.js).
+   Tutti i file di js/ condividono le stesse variabili: l'ordine di caricamento è in index.html. */
 
-  return [
-  { id: "pronad",
-    cards: ["Pronominaladverb: wo(r)+ / da(r)+", "Preposizione vs Präpositionaladverb — la differenza"],
-    it: "Pronominaladverb — darauf, worauf…", en: "Pronominal adverbs — darauf, worauf…",
-    items: [
-      C("pa01", "___ wartest du? – Auf den Bus.", ["Worauf", "Wofür", "Woran"], "Worauf",
-        "Si chiede di una COSA con wo(r)+ preposizione. Il verbo è warten AUF, quindi wo+r+auf = Worauf.",
-        "You ask about a THING with wo(r)+ preposition. The verb is warten AUF, so wo+r+auf = Worauf."),
-      C("pa02", "___ wartest du? – Auf meine Schwester.", ["Auf wen", "Worauf", "Darauf"], "Auf wen",
-        "Per le PERSONE non si usa wo(r)-: si tiene la preposizione e si mette wen (Akk.): Auf wen?",
-        "For PEOPLE you do not use wo(r)-: keep the preposition and add wen (Akk.): Auf wen?"),
-      C("pa03", "Ich freue mich ___, dass du kommst.", ["darauf", "auf es", "dafür"], "darauf",
-        "Non si dice «auf es»: preposizione + es diventa da(r)+preposizione. Qui darauf annuncia il dass-Satz.",
-        "You cannot say «auf es»: preposition + es becomes da(r)+preposition. Here darauf announces the dass clause."),
-      C("pa04", "Ich denke oft an meine Oma. Ich denke oft an ___.", ["sie", "daran", "dafür"], "sie",
-        "Oma è una persona: si usa preposizione + pronome (an sie), non daran.",
-        "Oma is a person: use preposition + pronoun (an sie), not daran."),
-      O("pa05", "Ich warte schon lange", ["darauf,", "dass", "der", "Bus", "endlich", "kommt"], ".",
-        "darauf annuncia il dass-Satz; nella subordinata il verbo (kommt) va in fondo.",
-        "darauf announces the dass clause; in the subordinate clause the verb (kommt) goes to the end."),
-      G("pa06", "Ich habe Angst ___, dass es regnet.", "da(r)- + vor", "davor",
-        "Angst haben VOR → da + vor. Davanti a consonante (v) non si aggiunge r.",
-        "Angst haben VOR → da + vor. Before a consonant (v) no r is added."),
-      G("pa07", "___ ärgerst du dich? – Über den Lärm.", "wo(r)- + über", "Worüber",
-        "sich ärgern ÜBER: über inizia con vocale (ü), quindi wo + r + über = Worüber.",
-        "sich ärgern ÜBER: über starts with a vowel (ü), so wo + r + über = Worüber."),
-      C("pa11", "___ träumst du? – Von einem Haus am Meer.", ["Wovon", "Woran", "Worauf"], "Wovon",
-        "träumen VON e la risposta è una cosa → wo + von = Wovon (niente r: von comincia per consonante).",
-        "träumen VON and the answer is a thing → wo + von = Wovon (no r: von starts with a consonant)."),
-      C("pa12", "Mit wem telefonierst du? – Mit meiner Schwester. Ich telefoniere jeden Tag mit ___.", ["ihr", "ihm", "sie"], "ihr",
-        "Persona femminile dopo mit (Dativ) → mit ihr.",
-        "Female person after mit (dative) → mit ihr."),
-      C("pa13", "Hast du mit deinem Chef gesprochen? – Ja, ich habe mit ___ gesprochen.", ["ihm", "ihn", "damit"], "ihm",
-        "Persona maschile dopo mit (Dativ) → mit ihm. damit solo per le cose.",
-        "Male person after mit (dative) → mit ihm. damit only for things."),
-      C("pa14", "Über wen ärgerst du dich? – Über meinen Nachbarn. Ich ärgere mich oft über ___.", ["ihn", "darüber", "ihm"], "ihn",
-        "Persona + über (Akk.) → über ihn.",
-        "Person + über (acc.) → über ihn."),
-      G("pa15", "Ich habe meine Lehrerin ___ informiert, dass ich krank bin.", "da(r)- + über", "darüber",
-        "jdn über etw informieren: davanti alla frase con dass → darüber.",
-        "jdn über etw informieren: before the dass clause → darüber."),
-      G("pa16", "Ich ärgere mich ___, so wenig Zeit zu haben.", "da(r)- + über", "darüber",
-        "sich ärgern über: davanti all'infinitiva con zu → darüber.",
-        "sich ärgern über: before the zu-infinitive clause → darüber."),
-      F("pa17", "Ich spreche oft mit meinem Bruder. Ich spreche jeden Tag damit.", [10], "Ich spreche oft mit meinem Bruder. Ich spreche jeden Tag mit ihm.",
-        "Il fratello è una persona: mit ihm, non damit.",
-        "The brother is a person: mit ihm, not damit."),
-      F("pa08", "Ich freue mich auf es.", [3, 4], "Ich freue mich darauf.",
-        "«auf es» non esiste: al posto di preposizione + es si usa darauf.",
-        "«auf es» does not exist: instead of preposition + es you use darauf."),
-      F("pa09", "Woran wartest du? – Auf den Bus.", [0], "Worauf wartest du? – Auf den Bus.",
-        "La risposta è Auf den Bus, quindi la domanda deve usare la stessa preposizione: Worauf.",
-        "The answer is Auf den Bus, so the question must use the same preposition: Worauf."),
-      F("pa10", "An wen denkst du? – Ich denke daran.", [7], "An wen denkst du? – Ich denke an ihn.",
-        "An wen? chiede di una persona, quindi la risposta è an ihn/an sie, non daran.",
-        "An wen? asks about a person, so the answer is an ihn/an sie, not daran.")
-    ] },
+/* ---------- ESERCIZI DI GRAMMATICA (v38) ----------
+   Banca in dati/esercizi.js (EX_TOPICS). Qui c'è il lettore: un solo "player" per
+   quattro tipi di esercizio (choice · order · gap · fix), con spiegazione dopo
+   ogni risposta e ripasso a intervalli (stesso schema Leitner delle parole).
+   Lo stato vive in localStorage "wortabolario_ex": { idEsercizio: {lv, due} }.
+   Stati mostrati all'utente: nuovo · da ripassare (due oggi o sbagliato) ·
+   più avanti (lv 1-2) · padroneggiato (lv 3+). */
 
-  { id: "nebens",
-    cards: ["Konjunktionaladverbien vs Subjunktionen"],
-    it: "Nebensätze — weil · dass · obwohl · damit", en: "Subordinate clauses — weil · dass · obwohl · damit",
-    items: [
-      C("ns01", "___ der Zug Verspätung hatte.", ["Weil", "Deshalb", "Obwohl"], "Weil",
-        "Risponde a «Warum?» e il verbo (hatte) è in fondo: serve una Subjunktion causale, weil.",
-        "It answers «Warum?» and the verb (hatte) is at the end: you need a causal subordinator, weil.", "Warum kommst du so spät?"),
-      C("ns02", "Es regnet. ___ gehen wir spazieren.", ["Trotzdem", "Obwohl", "Weil"], "Trotzdem",
-        "Qui il verbo (gehen) viene subito dopo la parola: è un Konjunktionaladverb (trotzdem), non una Subjunktion.",
-        "Here the verb (gehen) comes right after the word: it is a conjunctive adverb (trotzdem), not a subordinator."),
-      C("ns03", "Wir gehen spazieren, ___ es regnet.", ["obwohl", "trotzdem", "deshalb"], "obwohl",
-        "Dopo la virgola il verbo (regnet) va in fondo: obwohl è una Subjunktion (sebbene).",
-        "After the comma the verb (regnet) goes to the end: obwohl is a subordinator (although)."),
-      C("ns04", "Ich glaube, ___ er heute nicht kommt.", ["dass", "damit", "trotzdem"], "dass",
-        "Dopo verbi come glauben, sagen, wissen la frase dichiarativa si introduce con dass.",
-        "After verbs like glauben, sagen, wissen a declarative clause is introduced with dass."),
-      C("ns05", "Er lernt jeden Tag, ___ er die Prüfung besteht.", ["damit", "weil", "obwohl"], "damit",
-        "Esprime lo scopo (affinché): damit + verbo in fondo.",
-        "It expresses a purpose (so that): damit + verb at the end."),
-      O("ns06", "Ich bleibe zu Hause,", ["weil", "ich", "krank", "bin"], ".",
-        "Dopo weil il verbo coniugato (bin) va in fondo.",
-        "After weil the conjugated verb (bin) goes to the end."),
-      O("ns07", "Obwohl es kalt ist,", ["gehen", "wir", "spazieren"], ".",
-        "Se il Nebensatz è per primo, nella principale il verbo viene subito dopo la virgola (gehen wir…).",
-        "If the subordinate clause comes first, the verb of the main clause follows the comma directly (gehen wir…)."),
-      O("ns08", "Es ist kalt.", ["Deshalb", "trage", "ich", "eine", "Jacke"], ".",
-        "Deshalb è un Konjunktionaladverb: occupa la posizione 1 e il verbo (trage) è subito dopo.",
-        "Deshalb is a conjunctive adverb: it takes position 1 and the verb (trage) comes right after."),
-      G("ns09", "Ich esse nicht, ___ ich keinen Hunger habe.", "perché", "weil",
-        "Subjunktion causale con verbo in fondo (habe). Anche da è possibile.",
-        "Causal subordinator with the verb at the end (habe). da is also possible.", ["da"]),
-      G("ns10", "Er ist müde, ___ geht er früh ins Bett.", "quindi", "deshalb",
-        "Il verbo (geht) è subito dopo la parola: serve deshalb (o deswegen, darum).",
-        "The verb (geht) comes right after the word: you need deshalb (or deswegen, darum).", ["deswegen", "darum"]),
-      F("ns11", "Ich bleibe zu Hause, weil ich bin krank.", [6, 7], "Ich bleibe zu Hause, weil ich krank bin.",
-        "Dopo weil il verbo va in fondo: «krank bin», non «bin krank».",
-        "After weil the verb goes to the end: «krank bin», not «bin krank»."),
-      F("ns12", "Obwohl es regnet, wir gehen spazieren.", [3, 4], "Obwohl es regnet, gehen wir spazieren.",
-        "Dopo un Nebensatz iniziale il verbo della principale viene subito: «gehen wir», non «wir gehen».",
-        "After an initial subordinate clause the main clause verb comes first: «gehen wir», not «wir gehen».")
-    ] },
+const EX_KEY = "wortabolario_ex";
+let exData = {};
+try { exData = JSON.parse(localStorage.getItem(EX_KEY) || "{}"); } catch(e){}
+function saveEx(){ try { localStorage.setItem(EX_KEY, JSON.stringify(exData)); } catch(e){} }
 
-  { id: "pos0",
-    cards: ["Position 0 — und/aber/oder/denn/sondern"],
-    it: "Position 0 — und · aber · oder · denn · sondern", en: "Position 0 — und · aber · oder · denn · sondern",
-    items: [
-      C("p001", "Ich bin müde, ___ ich gehe nicht ins Bett.", ["aber", "trotzdem", "deshalb"], "aber",
-        "Dopo ich viene il verbo: l'ordine è normale, quindi la parola è Position 0 (aber). Con trotzdem/deshalb sarebbe «gehe ich».",
-        "The order is normal (ich gehe), so the word is Position 0 (aber). With trotzdem/deshalb it would be «gehe ich»."),
-      C("p002", "Ich bin müde, ___ gehe ich früh ins Bett.", ["deshalb", "denn", "aber"], "deshalb",
-        "Il verbo (gehe) precede il soggetto (ich): la parola occupa la posizione 1, quindi è deshalb, non Position 0.",
-        "The verb (gehe) comes before the subject (ich): the word takes position 1, so it is deshalb, not Position 0."),
-      C("p003", "Sie kauft keinen Kaffee, ___ Tee.", ["sondern", "aber", "denn"], "sondern",
-        "Dopo una negazione (keinen) per dire «bensì» si usa sondern.",
-        "After a negation (keinen), «but rather» is sondern."),
-      C("p004", "Ich habe Hunger, ___ ich habe kein Geld.", ["aber", "deshalb", "weil"], "aber",
-        "Contrasto con ordine normale (ich habe): aber. Weil richiederebbe il verbo in fondo.",
-        "Contrast with normal order (ich habe): aber. Weil would need the verb at the end."),
-      C("p005", "Wir bleiben zu Hause, ___ es regnet stark.", ["denn", "weil", "dass"], "denn",
-        "Il verbo (regnet) è in 2ª posizione: denn è Position 0. Con weil sarebbe «weil es stark regnet».",
-        "The verb (regnet) is in 2nd place: denn is Position 0. With weil it would be «weil es stark regnet»."),
-      O("p006", "Ich möchte Kaffee trinken,", ["aber", "ich", "habe", "keine", "Zeit"], ".",
-        "Aber è Position 0: dopo di lui il soggetto e il verbo restano nell'ordine normale.",
-        "Aber is Position 0: after it the subject and verb keep their normal order."),
-      O("p007", "Er ist krank,", ["denn", "er", "hat", "Fieber"], ".",
-        "Denn è Position 0: il verbo resta in 2ª posizione (er hat).",
-        "Denn is Position 0: the verb stays in 2nd position (er hat)."),
-      G("p008", "Ich trinke keinen Kaffee, ___ Tee.", "bensì", "sondern",
-        "Negazione + alternativa = sondern.",
-        "Negation + alternative = sondern."),
-      G("p009", "Er arbeitet viel, ___ er verdient wenig.", "ma", "aber",
-        "Contrasto tra due frasi principali: aber (Position 0).",
-        "Contrast between two main clauses: aber (Position 0)."),
-      F("p010", "Ich bin müde, aber gehe ich nicht ins Bett.", [4, 5], "Ich bin müde, aber ich gehe nicht ins Bett.",
-        "Aber è Position 0: non sposta il verbo. Il soggetto resta davanti: «ich gehe».",
-        "Aber is Position 0: it does not move the verb. The subject stays first: «ich gehe»."),
-      F("p011", "Ich bleibe zu Hause, denn bin ich krank.", [5, 6], "Ich bleibe zu Hause, denn ich bin krank.",
-        "Denn è Position 0: l'ordine rimane soggetto + verbo (ich bin).",
-        "Denn is Position 0: the order stays subject + verb (ich bin).")
-    ] },
+function exTopics(){ return typeof EX_TOPICS !== "undefined" ? EX_TOPICS : []; }
+function exEsc(t){ return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function exShuffle(a){
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function exStatus(id){
+  const d = exData[id];
+  if(!d) return "new";
+  if(d.due <= todayIdx()) return "now";
+  return d.lv >= 3 ? "mastered" : "later";
+}
+function exRecord(id, ok){
+  bumpStreak();
+  const cur = exData[id] || { lv: 0, due: todayIdx() };
+  if(ok){
+    cur.lv = Math.min(cur.lv + 1, 5);
+    cur.due = todayIdx() + SRS_INTERVALS[cur.lv - 1];
+  } else {
+    cur.lv = 0;
+    cur.due = todayIdx();
+  }
+  exData[id] = cur;
+  saveEx();
+}
+function exDueItems(){
+  const out = [];
+  exTopics().forEach(t => t.items.forEach(it => { if(exStatus(it.id) === "now") out.push({ topic: t, item: it }); }));
+  return out;
+}
+function exTopicName(t){ return lang === "en" ? t.en : t.it; }
+function exTopicEntry(t){ return ENTRIES.find(e => e.type === "grammatica" && e.de === t.cards[0]); }
+function exTopicByCard(de){ return exTopics().find(t => t.cards.includes(de)); }
+/* v40: un argomento può dichiarare la propria sezione (es. sec: "TELC" per gli esercizi d'esame) */
+function exTopicSection(t){ if(t.sec) return t.sec; const e = exTopicEntry(t); return (e && bignamiSection(e)) || "AP"; }
+function exTopicStats(t){
+  const st = { new: 0, now: 0, later: 0, mastered: 0 };
+  t.items.forEach(it => st[exStatus(it.id)]++);
+  return st;
+}
+function exBignamiLink(t){
+  const s = UI_STRINGS[lang], de = t.cards[0];
+  const p2 = BIGNAMI_B2_PAGES[de];
+  if(p2) return `<a class="bignami-link" href="${bignamiB2Pdf()}#page=${p2}" target="_blank" rel="noopener">${ic("book","ic-sm")}${s.bignamiB2Link(p2)}</a>`;
+  const p = BIGNAMI_PAGES[de];
+  return p ? `<a class="bignami-link" href="${bignamiPdf()}#page=${p}" target="_blank" rel="noopener">${ic("book","ic-sm")}${s.bignamiLink(p)}</a>` : "";
+}
+/* Le risposte scritte accettano ae/oe/ue/ss al posto di ä/ö/ü/ß e ignorano le maiuscole */
+function exNorm(t){
+  return String(t).trim().toLowerCase().replace(/\s+/g, " ")
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
+}
+function exFullSentence(it){
+  if(it.t === "choice") return it.q.includes("___") ? it.q.replace("___", it.a) : it.a;
+  if(it.t === "order") return (it.pre ? it.pre + " " : "") + it.a.join(" ") + it.post;
+  if(it.t === "gap") return it.q.replace("___", it.a);
+  return it.fix;
+}
 
-  { id: "komma",
-    cards: ["Kommasetzung — la virgola"],
-    it: "La virgola — Kommasetzung", en: "The comma — Kommasetzung",
-    items: [
-      C("km01", "Quale frase è scritta bene?", ["Ich bleibe zu Hause, weil ich krank bin.", "Ich bleibe zu Hause weil ich krank bin."], "Ich bleibe zu Hause, weil ich krank bin.",
-        "Prima di una subordinata (weil) la virgola è sempre obbligatoria.",
-        "Before a subordinate clause (weil) the comma is always required."),
-      C("km02", "Quale frase è scritta bene?", ["Er kauft Brot, Milch und Käse.", "Er kauft Brot, Milch, und Käse."], "Er kauft Brot, Milch und Käse.",
-        "In un elenco prima di und non si mette la virgola.",
-        "In a list there is no comma before und."),
-      C("km03", "Quale frase è scritta bene?", ["Ich koche gern aber ich backe nie.", "Ich koche gern, aber ich backe nie."], "Ich koche gern, aber ich backe nie.",
-        "Prima di aber la virgola è obbligatoria.",
-        "Before aber the comma is required."),
-      C("km04", "Quale frase è scritta bene?", ["Ich weiß dass er krank ist.", "Ich weiß, dass er krank ist."], "Ich weiß, dass er krank ist.",
-        "Il dass-Satz è una subordinata: virgola sempre.",
-        "A dass clause is a subordinate clause: always a comma."),
-      C("km05", "Quale frase è scritta bene?", ["Er spart Geld, um ein Auto zu kaufen.", "Er spart Geld um ein Auto zu kaufen."], "Er spart Geld, um ein Auto zu kaufen.",
-        "Con um … zu la virgola è obbligatoria.",
-        "With um … zu the comma is required."),
-      C("km06", "Quale frase è scritta bene?", ["Weil ich müde bin, gehe ich schlafen.", "Weil ich müde bin gehe ich schlafen."], "Weil ich müde bin, gehe ich schlafen.",
-        "Anche quando la subordinata è all'inizio, la virgola chiude la subordinata.",
-        "Even when the subordinate clause comes first, a comma closes it."),
-      F("km07", "Ich esse nicht weil ich keinen Hunger habe.", [2, 3], "Ich esse nicht, weil ich keinen Hunger habe.",
-        "Manca la virgola prima di weil (dopo «nicht»).",
-        "The comma before weil is missing (after «nicht»)."),
-      F("km08", "Ich kaufe Brot, Milch, und Käse.", [3, 4], "Ich kaufe Brot, Milch und Käse.",
-        "In tedesco non si mette la virgola prima di und in un elenco.",
-        "In German there is no comma before und in a list."),
-      F("km09", "Ich hoffe dass du kommst.", [1, 2], "Ich hoffe, dass du kommst.",
-        "Manca la virgola prima di dass.",
-        "The comma before dass is missing."),
-      F("km10", "Sie sagt dass sie später kommt.", [1, 2], "Sie sagt, dass sie später kommt.",
-        "Prima di dass serve sempre la virgola.",
-        "A comma is always needed before dass.")
-    ] },
+/* --- sessione --- */
+let exDeck = [], exIdx = 0, exOk = 0, exCtx = { mode: "topic", topicId: null };
 
-  { id: "dk",
-    cards: ["dürfen · können — le differenze"],
-    it: "dürfen o können?", en: "dürfen or können?",
-    items: [
-      C("dk01", "Hier ___ man nicht rauchen.", ["darf", "kann", "muss"], "darf",
-        "È una regola (divieto): dürfen. «darf nicht» = è vietato.",
-        "It is a rule (ban): dürfen. «darf nicht» = it is forbidden."),
-      C("dk02", "Ich ___ leider nicht kommen, ich bin krank.", ["kann", "darf", "soll"], "kann",
-        "Non puoi per una circostanza (malattia), non per un permesso: können.",
-        "You cannot because of a circumstance (illness), not because of a permission: können."),
-      C("dk03", "Als Kind ___ ich nicht allein ins Kino gehen.", ["durfte", "konnte", "musste"], "durfte",
-        "I genitori non lo permettevano: permesso → dürfen al Präteritum, durfte.",
-        "Parents did not allow it: permission → dürfen in the Präteritum, durfte."),
-      C("dk04", "Du ___ nicht kommen, wenn du nicht willst.", ["musst", "darfst", "kannst"], "musst",
-        "«nicht müssen» = non sei obbligato. «Du darfst nicht» sarebbe un divieto.",
-        "«nicht müssen» = you don't have to. «Du darfst nicht» would be a ban."),
-      C("dk05", "Mit 16 ___ man in Deutschland Bier trinken.", ["darf", "kann", "muss"], "darf",
-        "Dipende da una legge (permesso): dürfen.",
-        "It depends on a law (permission): dürfen."),
-      C("dk06", "Meine Tochter ___ schon lesen, sie ist erst vier.", ["kann", "darf", "muss"], "kann",
-        "È una capacità: können.",
-        "It is an ability: können."),
-      G("dk07", "Du ___ hier nicht parken. (è vietato)", "dürfen · du", "darfst",
-        "dürfen con du: darfst. Divieto = «darfst nicht».",
-        "dürfen with du: darfst. Ban = «darfst nicht»."),
-      G("dk08", "Wir ___ heute früher gehen. (abbiamo il permesso)", "dürfen · wir", "dürfen",
-        "Permesso → dürfen. Con wir la forma è dürfen.",
-        "Permission → dürfen. With wir the form is dürfen."),
-      G("dk09", "Er ___ sehr gut schwimmen. (è capace)", "können · er", "kann",
-        "Capacità → können; er → kann (senza -t).",
-        "Ability → können; er → kann (no -t)."),
-      F("dk10", "Ich kann hier nicht rauchen, das ist verboten.", [1], "Ich darf hier nicht rauchen, das ist verboten.",
-        "È vietato (verboten): serve dürfen, quindi «darf nicht».",
-        "It is forbidden (verboten): you need dürfen, so «darf nicht»."),
-      F("dk11", "Darfst du Klavier spielen?", [0], "Kannst du Klavier spielen?",
-        "Chiedi se sa farlo (capacità): können.",
-        "You are asking if they are able to (ability): können.")
-    ] },
+function exMakeDeck(pairs){
+  return pairs.map(p => {
+    const it = p.item, d = { topic: p.topic, item: it, res: null, given: "" };
+    if(it.t === "choice") d.opts = exShuffle(it.opts.slice());
+    if(it.t === "order"){
+      const idx = it.a.map((w, i) => i);
+      let tries = 0;
+      do { exShuffle(idx); tries++; } while(tries < 10 && it.a.length > 1 && idx.every((v, i) => v === i));
+      d.tiles = idx; d.placed = [];
+    }
+    if(it.t === "fix") d.sel = [];
+    return d;
+  });
+}
+function exStartTopic(id, size){
+  const t = exTopics().find(x => x.id === id);
+  if(!t) return;
+  const prio = { now: 0, new: 1, later: 2, mastered: 3 };
+  const pool = exShuffle(t.items.map(it => ({ topic: t, item: it }))).sort((a, b) => prio[exStatus(a.item.id)] - prio[exStatus(b.item.id)]);
+  exDeck = exMakeDeck(exShuffle(pool.slice(0, size || 10)));
+  exIdx = 0; exOk = 0; exCtx = { mode: "topic", topicId: id };
+  renderExPlay();
+}
+function exStartReview(){
+  const pairs = exShuffle(exDueItems()).slice(0, 15);
+  if(!pairs.length){ renderExPicker(); return; }
+  exDeck = exMakeDeck(pairs);
+  exIdx = 0; exOk = 0; exCtx = { mode: "review", topicId: null };
+  renderExPlay();
+}
+function exOpenOverlay(){
+  document.getElementById("exOverlay").classList.add("open");
+  document.body.classList.add("conj-lock");
+}
+function openExPicker(){ exOpenOverlay(); renderExPicker(); }
+function openExTopic(id){ exOpenOverlay(); exStartTopic(id); }
+function openExReview(){ exOpenOverlay(); exStartReview(); }
+function closeEx(){
+  document.getElementById("exOverlay").classList.remove("open");
+  document.body.classList.remove("conj-lock");
+  updateView();
+}
 
-  { id: "ww",
-    cards: ["wurde · würde · werden — le differenze"],
-    it: "wurde · würde · werden", en: "wurde · würde · werden",
-    items: [
-      C("ww01", "Gestern ___ der Film im Fernsehen gezeigt.", ["wurde", "würde", "wird"], "wurde",
-        "Passiv al passato (gestern + participio): wurde.",
-        "Past passive (gestern + participle): wurde."),
-      C("ww02", "Wenn ich Zeit hätte, ___ ich dich besuchen.", ["würde", "wurde", "werde"], "würde",
-        "Ipotesi (wenn + Konjunktiv II): würde + infinito.",
-        "Hypothesis (wenn + Konjunktiv II): würde + infinitive."),
-      C("ww03", "Nächste Woche ___ wir umziehen.", ["werden", "wurden", "würden"], "werden",
-        "Piano futuro (nächste Woche): werden + infinito = Futur I.",
-        "Future plan (nächste Woche): werden + infinitive = Futur I."),
-      C("ww04", "Er ___ im Jahr 2020 Vater.", ["wurde", "würde", "wird"], "wurde",
-        "Fatto reale del passato: wurde (diventò).",
-        "Real past fact: wurde (became)."),
-      C("ww05", "Ich ___ nie im Leben dort wohnen!", ["würde", "wurde", "werde"], "würde",
-        "Ipotesi enfatica («non ci abiterei mai»): würde.",
-        "Emphatic hypothesis («I would never live there»): würde."),
-      C("ww06", "Das Haus ___ gerade renoviert.", ["wird", "wurde", "würde"], "wird",
-        "Passiv al presente (gerade = adesso): wird.",
-        "Present passive (gerade = right now): wird."),
-      O("ww07", "Wenn ich du", ["wäre,", "würde", "ich", "das", "nicht", "kaufen"], ".",
-        "Frase ipotetica: wenn ich du wäre, würde ich … (würde + infinito in fondo).",
-        "Hypothetical sentence: wenn ich du wäre, würde ich … (würde + infinitive at the end)."),
-      O("ww08", "Die Brücke", ["wurde", "1990", "gebaut"], ".",
-        "Passiv al passato: wurde + participio II in fondo.",
-        "Past passive: wurde + participle II at the end."),
-      G("ww09", "Er ___ gestern 30 Jahre alt.", "werden · Präteritum", "wurde",
-        "Passato di werden (diventare) con er: wurde.",
-        "Past of werden (to become) with er: wurde."),
-      G("ww10", "An deiner Stelle ___ ich das nicht machen.", "werden · Konjunktiv II", "würde",
-        "Consiglio con «an deiner Stelle»: würde + infinito.",
-        "Advice with «an deiner Stelle»: würde + infinitive."),
-      F("ww11", "Morgen wurde ich 30 Jahre alt.", [1], "Morgen werde ich 30 Jahre alt.",
-        "Morgen = futuro: werde (non wurde, che è passato).",
-        "Morgen = future: werde (not wurde, which is past)."),
-      F("ww12", "Ich wurde gern mehr Sport machen.", [1], "Ich würde gern mehr Sport machen.",
-        "È un desiderio: Konjunktiv II con ü, würde.",
-        "It is a wish: Konjunktiv II with ü, würde.")
-    ] },
+/* --- elenco argomenti, raggruppati come le sezioni del Bignami --- */
+function renderExPicker(){
+  const s = UI_STRINGS[lang];
+  document.getElementById("exTitle").textContent = s.exPickTitle;
+  const body = document.getElementById("exBody");
+  const nDue = exDueItems().length;
+  const groups = {};
+  exTopics().forEach(t => { (groups[exTopicSection(t)] = groups[exTopicSection(t)] || []).push(t); });
+  const secHtml = SEC_ORDER.filter(k => groups[k]).map(k => {
+    const ts = groups[k];
+    let tot = 0, mas = 0;
+    ts.forEach(t => { const st = exTopicStats(t); tot += t.items.length; mas += st.mastered; });
+    return `<div class="ex-sec">
+      <div class="gsec gsec-${SEC_COLOR[k]}"><span class="gsec-code">${SEC_CODE[k] || k}</span><span class="gsec-title">${SEC_LABELS[k][lang === "en" ? "en" : "it"]}</span><span class="gsec-n">${mas}/${tot}</span></div>
+      ${ts.map(t => {
+        const st = exTopicStats(t), n = t.items.length;
+        return `<button type="button" class="ex-topic" data-t="${t.id}">
+          <span class="ex-topic-main">
+            <span class="ex-topic-name">${exEsc(exTopicName(t))}</span>
+            <span class="ex-topic-meta">${s.exItems(n, st.mastered)}</span>
+            <span class="ex-bar"><span class="ex-bar-fill" style="width:${Math.round(st.mastered / n * 100)}%"></span></span>
+          </span>
+          ${st.now > 0 ? `<span class="ex-chip-now">${s.exNowChip(st.now)}</span>` : ""}
+        </button>`;
+      }).join("")}
+    </div>`;
+  }).join("");
+  body.innerHTML = `
+    <p class="ex-pick-hint">${s.exPickHint}</p>
+    ${nDue > 0 ? `<button type="button" class="conj-btn ex-review-go" id="exReviewGo">${ic("clock","ic-sm")}${s.exReviewBtn(nDue)}</button>` : ""}
+    ${secHtml}`;
+  body.querySelectorAll(".ex-topic").forEach(b => b.addEventListener("click", () => exStartTopic(b.dataset.t)));
+  const rg = document.getElementById("exReviewGo");
+  if(rg) rg.addEventListener("click", exStartReview);
+  body.scrollTop = 0;
+}
 
-  { id: "gen",
-    cards: ["Präpositionen mit Genitiv"],
-    it: "Präpositionen mit Genitiv", en: "Prepositions with the genitive",
-    items: [
-      C("ge01", "___ des Regens bleiben wir zu Hause.", ["Wegen", "Trotz", "Während"], "Wegen",
-        "Causa («a causa della pioggia»): wegen + Genitiv.",
-        "Cause («because of the rain»): wegen + genitive."),
-      C("ge02", "___ der Kälte spielen die Kinder draußen.", ["Trotz", "Wegen", "Während"], "Trotz",
-        "Opposizione («nonostante il freddo»): trotz + Genitiv.",
-        "Contrast («despite the cold»): trotz + genitive."),
-      C("ge03", "___ des Unterrichts darf man nicht telefonieren.", ["Während", "Wegen", "Trotz"], "Während",
-        "Tempo («durante la lezione»): während + Genitiv.",
-        "Time («during the lesson»): während + genitive."),
-      C("ge04", "Wegen ___ Staus kam er zu spät.", ["des", "dem", "der"], "des",
-        "Der Stau è maschile: genitivo des (e il nome prende -s: Staus).",
-        "Der Stau is masculine: genitive des (and the noun takes -s: Staus)."),
-      C("ge05", "Trotz ___ Krankheit ging sie zur Arbeit.", ["der", "des", "die"], "der",
-        "Die Krankheit è femminile: il genitivo è der.",
-        "Die Krankheit is feminine: the genitive is der."),
-      C("ge06", "Das Hotel liegt ___ der Stadt.", ["außerhalb", "trotz", "wegen"], "außerhalb",
-        "«Fuori dalla città»: außerhalb + Genitiv.",
-        "«Outside the city»: außerhalb + genitive."),
-      O("ge07", "Wegen", ["des", "schlechten", "Wetters", "fällt", "das", "Fest", "aus"], ".",
-        "wegen + des + aggettivo + nome in -s (Wetters); poi il verbo in 2ª posizione (fällt).",
-        "wegen + des + adjective + noun in -s (Wetters); then the verb in 2nd position (fällt)."),
-      G("ge08", "Während ___ Sommers waren wir am Meer.", "der Sommer → Genitiv", "des",
-        "Der Sommer è maschile: genitivo des Sommers.",
-        "Der Sommer is masculine: genitive des Sommers."),
-      G("ge09", "Trotz ___ Lärms konnte er schlafen.", "der Lärm → Genitiv", "des",
-        "Der Lärm è maschile: genitivo des Lärms.",
-        "Der Lärm is masculine: genitive des Lärms."),
-      F("ge10", "Wegen dem Regen bleiben wir zu Hause.", [1, 2], "Wegen des Regens bleiben wir zu Hause.",
-        "Wegen vuole il Genitiv: «des Regens». Il Dativ si sente nel parlato ma nello scritto è sbagliato.",
-        "Wegen takes the genitive: «des Regens». The dative is heard in speech but is wrong in writing."),
-      F("ge11", "Trotz dem schlechten Wetter gehen wir spazieren.", [1, 3], "Trotz des schlechten Wetters gehen wir spazieren.",
-        "Trotz + Genitiv: «des schlechten Wetters».",
-        "Trotz + genitive: «des schlechten Wetters».")
-    ] },
+/* --- giudizio e invio risposta --- */
+function exJudge(d){
+  const it = d.item;
+  if(it.t === "choice") return d.given === it.a;
+  if(it.t === "order"){
+    const got = d.placed.map(i => it.a[i]).join(" ");
+    return got === it.a.join(" ") || it.alt.some(a => a.join(" ") === got);
+  }
+  if(it.t === "gap"){
+    const g = exNorm(d.given);
+    return !!g && [it.a].concat(it.alt).some(a => exNorm(a) === g);
+  }
+  return d.sel.length > 0 && d.sel.every(i => it.bad.includes(i));
+}
+function exSubmit(skip){
+  const d = exDeck[exIdx];
+  if(!d || d.res) return;
+  const ok = skip ? false : exJudge(d);
+  d.res = { ok, skip: !!skip };
+  exRecord(d.item.id, ok);
+  if(ok){
+    exOk++;
+    awardXp({ choice: XP_EASY, order: XP_MED, fix: XP_MED, gap: XP_HARD }[d.item.t]);
+  }
+  renderExPlay();
+}
 
-  { id: "nde",
-    cards: ["n-Deklination"],
-    it: "n-Deklination", en: "n-Deklination",
-    items: [
-      C("nd01", "Ich kenne den ___ gut.", ["Student", "Studenten", "Studentes"], "Studenten",
-        "Der Student è un nome debole: all'Akkusativ prende -en.",
-        "Der Student is a weak noun: in the accusative it takes -en."),
-      C("nd02", "Das ist das Buch des ___.", ["Kollege", "Kollegen", "Kolleges"], "Kollegen",
-        "Der Kollege (maschile in -e) è n-Deklination: Genitiv des Kollegen.",
-        "Der Kollege (masculine in -e) is n-Deklination: genitive des Kollegen."),
-      C("nd03", "Wir haben dem ___ geholfen.", ["Mensch", "Menschen", "Menschs"], "Menschen",
-        "Der Mensch è n-Deklination: anche al Dativ prende -en.",
-        "Der Mensch is n-Deklination: it takes -en in the dative too."),
-      C("nd04", "Ich schreibe dem ___ eine E-Mail.", ["Herr", "Herrn", "Herren"], "Herrn",
-        "Der Herr prende -n al singolare (Akk./Dat./Gen.): dem Herrn. Herren è il plurale.",
-        "Der Herr takes -n in the singular (Akk./Dat./Gen.): dem Herrn. Herren is the plural."),
-      C("nd05", "Quale NON è un nome n-Deklination?", ["der Löwe", "der Kunde", "der Lehrer"], "der Lehrer",
-        "Der Lehrer si declina normalmente (den Lehrer). Löwe e Kunde sono maschili in -e: n-Deklination.",
-        "Der Lehrer declines normally (den Lehrer). Löwe and Kunde are masculine in -e: n-Deklination."),
-      C("nd06", "Das Zeugnis des ___ ist sehr gut.", ["Praktikant", "Praktikanten", "Praktikants"], "Praktikanten",
-        "I nomi in -ant sono n-Deklination: Genitiv des Praktikanten.",
-        "Nouns in -ant are n-Deklination: genitive des Praktikanten."),
-      G("nd07", "Ich sehe den ___ am Bahnhof.", "der Franzose → Akk.", "Franzosen",
-        "Der Franzose (in -e): Akkusativ den Franzosen.",
-        "Der Franzose (in -e): accusative den Franzosen."),
-      G("nd08", "Der Name des ___ ist unbekannt.", "der Kandidat → Genitiv", "Kandidaten",
-        "I nomi in -at sono n-Deklination: des Kandidaten.",
-        "Nouns in -at are n-Deklination: des Kandidaten."),
-      G("nd09", "Ich kenne den ___ nicht.", "der Name → Akk.", "Namen",
-        "Der Name: Nominativ Name, Akkusativ Namen (Genitiv des Namens: eccezione con -s).",
-        "Der Name: nominative Name, accusative Namen (genitive des Namens: exception with -s)."),
-      F("nd11", "Ich kenne den Student sehr gut.", [3], "Ich kenne den Studenten sehr gut.",
-        "All'Akkusativ il nome debole prende -en: den Studenten.",
-        "In the accusative the weak noun takes -en: den Studenten."),
-      F("nd12", "Das ist das Auto des Kollegens.", [5], "Das ist das Auto des Kollegen.",
-        "Il genitivo dei nomi deboli è solo -en, senza -s: des Kollegen.",
-        "The genitive of weak nouns is just -en, without -s: des Kollegen."),
-      F("nd13", "Ich helfe dem Mensch.", [3], "Ich helfe dem Menschen.",
-        "Anche al Dativ: dem Menschen.",
-        "In the dative too: dem Menschen.")
-    ] },
+/* --- schermata di un esercizio --- */
+function renderExPlay(){
+  const s = UI_STRINGS[lang];
+  const body = document.getElementById("exBody");
+  const n = exDeck.length;
+  const modeTitle = exCtx.mode === "review" ? s.exReviewTitle
+    : exTopicName(exTopics().find(t => t.id === exCtx.topicId) || { it: "", en: "" });
+  document.getElementById("exTitle").textContent = exIdx < n ? `${s.exPickTitle} · ${exIdx + 1} / ${n}` : s.exPickTitle;
+  if(exIdx >= n){ renderExDone(modeTitle); return; }
 
-  /* v39 — dal PDF «Le frasi finali con um zu e damit» (Übung 1–4) */
-  { id: "finali",
-    cards: ["um...zu / damit", "Infinitiv mit zu"],
-    it: "um … zu oppure damit?", en: "um … zu or damit?",
-    items: [
-      C("fz01", "Ich studiere Medizin, ___ Arzt zu werden.", ["um", "damit", "dass"], "um",
-        "Stesso soggetto (io studio → io divento medico) e infinito con zu in fondo: um … zu.",
-        "Same subject (I study → I become a doctor) and infinitive with zu at the end: um … zu."),
-      C("fz02", "Meine Eltern geben mir Geld, ___ ich einen PC kaufe.", ["um", "damit", "zu"], "damit",
-        "Soggetti diversi (i genitori danno → io compro): serve damit + verbo coniugato in fondo.",
-        "Different subjects (my parents give → I buy): you need damit + conjugated verb at the end."),
-      C("fz03", "Ich gebe dir mein Handy, ___ du deine Mutter anrufst.", ["um", "damit", "weil"], "damit",
-        "Io do, tu chiami: soggetti diversi → damit.",
-        "I give, you call: different subjects → damit."),
-      C("fz04", "Ich nehme abends eine Tablette, ___ nicht bis zwei Uhr wach zu bleiben.", ["um", "damit", "ohne"], "um",
-        "Io prendo, io non resto sveglio: stesso soggetto e zu + infinito → um … zu.",
-        "I take, I don't stay awake: same subject and zu + infinitive → um … zu."),
-      C("fz05", "Ich ziehe den Pullover an, ___ ich mich nicht erkälte.", ["um", "damit", "sodass"], "damit",
-        "Qui c'è un verbo coniugato (erkälte) in fondo: con damit si può usare anche lo stesso soggetto.",
-        "Here there is a conjugated verb (erkälte) at the end: damit can also be used with the same subject."),
-      O("fz06", "Ich trainiere jeden Tag,", ["um", "Profispieler", "zu", "werden"], ".",
-        "um apre, zu + infinito chiudono la frase: um … Profispieler zu werden.",
-        "um opens, zu + infinitive close the clause: um … Profispieler zu werden."),
-      O("fz07", "Ich spreche langsam,", ["damit", "du", "mich", "verstehst"], ".",
-        "damit + soggetto (du) + … + verbo coniugato in fondo (verstehst).",
-        "damit + subject (du) + … + conjugated verb at the end (verstehst)."),
-      O("fz08", "Viele Leute lernen Deutsch,", ["um", "bessere", "Berufschancen", "zu", "haben"], ".",
-        "Stesso soggetto (le persone imparano / hanno): um … zu haben.",
-        "Same subject (people learn / have): um … zu haben."),
-      G("fz09", "Frau Bauer geht auf den Markt, um frisches Obst zu ___.", "kaufen", "kaufen",
-        "Dopo um … zu l'infinito resta nella forma base: zu kaufen.",
-        "After um … zu the infinitive stays in its base form: zu kaufen."),
-      G("fz10", "Ich habe Petra angerufen, ___ sie nicht zu spät kommt.", "per / affinché (soggetto diverso)", "damit",
-        "Io ho chiamato, lei non arriva tardi: soggetti diversi → damit.",
-        "I called, she doesn't come late: different subjects → damit."),
-      G("fz11", "Herr Kohl geht zur Bank, um Geld ___.", "abheben (separabile) con zu", "abzuheben",
-        "Verbo separabile: lo zu va in mezzo → ab-zu-heben.",
-        "Separable verb: zu goes in the middle → ab-zu-heben."),
-      F("fz12", "Ich lerne Deutsch, damit in Berlin zu arbeiten.", [3], "Ich lerne Deutsch, um in Berlin zu arbeiten.",
-        "Con zu + infinito e stesso soggetto serve um, non damit.",
-        "With zu + infinitive and the same subject you need um, not damit."),
-      F("fz13", "Ich gebe dir Geld, um du ein Buch kaufst.", [4], "Ich gebe dir Geld, damit du ein Buch kaufst.",
-        "Soggetti diversi e verbo coniugato (kaufst): serve damit.",
-        "Different subjects and a conjugated verb (kaufst): you need damit."),
-      F("fz14", "Er macht eine Diät, um zu abnehmen.", [5], "Er macht eine Diät, um abzunehmen.",
-        "abnehmen è separabile: lo zu va dentro la parola → abzunehmen.",
-        "abnehmen is separable: zu goes inside the word → abzunehmen.")
-    ] },
+  const d = exDeck[exIdx], it = d.item, done = !!d.res;
+  const gapSpan = (txt) => `<span class="ww-gap">${txt}</span>`;
+  let main = "", actions = "";
 
-  /* ---------- v40: ESAME telc B1 · B2 ----------
-     Esercizi nello stile delle prove telc (Sprachbausteine, lettera, orale).
-     Il campo `sec: "TELC"` li raggruppa in una sezione propria nell'elenco;
-     le `cards` restano le schede di grammatica collegate (link al Bignami). */
-  { id: "telc_sb", sec: "TELC",
-    cards: ["Konjunktionaladverbien vs Subjunktionen", "Verben mit Präpositionen", "Relativpronomen"],
-    it: "telc · Sprachbausteine — la parola giusta", en: "telc · Sprachbausteine — the right word",
-    items: [
-      C("tsb01", "Ich schreibe dir, ___ ich nächste Woche nach Berlin komme.", ["weil", "deshalb", "denn"], "weil",
-        "Il verbo (komme) è in fondo: serve una Subjunktion. weil manda il verbo in fondo; denn e deshalb no.",
-        "The verb (komme) is at the end: you need a subordinator. weil sends the verb to the end; denn and deshalb don't.", "E-Mail an eine Freundin"),
-      C("tsb02", "Ich hatte viel Arbeit, ___ konnte ich dir nicht früher antworten.", ["deshalb", "weil", "obwohl"], "deshalb",
-        "Subito dopo il buco c'è il verbo (konnte): serve un Konjunktionaladverb come deshalb, che occupa la 1ª posizione.",
-        "Right after the gap comes the verb (konnte): you need a conjunctive adverb like deshalb, which takes position 1.", "E-Mail an einen Freund"),
-      C("tsb03", "Ich freue mich schon ___ deinen Besuch nächste Woche.", ["auf", "an", "für"], "auf",
-        "sich freuen AUF = per qualcosa che deve ancora succedere (nächste Woche).",
-        "sich freuen AUF = about something still to come (nächste Woche)."),
-      C("tsb04", "Die Wohnung, ___ ich letztes Jahr gemietet habe, ist leider sehr laut.", ["die", "der", "das"], "die",
-        "Il pronome relativo prende il genere dalla parola a cui si riferisce: die Wohnung → die (qui Akkusativ, uguale).",
-        "The relative pronoun takes the gender of the noun it refers to: die Wohnung → die (Akkusativ here, same form).", "Brief an die Hausverwaltung"),
-      C("tsb05", "Könnten Sie bitte einen Techniker schicken, ___ die Heizung repariert?", ["der", "den", "dem"], "der",
-        "Nella relativa il tecnico è il soggetto (er repariert): Nominativ maschile → der.",
-        "In the relative clause the technician is the subject (er repariert): masculine Nominativ → der.", "Brief an die Hausverwaltung"),
-      C("tsb06", "Ich weiß noch nicht, ___ ich am Samstag Zeit habe.", ["ob", "dass", "wenn"], "ob",
-        "Domanda indiretta sì/no (Habe ich Zeit? – ja oder nein) → ob = se.",
-        "Indirect yes/no question (Habe ich Zeit? – yes or no) → ob = whether."),
-      C("tsb07", "Ich warte seit zwei Wochen ___ Ihre Antwort.", ["auf", "für", "an"], "auf",
-        "warten AUF + Akkusativ. In italiano «aspettare» non ha preposizione: va imparata con il verbo.",
-        "warten AUF + Akkusativ. In Italian «aspettare» has no preposition: learn it with the verb.", "Beschwerde"),
-      C("tsb08", "___ du Lust hast, können wir am Sonntag ins Kino gehen.", ["Wenn", "Als", "Wann"], "Wenn",
-        "Condizione (se) → wenn. als è solo per il passato una volta; wann è solo per le domande.",
-        "Condition (if) → wenn. als is only for a single past event; wann only for questions."),
-      C("tsb09", "Gestern habe ich ___ neuen Kollegen kennengelernt.", ["einen", "einem", "ein"], "einen",
-        "kennenlernen vuole l'Akkusativ; Kollege è maschile → einen neuen Kollegen.",
-        "kennenlernen takes the Akkusativ; Kollege is masculine → einen neuen Kollegen."),
-      C("tsb10", "Ich interessiere mich ___ den Deutschkurs am Abend.", ["für", "auf", "über"], "für",
-        "sich interessieren FÜR + Akkusativ.",
-        "sich interessieren FÜR + Akkusativ.", "Anfrage an eine Sprachschule"),
-      G("tsb11", "Vielen Dank ___ deine E-Mail!", "Präposition — danke ___", "für",
-        "Dank / danken FÜR qualcosa.",
-        "Dank / danken FÜR something."),
-      G("tsb12", "Ich hoffe, ___ es dir gut geht.", "congiunzione: che", "dass",
-        "Dopo hoffen, glauben, denken la frase si apre con dass e il verbo (geht) va in fondo.",
-        "After hoffen, glauben, denken the clause opens with dass and the verb (geht) goes to the end."),
-      G("tsb13", "Leider kann ich nicht kommen, ___ ich krank bin.", "causale, verbo in fondo", "weil",
-        "Causa + verbo in fondo (bin) → weil (anche da va bene).",
-        "Reason + verb at the end (bin) → weil (da also works).", ["da"]),
-      G("tsb14", "Kannst du mir sagen, ___ der Kurs beginnt?", "quando? (domanda indiretta)", "wann",
-        "Domanda indiretta con parola interrogativa: Wann beginnt der Kurs? → …, wann der Kurs beginnt.",
-        "Indirect question with a question word: Wann beginnt der Kurs? → …, wann der Kurs beginnt."),
-      F("tsb15", "Ich schreibe dir, weil ich habe eine Frage.", [5], "Ich schreibe dir, weil ich eine Frage habe.",
-        "Dopo weil il verbo coniugato va in fondo: … weil ich eine Frage habe.",
-        "After weil the conjugated verb goes to the end: … weil ich eine Frage habe."),
-      F("tsb16", "Ich habe viel gelernt, deshalb ich habe die Prüfung bestanden.", [5, 6], "Ich habe viel gelernt, deshalb habe ich die Prüfung bestanden.",
-        "deshalb occupa la 1ª posizione: subito dopo viene il verbo, poi il soggetto → deshalb habe ich.",
-        "deshalb takes position 1: the verb comes right after, then the subject → deshalb habe ich.")
-    ] },
+  if(it.t === "choice"){
+    const hasGap = it.q.includes("___");
+    const sentence = hasGap
+      ? exEsc(it.q).replace("___", done ? `<span class="ex-filled">${exEsc(it.a)}</span>` : gapSpan("___"))
+      : exEsc(it.q);
+    main = `${it.ctx ? `<div class="ex-ctx">${exEsc(it.ctx)}</div>` : ""}
+      <div class="ww-sentence">${sentence}</div>
+      <div class="ex-opts">${d.opts.map((o, i) => {
+        let cls = "ww-navy";
+        if(done){
+          if(o === it.a) cls += " right";
+          else if(o === d.given) cls += " picked-wrong";
+          else cls += " wrong";
+        }
+        return `<button type="button" class="genus-opt ww-opt ex-opt ${cls}" data-i="${i}"${done ? " disabled" : ""}>${exEsc(o)}</button>`;
+      }).join("")}</div>`;
+  } else if(it.t === "order"){
+    const tile = (i, cls) => `<button type="button" class="ex-tile ${cls}" data-i="${i}"${done ? " disabled" : ""}>${exEsc(it.a[i])}</button>`;
+    const free = d.tiles.filter(i => !d.placed.includes(i));
+    main = `${it.pre ? `<div class="ex-pre">${exEsc(it.pre)}</div>` : ""}
+      <div class="ex-line ${done ? (d.res.ok ? "ok" : "bad") : ""}" id="exLine">${d.placed.map(i => tile(i, "placed")).join("")}${it.post ? `<span class="ex-post">${exEsc(it.post)}</span>` : ""}</div>
+      <div class="ex-bank" id="exBank">${done ? "" : free.map(i => tile(i, "")).join("")}</div>`;
+    if(!done){
+      actions = `<button type="button" class="conj-btn ex-go" id="exCheck"${d.placed.length === d.tiles.length ? "" : " disabled"}>${s.exCheck}</button>
+        <button type="button" class="flash-secondary" id="exSkip">${s.cqSkip}</button>`;
+    }
+  } else if(it.t === "gap"){
+    const sentence = exEsc(it.q).replace("___", done ? `<span class="ex-filled">${exEsc(it.a)}</span>` : gapSpan("___"));
+    main = `<div class="ww-sentence">${sentence}</div>
+      <div class="genus-hint">${s.exHint}: ${exEsc(it.hint)}</div>
+      <div class="ex-field">
+        <input type="text" class="ex-input ${done ? (d.res.ok ? "ok" : "bad") : ""}" id="exInput" value="${exEsc(d.given)}" lang="de"
+          placeholder="${s.exPlaceholder}" aria-label="${s.exPlaceholder}"
+          autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text"${done ? " disabled" : ""}>
+        ${done ? "" : `<div class="ex-keys-box">
+          <div class="ex-keys-label">${s.exKeysLabel}</div>
+          <div class="ex-keys" role="group" aria-label="${s.exKeysAria}">${["ä","ö","ü","ß"].map(c => `<button type="button" class="ex-key" data-c="${c}" tabindex="-1">${c}</button>`).join("")}</div>
+          <div class="ex-keys-alt">${s.exKeysAlt}</div>
+        </div>`}
+      </div>`;
+    if(!done){
+      actions = `<button type="button" class="conj-btn ex-go" id="exCheck">${s.exCheck}</button>
+        <button type="button" class="flash-secondary" id="exSkip">${s.cqSkip}</button>`;
+    }
+  } else {   // fix
+    const words = it.q.split(" ");
+    main = `<div class="ex-words">${words.map((w, i) => {
+      let cls = d.sel.includes(i) ? "sel" : "";
+      if(done){
+        if(it.bad.includes(i)) cls += " is-bad";
+        else if(d.sel.includes(i)) cls += " pick-wrong";
+      }
+      return `<button type="button" class="ex-word ${cls}" data-i="${i}"${done ? " disabled" : ""}>${exEsc(w)}</button>`;
+    }).join(" ")}</div>
+    <div class="genus-hint">${s.exFixHint}</div>`;
+    if(!done){
+      actions = `<button type="button" class="conj-btn ex-go" id="exCheck"${d.sel.length ? "" : " disabled"}>${s.exCheck}</button>
+        <button type="button" class="flash-secondary" id="exSkip">${s.cqSkip}</button>`;
+    }
+  }
 
-  { id: "telc_brief", sec: "TELC",
-    cards: ["Der Brief — Anrede und Gruß", "Kommasetzung — la virgola"],
-    it: "telc · Schreiben — la lettera", en: "telc · Schreiben — the letter",
-    items: [
-      C("tbr01", "___ leider funktioniert die Heizung in meiner Wohnung seit Montag nicht.",
-        ["Sehr geehrter Herr Weber,", "Lieber Weber,", "Hallo Weber,"], "Sehr geehrter Herr Weber,",
-        "A un padrone di casa scrivi in modo formale: Sehr geehrter Herr + cognome. Mai il cognome da solo.",
-        "To a landlord you write formally: Sehr geehrter Herr + surname. Never the surname alone.", "Scrivi al padrone di casa, il signor Weber."),
-      C("tbr02", "___ ich interessiere mich für Ihren Deutschkurs.",
-        ["Sehr geehrte Damen und Herren,", "Liebe Damen und Herren,", "Hallo zusammen,"], "Sehr geehrte Damen und Herren,",
-        "Se non sai il nome della persona: Sehr geehrte Damen und Herren,",
-        "If you don't know the person's name: Sehr geehrte Damen und Herren,", "Scrivi a una scuola: non sai il nome."),
-      C("tbr03", "Ich freue mich auf Ihre Antwort. ___",
-        ["Mit freundlichen Grüßen", "Liebe Grüße", "Tschüs"], "Mit freundlichen Grüßen",
-        "Lettera formale (Sie) → Mit freundlichen Grüßen. Liebe Grüße e Tschüs sono per amici.",
-        "Formal letter (Sie) → Mit freundlichen Grüßen. Liebe Grüße and Tschüs are for friends.", "Fine di una lettera formale."),
-      C("tbr04", "Liebe Anna, ich schreibe ___, weil ich dich zu meiner Party einladen möchte.", ["dir", "Ihnen", "dich"], "dir",
-        "schreiben + Dativ (a chi?) e con Anna usi du → dir.",
-        "schreiben + Dativ (to whom?) and with Anna you use du → dir."),
-      C("tbr05", "Sehr geehrte Frau Klein, könnten ___ mir bitte sagen, wann der Kurs beginnt?", ["Sie", "du", "ihr"], "Sie",
-        "Hai aperto con Sehr geehrte: resti sul Sie per tutta la lettera.",
-        "You opened with Sehr geehrte: you stay with Sie for the whole letter."),
-      C("tbr06", "Liebe Anna, ___ geht es dir?", ["wie", "Wie"], "wie",
-        "Dopo la virgola dell'Anrede la riga continua con la minuscola: Liebe Anna, wie geht es dir?",
-        "After the comma of the Anrede the line continues in lower case: Liebe Anna, wie geht es dir?"),
-      O("tbr07", "Sehr geehrte Damen und Herren,", ["ich", "schreibe", "Ihnen,", "weil", "ich", "eine", "Frage", "habe"], ".",
-        "Frase d'apertura classica: ich schreibe Ihnen, weil … + verbo in fondo.",
-        "Classic opening line: ich schreibe Ihnen, weil … + verb at the end."),
-      O("tbr08", "Könnten Sie mir bitte sagen,", ["ob", "noch", "ein", "Platz", "frei", "ist"], "?",
-        "Domanda indiretta sì/no con ob; il verbo (ist) va in fondo.",
-        "Indirect yes/no question with ob; the verb (ist) goes to the end.", [["ob", "ein", "Platz", "noch", "frei", "ist"]]),
-      O("tbr09", "", ["Ich", "freue", "mich", "auf", "deine", "Antwort"], "!",
-        "Chiusura informale fissa: Ich freue mich auf deine Antwort! (con Sie: auf Ihre Antwort).",
-        "Fixed informal closing: Ich freue mich auf deine Antwort! (with Sie: auf Ihre Antwort)."),
-      G("tbr10", "Vielen Dank im ___.", "in anticipo", "Voraus",
-        "Vielen Dank im Voraus = grazie in anticipo. Formula tipica prima del saluto.",
-        "Vielen Dank im Voraus = thank you in advance. Typical line before the closing."),
-      G("tbr11", "Es tut mir ___, aber ich kann am Samstag nicht kommen.", "mi dispiace = es tut mir …", "leid",
-        "Es tut mir leid = mi dispiace. leid si scrive minuscolo.",
-        "Es tut mir leid = I'm sorry. leid is written in lower case."),
-      G("tbr12", "Ich freue mich ___ Ihre Antwort.", "Präposition — per una cosa futura", "auf",
-        "sich freuen AUF: l'attesa di qualcosa che deve arrivare (la risposta).",
-        "sich freuen AUF: looking forward to something still to come (the answer)."),
-      F("tbr13", "Liebe Anna, wie geht es Ihnen?", [5], "Liebe Anna, wie geht es dir?",
-        "Liebe Anna = du. Non mischiare du e Sie nella stessa lettera.",
-        "Liebe Anna = du. Never mix du and Sie in the same letter."),
-      F("tbr14", "Sehr geehrte Damen und Herren, Ich schreibe Ihnen, weil die Heizung kaputt ist.", [5], "Sehr geehrte Damen und Herren, ich schreibe Ihnen, weil die Heizung kaputt ist.",
-        "Dopo la virgola dell'Anrede si continua con la minuscola: ich.",
-        "After the comma of the Anrede you continue in lower case: ich."),
-      F("tbr15", "Sehr geehrte Damen und Herren, … Tschüs!", [6], "Sehr geehrte Damen und Herren, … Mit freundlichen Grüßen",
-        "Apertura formale → chiusura formale: Mit freundlichen Grüßen. Tschüs è solo tra amici.",
-        "Formal opening → formal closing: Mit freundlichen Grüßen. Tschüs is only for friends.")
-    ] },
+  let fb = "";
+  if(done){
+    const full = exFullSentence(it);
+    fb = `<div class="ex-fb ${d.res.ok ? "ex-fb-ok" : "ex-fb-bad"}" id="exFb">
+      <div class="ex-fb-title">${d.res.ok ? s.exRight : s.exWrong}</div>
+      <div class="ex-fb-ans">${d.res.ok ? "" : `<span class="ex-fb-lbl">${s.exCorrectIs}</span> `}<b>${exEsc(full)}</b>${speakBtnHtml(full, "quiz-speak")}</div>
+      <div class="ww-why">${exEsc(it.why[lang === "en" ? "en" : "it"])}</div>
+      ${exBignamiLink(d.topic)}
+    </div>`;
+  }
+  const last = exIdx === n - 1;
+  body.innerHTML = `
+    <div class="flash-progress"><div class="flash-progress-fill" style="width:${(exIdx / n) * 100}%"></div></div>
+    <div class="ex-topic-tag">${exEsc(exCtx.mode === "review" ? exTopicName(d.topic) : modeTitle)}</div>
+    <div class="ex-instr">${s.exInstr[it.t]}</div>
+    ${main}
+    ${actions ? `<div class="ex-actions">${actions}</div>` : ""}
+    ${fb}
+    <div class="genus-nav">
+      <button type="button" class="flash-secondary" id="exToPick">${s.exTopics}</button>
+      ${done ? `<button type="button" class="conj-btn genus-next" id="exNext">${last ? s.exFinish : s.cqNext}</button>` : ""}
+    </div>`;
 
-  { id: "telc_sprechen", sec: "TELC",
-    cards: ["Konjunktiv II", "Position 0 — und/aber/oder/denn/sondern"],
-    it: "telc · Sprechen — frasi per l'orale", en: "telc · Sprechen — phrases for the oral exam",
-    items: [
-      C("tsp01", "Wie ___ es, wenn wir am Samstag zusammen grillen?", ["wäre", "war", "ist"], "wäre",
-        "Proposta gentile con il Konjunktiv II: Wie wäre es, wenn … ? (Che ne dici se…?)",
-        "Polite suggestion with Konjunktiv II: Wie wäre es, wenn … ? (How about…?)", "Teil 3 · proponi qualcosa"),
-      C("tsp02", "Meiner Meinung nach ___.", ["ist das zu teuer", "das ist zu teuer", "das zu teuer ist"], "ist das zu teuer",
-        "Meiner Meinung nach occupa la 1ª posizione: il verbo viene subito dopo (2° posto).",
-        "Meiner Meinung nach takes position 1: the verb comes right after it (position 2)."),
-      C("tsp03", "Ich finde, ___.", ["dass das zu teuer ist", "dass das ist zu teuer", "dass ist das zu teuer"], "dass das zu teuer ist",
-        "Con dass il verbo (ist) va in fondo.",
-        "With dass the verb (ist) goes to the end."),
-      C("tsp04", "___", ["Das ist eine gute Idee, aber ich gehe lieber in den Park.", "Nein, das ist blöd.", "Ja."], "Das ist eine gute Idee, aber ich gehe lieber in den Park.",
-        "All'orale conta l'interazione: rispondi con gentilezza, poi proponi un'alternativa e motivala.",
-        "In the oral exam interaction counts: reply politely, then suggest an alternative and give a reason.", "Il partner dice: «Wir könnten ins Museum gehen.» Tu preferiresti il parco."),
-      C("tsp05", "Wir ___ zusammen einen Kuchen backen.", ["könnten", "konnten", "gekonnt"], "könnten",
-        "könnten (con Umlaut) = Konjunktiv II, proposta gentile. konnten senza Umlaut = passato (potevamo).",
-        "könnten (with Umlaut) = Konjunktiv II, polite suggestion. konnten without Umlaut = past (we could/were able to).", "Teil 3 · proponi qualcosa"),
-      C("tsp06", "Ich schlage vor, dass wir den Zug ___.", ["nehmen", "nehmen wir", "genommen"], "nehmen",
-        "dass manda il verbo coniugato in fondo: …, dass wir den Zug nehmen.",
-        "dass sends the conjugated verb to the end: …, dass wir den Zug nehmen."),
-      C("tsp07", "Was ___ du beruflich?", ["machst", "bist", "arbeitest"], "machst",
-        "Domanda fissa per il lavoro: Was machst du beruflich? (Che lavoro fai?)",
-        "Fixed question about work: Was machst du beruflich? (What do you do for a living?)", "Teil 1 B1 · fai domande al partner"),
-      O("tsp08", "Ich schlage vor,", ["dass", "wir", "am", "Sonntag", "ins", "Kino", "gehen"], ".",
-        "dass + soggetto + … + verbo in fondo. Prima il tempo (am Sonntag), poi il luogo (ins Kino).",
-        "dass + subject + … + verb at the end. Time first (am Sonntag), then place (ins Kino)."),
-      O("tsp09", "Wie wäre es,", ["wenn", "wir", "zusammen", "ein", "Geschenk", "kaufen"], "?",
-        "Dopo wenn il verbo (kaufen) va in fondo.",
-        "After wenn the verb (kaufen) goes to the end."),
-      O("tsp10", "Meiner Meinung nach", ["ist", "das", "Leben", "in", "der", "Stadt", "teurer"], ".",
-        "Dopo Meiner Meinung nach viene subito il verbo (ist), poi il soggetto (das Leben in der Stadt).",
-        "After Meiner Meinung nach comes the verb (ist), then the subject (das Leben in der Stadt)."),
-      G("tsp11", "Da hast du ___, aber ich sehe das anders.", "hai ragione = du hast …", "recht",
-        "Da hast du recht = hai ragione. Frase perfetta per essere d'accordo solo in parte.",
-        "Da hast du recht = you're right. Perfect for agreeing only partly."),
-      G("tsp12", "Ich bin der ___, dass wir mehr Zeit brauchen.", "opinione (die …)", "Meinung",
-        "Ich bin der Meinung, dass … = sono dell'opinione che… (verbo in fondo).",
-        "Ich bin der Meinung, dass … = I am of the opinion that… (verb at the end)."),
-      G("tsp13", "___ wir zusammen ins Kino gehen?", "vogliamo…? (wollen, wir)", "Wollen",
-        "Wollen wir … ? = vogliamo…? Modo semplice per proporre qualcosa al partner.",
-        "Wollen wir … ? = shall we…? A simple way to suggest something to your partner.", ["Sollen"]),
-      F("tsp14", "Meiner Meinung nach das ist zu teuer.", [3, 4], "Meiner Meinung nach ist das zu teuer.",
-        "Meiner Meinung nach è in 1ª posizione: il verbo (ist) va subito dopo, prima del soggetto.",
-        "Meiner Meinung nach is in position 1: the verb (ist) comes right after, before the subject."),
-      F("tsp15", "Ich finde, dass ist das eine gute Idee.", [3], "Ich finde, dass das eine gute Idee ist.",
-        "Dopo dass il verbo (ist) non sta al 2° posto ma in fondo.",
-        "After dass the verb (ist) is not in position 2 but at the end."),
-      F("tsp16", "Wie wäre es, wenn wir gehen ins Kino?", [5], "Wie wäre es, wenn wir ins Kino gehen?",
-        "wenn manda il verbo (gehen) in fondo.",
-        "wenn sends the verb (gehen) to the end."),
-      /* v41 — Redemittel per discutere (libro B2, Kap. 2) */
-      C("tsp17", "___, dass man im Internet viel lernen kann.", ["Dafür spricht", "Dagegen spricht", "Da muss ich widersprechen"], "Dafür spricht",
-        "Dafür spricht, dass … = un argomento A FAVORE è che… (dagegen = contro).",
-        "Dafür spricht, dass … = one argument FOR it is that… (dagegen = against).", "Vuoi dare un argomento a favore."),
-      C("tsp18", "Zum einen ist die Wohnung billig, zum ___ ist sie nah am Zentrum.", ["anderen", "zweiten", "weiteren"], "anderen",
-        "Formula fissa: zum einen …, zum anderen … per due argomenti nella stessa direzione.",
-        "Fixed phrase: zum einen …, zum anderen … for two points in the same direction."),
-      C("tsp19", "Einerseits ist das Smartphone praktisch, ___ macht es süchtig.", ["andererseits", "deshalb", "zum Beispiel"], "andererseits",
-        "Einerseits … andererseits mette a confronto pro e contro. Dopo andererseits viene subito il verbo (macht).",
-        "Einerseits … andererseits compares pros and cons. After andererseits the verb comes right away (macht)."),
-      C("tsp20", "___", ["Wie meinst du das genau?", "Das sehe ich ganz anders.", "Zum einen …"], "Wie meinst du das genau?",
-        "Per chiedere un chiarimento (Rückfrage): Wie meinst du das genau? È anche un buon modo per guadagnare tempo all'esame.",
-        "To ask for clarification (Rückfrage): Wie meinst du das genau? It's also a good way to win time in the exam.", "Non hai capito bene cosa intende il partner."),
-      G("tsp21", "Da muss ich ___.", "contraddire", "widersprechen",
-        "Da muss ich widersprechen = qui devo contraddirti. widersprechen + Dativ (dir).",
-        "Da muss ich widersprechen = I have to disagree there. widersprechen + Dativ (dir)."),
-      G("tsp22", "Ich halte nichts ___, jeden Tag online zu sein.", "da(r)- + von", "davon",
-        "etwas halten VON → davon annuncia l'infinitiva con zu.",
-        "etwas halten VON → davon announces the zu-infinitive clause."),
-      O("tsp23", "Ich bin der Ansicht,", ["dass", "wir", "weniger", "Zeit", "online", "verbringen", "sollten"], ".",
-        "Ich bin der Ansicht, dass … : dass manda il verbo coniugato (sollten) in fondo.",
-        "Ich bin der Ansicht, dass … : dass sends the conjugated verb (sollten) to the end."),
-      F("tsp24", "Ich bin der Ansicht, dass das ist richtig.", [6], "Ich bin der Ansicht, dass das richtig ist.",
-        "Dopo dass il verbo (ist) va in fondo.",
-        "After dass the verb (ist) goes to the end.")
-    ] },
+  /* collegamento degli eventi */
+  document.getElementById("exToPick").addEventListener("click", renderExPicker);
+  const nx = document.getElementById("exNext");
+  if(nx) nx.addEventListener("click", () => { exIdx++; renderExPlay(); });
+  if(done){
+    bindSpeakBtns(document.getElementById("exFb"));
+    const fbEl = document.getElementById("exFb");
+    if(fbEl && fbEl.scrollIntoView) fbEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    return;
+  }
+  const chk = document.getElementById("exCheck");
+  if(chk) chk.addEventListener("click", () => exSubmit(false));
+  const sk = document.getElementById("exSkip");
+  if(sk) sk.addEventListener("click", () => exSubmit(true));
 
-  /* ---------- v41: infinitiva o dass · Infinitiv Perfekt (Bignami B2, B8–B9) ---------- */
-  { id: "infdass",
-    cards: ["Infinitivsatz oder dass-Satz?", "Infinitiv Perfekt — geschrieben zu haben", "Infinitiv mit zu"],
-    it: "Infinito con zu o dass? · … zu haben / zu sein", en: "zu-infinitive or dass? · … zu haben / zu sein",
-    items: [
-      C("ida01", "___", ["Sì: mir = ich", "No: soggetti diversi", "No: c'è un modale"], "Sì: mir = ich",
-        "L'oggetto della principale (mir) è la stessa persona del soggetto del dass (ich): si può dire …, eine Wohnung zu mieten.",
-        "The object of the main clause (mir) is the same person as the subject of the dass clause (ich): you can say …, eine Wohnung zu mieten.",
-        "Si può usare zu? «Ein Freund hat mir vorgeschlagen, dass ich eine Wohnung miete.»"),
-      C("ida02", "___", ["No: soggetti diversi", "Sì: stesso soggetto", "Sì: es … man"], "No: soggetti diversi",
-        "Chi ha paura è ich, chi è troppo cara è die Wohnung: soggetti diversi, resta il dass.",
-        "The one who is afraid is ich, the one that is too expensive is die Wohnung: different subjects, dass stays.",
-        "Si può usare zu? «Zuerst hatte ich Angst, dass die Wohnung zu teuer ist.»"),
-      C("ida03", "___", ["Sì: es … man", "No: soggetti diversi", "No: c'è un modale"], "Sì: es … man",
-        "es nella principale e man nel dass: si può dire Es ist nicht normal, so viel Miete zu zahlen.",
-        "es in the main clause and man in the dass clause: you can say Es ist nicht normal, so viel Miete zu zahlen.",
-        "Si può usare zu? «Es ist nicht normal, dass man so viel Miete zahlt.»"),
-      C("ida04", "___", ["No: wissen + modale", "Sì: stesso soggetto", "Sì: es … man"], "No: wissen + modale",
-        "Il soggetto è lo stesso, ma con wissen (e con il modale kann) l'infinitiva non si usa: resta il dass.",
-        "The subject is the same, but with wissen (and the modal kann) you can't use the infinitive clause: dass stays.",
-        "Si può usare zu? «Ich weiß, dass ich mich auf meine Nachbarn verlassen kann.»"),
-      C("ida05", "___", ["No: soggetti diversi", "Sì: stesso soggetto", "Sì: mich = ich"], "No: soggetti diversi",
-        "ich trova bello, ma sono wir a capirsi: soggetti diversi, resta il dass.",
-        "ich finds it nice, but it is wir who get on well: different subjects, dass stays.",
-        "Si può usare zu? «Ich fand es schön, dass wir uns so gut verstanden haben.»"),
-      C("ida06", "Ich bin froh, mit WhatsApp ___.", ["aufgewachsen zu sein", "aufgewachsen zu haben", "zu aufgewachsen sein"], "aufgewachsen zu sein",
-        "È già successo → Infinitiv Perfekt. aufwachsen fa il Perfekt con sein (ich bin aufgewachsen) → aufgewachsen zu sein.",
-        "It has already happened → perfect infinitive. aufwachsen forms the Perfekt with sein (ich bin aufgewachsen) → aufgewachsen zu sein."),
-      C("ida07", "Heute bin ich froh, als Kind kein Smartphone ___.", ["besessen zu haben", "besessen zu sein", "zu besessen haben"], "besessen zu haben",
-        "Azione passata (als Kind) → Partizip II + zu + haben. besitzen: ich habe besessen.",
-        "Past action (als Kind) → Partizip II + zu + haben. besitzen: ich habe besessen."),
-      C("ida08", "Es hat mir immer gefallen, Briefe ___.", ["zu schreiben", "geschrieben zu haben", "zu geschrieben"], "zu schreiben",
-        "Le due azioni avvengono insieme (mi piaceva mentre scrivevo): infinito semplice con zu.",
-        "Both actions happen at the same time (I liked it while writing): simple infinitive with zu.",
-        "le due azioni sono contemporanee"),
-      O("ida09", "Ich habe vor,", ["irgendwann", "in", "eine", "andere", "Stadt", "umzuziehen"], ".",
-        "vorhaben vuole zu + infinito. umziehen è separabile: zu va in mezzo → umzuziehen, in fondo alla frase.",
-        "vorhaben takes zu + infinitive. umziehen is separable: zu goes in the middle → umzuziehen, at the end of the clause."),
-      O("ida10", "Es stresst mich,", ["so", "viele", "Dinge", "zu", "besitzen"], ".",
-        "es + verbo + oggetto (mich) e poi l'infinitiva: zu + infinito sempre in fondo.",
-        "es + verb + object (mich) and then the infinitive clause: zu + infinitive always at the end."),
-      O("ida11", "Ich finde es traurig,", ["den", "Kontakt", "verloren", "zu", "haben"], ".",
-        "Azione già avvenuta: Partizip II (verloren) + zu + haben, in quest'ordine.",
-        "Action already completed: Partizip II (verloren) + zu + haben, in this order."),
-      G("ida12", "Ich habe entschieden, den Mietvertrag ___.", "kündigen, con zu", "zu kündigen",
-        "Stesso soggetto (ich ho deciso, ich disdico) → …, den Mietvertrag zu kündigen.",
-        "Same subject (ich decided, ich cancel) → …, den Mietvertrag zu kündigen."),
-      G("ida13", "Ich habe vor, irgendwann ___.", "umziehen (separabile), con zu", "umzuziehen",
-        "Verbo separabile: zu va tra prefisso e verbo → um-zu-ziehen.",
-        "Separable verb: zu goes between prefix and verb → um-zu-ziehen."),
-      G("ida14", "Er ärgert sich, so spät aufgestanden zu ___.", "haben o sein? (aufstehen)", "sein",
-        "aufstehen fa il Perfekt con sein (er ist aufgestanden) → aufgestanden zu sein.",
-        "aufstehen forms the Perfekt with sein (er ist aufgestanden) → aufgestanden zu sein."),
-      G("ida15", "Ich bin froh, die Prüfung bestanden zu ___.", "haben o sein? (bestehen)", "haben",
-        "bestehen fa il Perfekt con haben (ich habe bestanden) → bestanden zu haben.",
-        "bestehen forms the Perfekt with haben (ich habe bestanden) → bestanden zu haben."),
-      F("ida16", "Ich bin froh, die Prüfung zu bestanden haben.", [5, 6], "Ich bin froh, die Prüfung bestanden zu haben.",
-        "zu sta tra il Partizip II e haben: bestanden zu haben.",
-        "zu goes between the Partizip II and haben: bestanden zu haben."),
-      F("ida17", "Ich habe vor, zu umziehen.", [3, 4], "Ich habe vor, umzuziehen.",
-        "Nei verbi separabili zu va dentro la parola: umzuziehen.",
-        "With separable verbs zu goes inside the word: umzuziehen."),
-      F("ida18", "Er ist froh, früh aufgestanden zu haben.", [6], "Er ist froh, früh aufgestanden zu sein.",
-        "aufstehen vuole sein nel Perfekt, quindi anche qui: aufgestanden zu sein.",
-        "aufstehen takes sein in the Perfekt, so here too: aufgestanden zu sein.")
-    ] },
+  if(it.t === "choice"){
+    body.querySelectorAll(".ex-opt").forEach(b => b.addEventListener("click", () => {
+      d.given = d.opts[+b.dataset.i];
+      exSubmit(false);
+    }));
+  } else if(it.t === "order"){
+    body.querySelectorAll(".ex-tile").forEach(b => b.addEventListener("click", () => {
+      const i = +b.dataset.i, at = d.placed.indexOf(i);
+      if(at >= 0) d.placed.splice(at, 1); else d.placed.push(i);
+      renderExPlay();
+    }));
+  } else if(it.t === "gap"){
+    const inp = document.getElementById("exInput");
+    inp.addEventListener("input", () => { d.given = inp.value; });
+    inp.addEventListener("keydown", (ev) => { if(ev.key === "Enter"){ ev.preventDefault(); d.given = inp.value; exSubmit(false); } });
+    /* mousedown/pointerdown senza default: il campo resta attivo, quindi i tasti non spariscono prima del tocco */
+    body.querySelectorAll(".ex-key").forEach(k => ["mousedown","pointerdown"].forEach(t => k.addEventListener(t, ev => ev.preventDefault())));
+    body.querySelectorAll(".ex-key").forEach(k => k.addEventListener("click", () => {
+      const a = inp.selectionStart == null ? inp.value.length : inp.selectionStart;
+      const b = inp.selectionEnd == null ? a : inp.selectionEnd;
+      inp.value = inp.value.slice(0, a) + k.dataset.c + inp.value.slice(b);
+      d.given = inp.value;
+      inp.focus();
+      try { inp.setSelectionRange(a + 1, a + 1); } catch(e){}
+    }));
+    try { inp.focus({ preventScroll: true }); } catch(e){}
+  } else {
+    body.querySelectorAll(".ex-word").forEach(b => b.addEventListener("click", () => {
+      const i = +b.dataset.i, at = d.sel.indexOf(i);
+      if(at >= 0) d.sel.splice(at, 1); else d.sel.push(i);
+      renderExPlay();
+    }));
+  }
+}
 
-  /* =================== v42 — ripasso completo della grammatica =================== */
-  { id: "fragprep",
-    cards: ["Verben mit Präpositionen", "Pronominaladverb: wo(r)+ / da(r)+"],
-    it: "Domande con preposizione — Akk o Dat? persona o cosa?", en: "Questions with prepositions — Akk or Dat? person or thing?",
-    items: [
-      C("fp01", "Mit ___ diskutierst du oft?", ["wem", "wen", "wer"], "wem",
-        "mit vuole sempre il Dativ: la domanda su una persona è Mit wem?",
-        "mit always takes the dative: the question about a person is Mit wem?"),
-      C("fp02", "Über ___ ärgerst du dich manchmal?", ["wen", "wem", "wer"], "wen",
-        "sich ärgern ÜBER + Akkusativ: per una persona → Über wen?",
-        "sich ärgern ÜBER + accusative: for a person → Über wen?"),
-      C("fp03", "___ interessierst du dich? – Für Musik.", ["Wofür", "Für wem", "Worüber"], "Wofür",
-        "Musik è una cosa e il verbo è sich interessieren FÜR → wo + für = Wofür?",
-        "Musik is a thing and the verb is sich interessieren FÜR → wo + für = Wofür?"),
-      C("fp04", "Von ___ träumst du? – Von meiner Freundin.", ["wem", "wen", "was"], "wem",
-        "Persona + von (sempre Dativ) → Von wem?",
-        "Person + von (always dative) → Von wem?"),
-      C("fp05", "___ denkst du nie? – An die Arbeit.", ["Woran", "Wovon", "Worauf"], "Woran",
-        "denken AN e la risposta è una cosa → wo + r + an = Woran?",
-        "denken AN and the answer is a thing → wo + r + an = Woran?"),
-      G("fp06", "Ich interessiere mich sehr ___ Musik.", "sich interessieren ___ + Akk.", "für",
-        "sich interessieren FÜR + Akkusativ.",
-        "sich interessieren FÜR + accusative."),
-      G("fp07", "Ich träume oft ___ einer Reise nach Japan.", "träumen ___ + Dat.", "von",
-        "träumen VON + Dativ (einer Reise).",
-        "träumen VON + dative (einer Reise)."),
-      G("fp08", "Ich diskutiere oft ___ meinem Vater über Politik.", "con chi? + Dat.", "mit",
-        "diskutieren MIT jemandem (Dat.) ÜBER etwas (Akk.).",
-        "diskutieren MIT someone (dat.) ÜBER something (acc.)."),
-      O("fp09", "Ingrid ärgert sich oft darüber,", ["dass", "die", "Leute", "Müll", "auf", "die", "Straße", "werfen"], ".",
-        "darüber annuncia la frase con dass; il verbo (werfen) va in fondo.",
-        "darüber announces the dass clause; the verb (werfen) goes to the end."),
-      O("fp10", "Ich warte schon lange darauf,", ["endlich", "Urlaub", "zu", "haben"], ".",
-        "Stesso soggetto (io aspetto, io ho): dopo darauf basta zu + infinito.",
-        "Same subject (I wait, I have): after darauf zu + infinitive is enough."),
-      F("fp11", "Mit wen telefonierst du am häufigsten?", [1], "Mit wem telefonierst du am häufigsten?",
-        "mit vuole il Dativ: wem, non wen.",
-        "mit takes the dative: wem, not wen."),
-      F("fp12", "Ich habe meine Lehrerin über informiert, dass ich krank bin.", [4], "Ich habe meine Lehrerin darüber informiert, dass ich krank bin.",
-        "Prima di una frase intera la preposizione diventa da(r)+: darüber informieren, dass …",
-        "Before a whole clause the preposition becomes da(r)+: darüber informieren, dass …")
-    ] },
+/* --- fine sessione --- */
+function renderExDone(modeTitle){
+  const s = UI_STRINGS[lang];
+  const body = document.getElementById("exBody");
+  const n = exDeck.length;
+  const t = exCtx.mode === "topic" ? exTopics().find(x => x.id === exCtx.topicId) : null;
+  const st = t ? exTopicStats(t) : null;
+  const msg = exOk === n ? s.exPerfect : (exOk >= n * 0.7 ? s.exGood : s.exMeh);
+  const nDue = exDueItems().length;
+  body.innerHTML = `
+    <div class="flash-done">
+      <div class="flash-done-ic">${ic(exOk === n ? "checkSeal" : "book")}</div>
+      <h3>${s.exDoneTitle}</h3>
+      <p>${s.cqDoneMsg(exOk, n)}<br>${msg}</p>
+      ${st ? `<p class="ex-done-stat">${s.exMasteredOf(st.mastered, t.items.length)}</p>` : ""}
+      <div class="flash-actions">
+        ${t ? `<button type="button" class="conj-btn" id="exAgain">${s.exAgain}</button>` : (nDue > 0 ? `<button type="button" class="conj-btn" id="exAgain">${s.exReviewBtn(nDue)}</button>` : "")}
+        <button type="button" class="flash-secondary" id="exTopicsBtn">${s.exTopics}</button>
+        <button type="button" class="flash-secondary" id="exEnd">${s.flashCloseBtn}</button>
+      </div>
+    </div>`;
+  const ag = document.getElementById("exAgain");
+  if(ag) ag.addEventListener("click", () => { if(t) exStartTopic(t.id); else exStartReview(); });
+  document.getElementById("exTopicsBtn").addEventListener("click", renderExPicker);
+  document.getElementById("exEnd").addEventListener("click", closeEx);
+}
 
-  { id: "kasus",
-    cards: ["Der/die/das — Artikel nach Kasus", "ein / kein — Artikel nach Kasus", "Nominativ/Akkusativ/Dativ — il trucco"],
-    it: "Gli articoli nei casi — der, den, dem, des", en: "Articles in the cases — der, den, dem, des",
-    items: [
-      C("ks01", "Ich sehe ___ Mann.", ["den", "der", "dem"], "den",
-        "sehen vuole l'Akkusativ (chi vedo?). Maschile Akk. → den.",
-        "sehen takes the accusative (whom do I see?). Masculine acc. → den."),
-      C("ks02", "Ich gebe ___ Kind einen Apfel.", ["dem", "das", "den"], "dem",
-        "A chi do? → Dativ. das Kind al Dativ → dem Kind.",
-        "To whom do I give? → dative. das Kind in the dative → dem Kind."),
-      C("ks03", "Das ist das Auto ___ Lehrerin.", ["der", "die", "den"], "der",
-        "Di chi? → Genitiv. Femminile Genitiv → der Lehrerin.",
-        "Whose? → genitive. Feminine genitive → der Lehrerin."),
-      C("ks04", "Ich habe ___ Bruder und zwei Schwestern.", ["einen", "ein", "einem"], "einen",
-        "haben vuole l'Akkusativ; der Bruder → einen Bruder.",
-        "haben takes the accusative; der Bruder → einen Bruder."),
-      C("ks05", "Wir helfen ___ Nachbarn.", ["den", "die", "der"], "den",
-        "helfen vuole il Dativ. Plurale Dativ → den … + n: den Nachbarn.",
-        "helfen takes the dative. Dative plural → den … + n: den Nachbarn.", "plurale"),
-      C("ks06", "Ich habe heute ___ Zeit.", ["keine", "kein", "keinen"], "keine",
-        "die Zeit è femminile: Akk. femminile → keine.",
-        "die Zeit is feminine: feminine acc. → keine."),
-      G("ks07", "Der Hund gehört ___ Frau.", "gehören + Dat., die Frau", "der",
-        "gehören vuole il Dativ; die Frau al Dativ → der Frau.",
-        "gehören takes the dative; die Frau in the dative → der Frau."),
-      G("ks08", "Ich kaufe ___ Tisch.", "ein, der Tisch, Akk.", "einen",
-        "Maschile all'Akkusativ: ein → einen.",
-        "Masculine accusative: ein → einen."),
-      O("ks09", "Ich zeige", ["dem", "Kind", "den", "Weg"], ".",
-        "Con due nomi: prima il Dativ (a chi? dem Kind), poi l'Akkusativ (cosa? den Weg).",
-        "With two nouns: first the dative (to whom? dem Kind), then the accusative (what? den Weg)."),
-      F("ks10", "Ich schenke der Mann ein Buch.", [2], "Ich schenke dem Mann ein Buch.",
-        "A chi regalo? → Dativ. der Mann al Dativ → dem Mann.",
-        "To whom do I give? → dative. der Mann in the dative → dem Mann."),
-      F("ks11", "Er hat kein Hund.", [2], "Er hat keinen Hund.",
-        "der Hund all'Akkusativ: kein → keinen.",
-        "der Hund in the accusative: kein → keinen.")
-    ] },
-
-  { id: "adj",
-    cards: ["Adjektivdeklination — le desinenze", "Adjektive ohne Artikel — Nullartikel"],
-    it: "Le desinenze degli aggettivi", en: "Adjective endings",
-    items: [
-      C("ad01", "Der ___ Hund schläft.", ["kleine", "kleinen", "kleiner"], "kleine",
-        "Dopo der (Nominativ) l'aggettivo prende solo -e: der kleine Hund.",
-        "After der (nominative) the adjective only takes -e: der kleine Hund."),
-      C("ad02", "Ich sehe den ___ Hund.", ["kleinen", "kleine", "kleiner"], "kleinen",
-        "Maschile Akkusativ con articolo → -en: den kleinen Hund.",
-        "Masculine accusative with an article → -en: den kleinen Hund."),
-      C("ad03", "Das ist ein ___ Hund.", ["kleiner", "kleine", "kleines"], "kleiner",
-        "ein non mostra il genere, quindi lo mostra l'aggettivo: maschile → -er.",
-        "ein doesn't show the gender, so the adjective does: masculine → -er."),
-      C("ad04", "Ich habe ein ___ Auto.", ["neues", "neue", "neuen"], "neues",
-        "das Auto, Akk. con ein: l'aggettivo mostra il neutro → -es.",
-        "das Auto, acc. with ein: the adjective shows the neuter → -es."),
-      C("ad05", "Mit dem ___ Fahrrad fahre ich zur Arbeit.", ["alten", "alte", "altes"], "alten",
-        "Al Dativ, dopo un articolo, l'aggettivo prende sempre -en.",
-        "In the dative, after an article, the adjective always takes -en."),
-      C("ad06", "Ich trinke gern ___ Kaffee.", ["heißen", "heiße", "heißer"], "heißen",
-        "Senza articolo l'aggettivo prende la desinenza dell'articolo: den Kaffee → heißen Kaffee.",
-        "With no article the adjective takes the article's ending: den Kaffee → heißen Kaffee.", "senza articolo"),
-      G("ad07", "Sie trägt eine ___ Jacke.", "rot, Akk. femminile", "rote",
-        "die Jacke all'Akkusativ con eine → -e: eine rote Jacke.",
-        "die Jacke in the accusative with eine → -e: eine rote Jacke."),
-      G("ad08", "Wir wohnen in einer ___ Wohnung.", "groß, Dativ femminile", "großen",
-        "Dativ dopo un articolo → -en: in einer großen Wohnung.",
-        "Dative after an article → -en: in einer großen Wohnung."),
-      G("ad09", "___ Wetter heute!", "schön, senza articolo, neutro", "Schönes",
-        "Senza articolo, neutro Nominativ → -es (come das).",
-        "No article, neuter nominative → -es (like das)."),
-      O("ad10", "Ich wünsche dir", ["einen", "schönen", "Tag"], "!",
-        "einen + aggettivo in -en + nome: einen schönen Tag.",
-        "einen + adjective in -en + noun: einen schönen Tag."),
-      F("ad11", "Ich habe einen neue Computer.", [3], "Ich habe einen neuen Computer.",
-        "Dopo einen (Akk. maschile) l'aggettivo prende -en.",
-        "After einen (masc. acc.) the adjective takes -en."),
-      F("ad12", "Das ist ein schöne Haus.", [3], "Das ist ein schönes Haus.",
-        "ein + neutro: è l'aggettivo a mostrare il genere → -es.",
-        "ein + neuter: the adjective shows the gender → -es.")
-    ] },
-
-  { id: "perfekt",
-    cards: ["Das Perfekt — haben oder sein?", "Trennbare und untrennbare Vorsilben"],
-    it: "Il Perfekt — haben o sein, ge- o niente ge-", en: "The Perfekt — haben or sein, ge- or no ge-",
-    items: [
-      C("pf01", "Ich ___ gestern spät nach Hause gegangen.", ["bin", "habe", "war"], "bin",
-        "gehen è un verbo di movimento → Perfekt con sein.",
-        "gehen is a verb of movement → Perfekt with sein."),
-      C("pf02", "Wir ___ lange geschlafen.", ["haben", "sind", "hatten"], "haben",
-        "schlafen non è movimento né cambiamento → haben.",
-        "schlafen is neither movement nor change → haben."),
-      C("pf03", "Er ___ im Sommer nach Berlin umgezogen.", ["ist", "hat", "wird"], "ist",
-        "umziehen = cambiare casa, è movimento → sein.",
-        "umziehen = to move house, it's movement → sein."),
-      C("pf04", "Ich habe meine Oma ___.", ["besucht", "gebesucht", "besuchte"], "besucht",
-        "be- è un prefisso inseparabile: niente ge- → besucht.",
-        "be- is an inseparable prefix: no ge- → besucht."),
-      C("pf05", "Wann bist du heute ___?", ["aufgestanden", "geaufstanden", "aufgesteht"], "aufgestanden",
-        "aufstehen è separabile: ge- va in mezzo → auf-ge-standen.",
-        "aufstehen is separable: ge- goes in the middle → auf-ge-standen."),
-      C("pf06", "Sie hat in Italien ___.", ["studiert", "gestudiert", "studieren"], "studiert",
-        "I verbi in -ieren non prendono ge-: studiert.",
-        "Verbs in -ieren take no ge-: studiert."),
-      G("pf07", "Ich habe heute viel ___.", "einkaufen → Partizip II", "eingekauft",
-        "Separabile: ein-ge-kauft.",
-        "Separable: ein-ge-kauft."),
-      G("pf08", "Der Zug ist pünktlich ___.", "ankommen → Partizip II", "angekommen",
-        "Separabile e irregolare: an-ge-kommen.",
-        "Separable and irregular: an-ge-kommen."),
-      G("pf09", "Was ist ___? – Der Hund ist weggelaufen.", "passieren → Partizip II", "passiert",
-        "-ieren: niente ge-. passieren fa il Perfekt con sein.",
-        "-ieren: no ge-. passieren forms the Perfekt with sein."),
-      O("pf10", "Gestern", ["habe", "ich", "einen", "Film", "gesehen"], ".",
-        "Ausiliare al 2° posto, Partizip II in fondo.",
-        "Auxiliary in 2nd position, Partizip II at the end."),
-      F("pf11", "Ich habe nach Hamburg gefahren.", [1], "Ich bin nach Hamburg gefahren.",
-        "fahren verso un luogo è movimento → sein.",
-        "fahren to a place is movement → sein."),
-      F("pf12", "Er hat das nicht geverstanden.", [4], "Er hat das nicht verstanden.",
-        "ver- è inseparabile: niente ge- → verstanden.",
-        "ver- is inseparable: no ge- → verstanden.")
-    ] },
-
-  { id: "wechsel",
-    cards: ["Präpositionen — Akkusativ, Dativ oder Wechsel?", "an · in · auf · zu/bei — dove vai / dove sei", "mit · zu · von — sempre dativo"],
-    it: "Preposizioni — Akk, Dat o Wechsel?", en: "Prepositions — Akk, Dat or two-way?",
-    items: [
-      C("wp01", "Ich lege das Buch auf ___ Tisch.", ["den", "dem", "der"], "den",
-        "Wohin? (movimento verso) → Akkusativ: auf den Tisch.",
-        "Wohin? (movement towards) → accusative: auf den Tisch."),
-      C("wp02", "Das Buch liegt auf ___ Tisch.", ["dem", "den", "der"], "dem",
-        "Wo? (posizione) → Dativ: auf dem Tisch.",
-        "Wo? (position) → dative: auf dem Tisch."),
-      C("wp03", "Ich gehe heute ___ Arzt.", ["zum", "beim", "im"], "zum",
-        "Dove vado da una persona → zu: zum Arzt.",
-        "Going to a person → zu: zum Arzt."),
-      C("wp04", "Ich war gestern ___ Arzt.", ["beim", "zum", "im"], "beim",
-        "Dove sono stato da una persona → bei: beim Arzt.",
-        "Where I was at a person's → bei: beim Arzt."),
-      C("wp05", "Ich fahre jeden Tag mit ___ Bus.", ["dem", "den", "der"], "dem",
-        "mit vuole sempre il Dativ: mit dem Bus.",
-        "mit always takes the dative: mit dem Bus."),
-      C("wp06", "Ich kaufe ein Geschenk für ___ Freundin.", ["meine", "meiner", "meinem"], "meine",
-        "für vuole sempre l'Akkusativ: für meine Freundin.",
-        "für always takes the accusative: für meine Freundin."),
-      C("wp07", "Sie hängt das Bild an ___ Wand.", ["die", "der", "den"], "die",
-        "Wohin hängt sie das Bild? → Akkusativ: an die Wand.",
-        "Wohin does she hang the picture? → accusative: an die Wand."),
-      G("wp08", "Die Katze schläft unter ___ Bett.", "Wo? → Dativ, das Bett", "dem",
-        "Posizione (Wo?) → Dativ: unter dem Bett.",
-        "Position (Wo?) → dative: unter dem Bett."),
-      G("wp09", "Ich gehe jetzt in ___ Park.", "Wohin? → Akk., der Park", "den",
-        "Movimento verso (Wohin?) → Akkusativ: in den Park.",
-        "Movement towards (Wohin?) → accusative: in den Park."),
-      O("wp10", "Am Wochenende", ["fahren", "wir", "mit", "dem", "Zug", "an", "die", "Ostsee"], ".",
-        "Verbo al 2° posto; mit + Dativ (dem Zug); Wohin? → an die Ostsee (Akk.).",
-        "Verb in 2nd position; mit + dative (dem Zug); Wohin? → an die Ostsee (acc.)."),
-      F("wp11", "Ich wohne seit zwei Jahre in Berlin.", [3], "Ich wohne seit zwei Jahren in Berlin.",
-        "seit vuole il Dativ; al Dativ plurale il nome prende -n: Jahren.",
-        "seit takes the dative; in the dative plural the noun takes -n: Jahren."),
-      F("wp12", "Ich fahre mit meinem Freundin nach Hamburg.", [3], "Ich fahre mit meiner Freundin nach Hamburg.",
-        "mit + Dativ femminile → meiner Freundin.",
-        "mit + feminine dative → meiner Freundin.")
-    ] },
-
-  { id: "passiv",
-    cards: ["Das Passiv", "Passiv mit Modalverben"],
-    it: "Il passivo — wird, wurde, ist … worden", en: "The passive — wird, wurde, ist … worden",
-    items: [
-      C("ps01", "Das Haus ___ 1900 gebaut.", ["wurde", "wird", "würde"], "wurde",
-        "C'è un anno nel passato → passivo al Präteritum: wurde + Partizip II.",
-        "There's a past year → passive in the Präteritum: wurde + Partizip II."),
-      C("ps02", "Hier ___ Deutsch gesprochen.", ["wird", "ist", "hat"], "wird",
-        "Passivo presente: werden (wird) + Partizip II.",
-        "Present passive: werden (wird) + Partizip II."),
-      C("ps03", "Die Briefe ___ gestern abgeschickt.", ["wurden", "wurde", "werden"], "wurden",
-        "Soggetto plurale (die Briefe) e passato (gestern) → wurden.",
-        "Plural subject (die Briefe) and past (gestern) → wurden."),
-      C("ps04", "Das Fenster muss repariert ___.", ["werden", "wurde", "worden"], "werden",
-        "Modale + Partizip II + werden all'infinito, in fondo.",
-        "Modal + Partizip II + werden in the infinitive, at the end."),
-      C("ps05", "Der Dieb ist von der Polizei gefasst ___.", ["worden", "geworden", "werden"], "worden",
-        "Passivo al Perfekt: ist + Partizip II + worden (senza ge-!).",
-        "Passive in the Perfekt: ist + Partizip II + worden (without ge-!)."),
-      G("ps06", "Der Brief ___ von meiner Mutter geschrieben.", "werden, Präteritum, er/sie/es", "wurde",
-        "Passivo al passato: wurde. Chi fa l'azione → von + Dativ.",
-        "Past passive: wurde. The doer → von + dative."),
-      G("ps07", "Die Hausaufgaben müssen heute gemacht ___.", "modale + Passiv", "werden",
-        "Con i modali: Partizip II + werden in fondo.",
-        "With modals: Partizip II + werden at the end."),
-      O("ps08", "In Deutschland", ["wird", "viel", "Brot", "gegessen"], ".",
-        "wird al 2° posto, Partizip II in fondo.",
-        "wird in 2nd position, Partizip II at the end."),
-      O("ps09", "Das Paket", ["kann", "morgen", "geliefert", "werden"], ".",
-        "Modale al 2° posto, poi Partizip II + werden in fondo.",
-        "Modal in 2nd position, then Partizip II + werden at the end."),
-      F("ps10", "Das Haus ist 1900 gebaut geworden.", [5], "Das Haus ist 1900 gebaut worden.",
-        "Nel passivo il Partizip di werden è worden, non geworden.",
-        "In the passive the Partizip of werden is worden, not geworden."),
-      F("ps11", "Die Tür muss geschlossen wird.", [4], "Die Tür muss geschlossen werden.",
-        "Dopo un modale werden resta all'infinito.",
-        "After a modal werden stays in the infinitive.")
-    ] },
-
-  { id: "relativ",
-    cards: ["Relativpronomen", "Relativsätze: Präposition, wo, was"],
-    it: "Frasi relative — der, den, dem, denen, was", en: "Relative clauses — der, den, dem, denen, was",
-    items: [
-      C("rl01", "Das ist der Mann, ___ mir geholfen hat.", ["der", "den", "dem"], "der",
-        "Nella relativa il Mann è il soggetto (er hat geholfen) → Nominativ: der.",
-        "In the relative clause the man is the subject (er hat geholfen) → nominative: der."),
-      C("rl02", "Das ist der Mann, ___ ich gestern gesehen habe.", ["den", "der", "dem"], "den",
-        "Ich habe IHN gesehen → Akkusativ maschile: den.",
-        "Ich habe IHN gesehen → masculine accusative: den."),
-      C("rl03", "Das ist die Frau, ___ ich das Buch gegeben habe.", ["der", "die", "denen"], "der",
-        "Ich habe IHR das Buch gegeben → Dativ femminile: der.",
-        "Ich habe IHR das Buch gegeben → feminine dative: der."),
-      C("rl04", "Das sind die Kinder, ___ ich helfe.", ["denen", "die", "den"], "denen",
-        "helfen + Dativ, plurale → denen.",
-        "helfen + dative, plural → denen."),
-      C("rl05", "Das ist die Stadt, ___ ich geboren bin.", ["in der", "in die", "der"], "in der",
-        "Wo? → in + Dativ: in der (si può dire anche wo).",
-        "Wo? → in + dative: in der (you can also say wo)."),
-      C("rl06", "Alles, ___ du sagst, ist richtig.", ["was", "das", "wo"], "was",
-        "Dopo alles, nichts, etwas, das Beste si usa was.",
-        "After alles, nichts, etwas, das Beste you use was."),
-      C("rl07", "Das ist der Freund, mit ___ ich in Urlaub fahre.", ["dem", "den", "der"], "dem",
-        "mit + Dativ maschile → mit dem.",
-        "mit + masculine dative → mit dem."),
-      G("rl08", "Der Kurs, für ___ ich mich interessiere, beginnt im Mai.", "für + Akk., der Kurs", "den",
-        "La preposizione va davanti al relativo: für + Akk. maschile → für den.",
-        "The preposition goes before the relative pronoun: für + masc. acc. → für den."),
-      O("rl09", "Das ist das Buch,", ["das", "ich", "dir", "empfohlen", "habe"], ".",
-        "Relativo all'inizio, verbo coniugato (habe) in fondo.",
-        "Relative pronoun at the start, conjugated verb (habe) at the end."),
-      F("rl10", "Das ist die Frau, die ich gestern geholfen habe.", [4], "Das ist die Frau, der ich gestern geholfen habe.",
-        "helfen vuole il Dativ: der (femminile Dativ), non die.",
-        "helfen takes the dative: der (feminine dative), not die.")
-    ] },
-
-  { id: "temporal",
-    cards: ["als / wenn / wann", "Nebensatz mit nachdem", "Nebensatz mit bevor", "Nebensatz mit während"],
-    it: "Frasi di tempo — als, wenn, wann, nachdem, bevor, während", en: "Time clauses — als, wenn, wann, nachdem, bevor, während",
-    items: [
-      C("tm01", "___ ich ein Kind war, wohnte ich in Rom.", ["Als", "Wenn", "Wann"], "Als",
-        "Un periodo unico nel passato → als.",
-        "A single period in the past → als."),
-      C("tm02", "___ ich nach Hause komme, koche ich immer.", ["Wenn", "Als", "Wann"], "Wenn",
-        "Ogni volta / presente → wenn.",
-        "Every time / present → wenn."),
-      C("tm03", "Weißt du, ___ der Film beginnt?", ["wann", "wenn", "als"], "wann",
-        "Domanda (anche indiretta) sul momento → wann.",
-        "A question (also indirect) about the time → wann."),
-      C("tm04", "___ ich gegessen hatte, ging ich spazieren.", ["Nachdem", "Bevor", "Während"], "Nachdem",
-        "Prima ho mangiato, poi sono uscito: nachdem + Plusquamperfekt.",
-        "First I ate, then I went out: nachdem + Plusquamperfekt."),
-      C("tm05", "___ du gehst, mach bitte das Licht aus.", ["Bevor", "Nachdem", "Als"], "Bevor",
-        "Prima di andare → bevor.",
-        "Before leaving → bevor."),
-      C("tm06", "___ ich koche, höre ich Musik.", ["Während", "Nachdem", "Als"], "Während",
-        "Due azioni nello stesso momento → während.",
-        "Two actions at the same time → während."),
-      G("tm07", "Nachdem er die Prüfung bestanden ___, hat er gefeiert.", "Plusquamperfekt di haben", "hatte",
-        "nachdem + Plusquamperfekt: hatte + Partizip II.",
-        "nachdem + Plusquamperfekt: hatte + Partizip II."),
-      G("tm08", "Jedes Mal, ___ es regnet, bleibe ich zu Hause.", "ogni volta che", "wenn",
-        "Azione che si ripete → wenn.",
-        "Repeated action → wenn."),
-      O("tm09", "Bevor ich schlafen gehe,", ["lese", "ich", "ein", "bisschen"], ".",
-        "Dopo una subordinata in 1ª posizione il verbo principale viene subito (lese ich).",
-        "After a subordinate clause in 1st position the main verb comes right away (lese ich)."),
-      F("tm10", "Wenn ich 2015 nach Berlin kam, sprach ich kein Deutsch.", [0], "Als ich 2015 nach Berlin kam, sprach ich kein Deutsch.",
-        "Fatto unico nel passato (2015) → als.",
-        "A one-off past event (2015) → als.")
-    ] },
-
-  { id: "konj2",
-    cards: ["Konjunktiv II"],
-    it: "Konjunktiv II — wäre, hätte, würde, könnte", en: "Konjunktiv II — wäre, hätte, würde, könnte",
-    items: [
-      C("k201", "Wenn ich Zeit ___, würde ich mehr lesen.", ["hätte", "habe", "hatte"], "hätte",
-        "Ipotesi irreale → Konjunktiv II di haben: hätte.",
-        "Unreal condition → Konjunktiv II of haben: hätte."),
-      C("k202", "Wenn ich reich ___, würde ich reisen.", ["wäre", "war", "bin"], "wäre",
-        "Konjunktiv II di sein: wäre (con l'Umlaut).",
-        "Konjunktiv II of sein: wäre (with Umlaut)."),
-      C("k203", "___ Sie mir bitte helfen?", ["Könnten", "Konnten", "Kann"], "Könnten",
-        "Richiesta gentile → Könnten Sie …? Konnten senza Umlaut è il passato.",
-        "Polite request → Könnten Sie …? Konnten without Umlaut is the past."),
-      C("k204", "Ich ___ gern einen Kaffee.", ["hätte", "hatte", "habe gehabt"], "hätte",
-        "Al bar: Ich hätte gern … = vorrei.",
-        "At the café: Ich hätte gern … = I'd like."),
-      C("k205", "An deiner Stelle ___ ich zum Arzt gehen.", ["würde", "wurde", "werde"], "würde",
-        "Consiglio (al tuo posto…) → würde + infinito.",
-        "Advice (in your place…) → würde + infinitive."),
-      G("k206", "Wenn ich du ___, würde ich das nicht machen.", "sein, Konjunktiv II", "wäre",
-        "Wenn ich du wäre = se fossi in te.",
-        "Wenn ich du wäre = if I were you."),
-      G("k207", "Ich ___ gern mehr Freizeit.", "haben, Konjunktiv II (desiderio)", "hätte",
-        "Desiderio → hätte gern.",
-        "Wish → hätte gern."),
-      O("k208", "Wenn ich mehr Geld hätte,", ["würde", "ich", "ein", "Haus", "kaufen"], ".",
-        "Dopo la frase con wenn viene subito il verbo (würde), poi il soggetto.",
-        "After the wenn clause the verb (würde) comes first, then the subject."),
-      F("k209", "Wenn ich Zeit hätte, ich würde kommen.", [4, 5], "Wenn ich Zeit hätte, würde ich kommen.",
-        "La subordinata occupa la 1ª posizione: subito dopo viene il verbo → würde ich.",
-        "The subordinate clause takes position 1: the verb comes right after → würde ich."),
-      F("k210", "Wenn ich mehr Zeit hatte, würde ich Gitarre lernen.", [4], "Wenn ich mehr Zeit hätte, würde ich Gitarre lernen.",
-        "Ipotesi irreale: hätte (Konjunktiv II), non hatte (passato).",
-        "Unreal condition: hätte (Konjunktiv II), not hatte (past)."),
-      C("k211", "Wenn ich Zeit hätte, ___ ich gern kommen.", ["würde", "möchte", "wurde"], "würde",
-        "Per un'ipotesi si usa würde gern. möchte è un presente cortese (Ich möchte einen Kaffee), non un'ipotesi.",
-        "For a hypothesis use würde gern. möchte is a polite present (Ich möchte einen Kaffee), not a hypothesis."),
-      C("k212", "Wenn ich das ___, würde ich es dir sagen.", ["wüsste", "wusste", "weiß"], "wüsste",
-        "wissen ha una forma propria al Konjunktiv II: wüsste (con Umlaut). wusste è il passato.",
-        "wissen has its own Konjunktiv II form: wüsste (with Umlaut). wusste is the past."),
-      C("k213", "Es ___ weniger Probleme, wenn alle pünktlich wären.", ["gäbe", "gab", "gibt"], "gäbe",
-        "es gibt al Konjunktiv II diventa es gäbe (ci sarebbero).",
-        "es gibt in the Konjunktiv II becomes es gäbe (there would be)."),
-      C("k214", "Sie ist heute nicht da. Sie ___ krank sein.", ["dürfte", "durfte", "darf"], "dürfte",
-        "Supposizione: dürfte + infinito = sarà, probabilmente è. Non c'entra il permesso.",
-        "Assumption: dürfte + infinitive = she's probably … It has nothing to do with permission.", "supposizione"),
-      G("k215", "Ich hätte mehr lernen ___.", "sollen, passato del Konjunktiv II", "sollen",
-        "Passato con un modale: hätte + infinito + modale ALL'INFINITO (non gesollt) = avrei dovuto studiare di più.",
-        "Past with a modal: hätte + infinitive + modal IN THE INFINITIVE (not gesollt) = I should have studied more."),
-      F("k216", "Ich würde gern kommen, wenn ich nicht arbeiten musste.", [8], "Ich würde gern kommen, wenn ich nicht arbeiten müsste.",
-        "Ipotesi irreale: müsste con l'Umlaut. musste senza puntini è il passato (dovevo).",
-        "Unreal condition: müsste with the Umlaut. musste without the dots is the past (I had to).")
-    ] },
-
-  { id: "modal",
-    cards: ["Modalverben — Präsens und Präteritum", "dürfen · können — le differenze"],
-    it: "Modalverben — müssen, können, dürfen, sollen…", en: "Modal verbs — müssen, können, dürfen, sollen…",
-    items: [
-      C("mo01", "Er ___ zu Fuß gehen. Sein Auto ist kaputt.", ["muss", "darf", "will"], "muss",
-        "Non ha scelta: è una necessità → müssen.",
-        "He has no choice: it's a necessity → müssen."),
-      C("mo02", "Hier ___ man nicht rauchen. Das ist verboten.", ["darf", "muss", "soll"], "darf",
-        "Un divieto si dice con nicht dürfen. «nicht müssen» vorrebbe dire «non è necessario».",
-        "A prohibition is nicht dürfen. «nicht müssen» would mean «there's no need»."),
-      C("mo03", "Du ___ nicht kommen, wenn du keine Zeit hast.", ["musst", "darfst", "sollst"], "musst",
-        "Non è necessario, non è un divieto → nicht müssen (= nicht brauchen zu).",
-        "It isn't necessary, it isn't forbidden → nicht müssen (= nicht brauchen zu).", "non è necessario"),
-      C("mo04", "___ ich das Fenster aufmachen? – Ja, gern, danke!", ["Soll", "Muss", "Will"], "Soll",
-        "Offrirsi di fare qualcosa: Soll ich …? = vuoi che io …?",
-        "Offering to do something: Soll ich …? = shall I …?"),
-      C("mo05", "Gestern ___ ich nicht kommen. Ich war krank.", ["konnte", "könnte", "kann"], "konnte",
-        "È passato (gestern): Präteritum senza Umlaut, konnte. könnte sarebbe il Konjunktiv II.",
-        "It's the past (gestern): Präteritum without Umlaut, konnte. könnte would be the Konjunktiv II."),
-      G("mo06", "Ich ___ gestern ins Kino gehen, aber ich hatte keine Zeit.", "möchten al passato", "wollte",
-        "möchten non ha un passato proprio: si usa wollte.",
-        "möchten has no past of its own: use wollte."),
-      C("mo07", "Du siehst müde aus. Du ___ weniger arbeiten.", ["solltest", "sollst", "musst"], "solltest",
-        "Un consiglio si dà con il Konjunktiv II: du solltest = dovresti.",
-        "Advice is given with the Konjunktiv II: du solltest = you should."),
-      C("mo08", "Wir ___ am Wochenende ins Kino gehen. Was meinst du?", ["könnten", "konnten", "können"], "könnten",
-        "Proposta gentile → Konjunktiv II könnten (con Umlaut). konnten è il passato.",
-        "Polite suggestion → Konjunktiv II könnten (with Umlaut). konnten is the past."),
-      O("mo09", "Heute", ["muss", "ich", "lange", "arbeiten"], ".",
-        "Il modale resta in 2ª posizione anche se la frase comincia con Heute: il soggetto va dopo (inversione), l'infinito in fondo.",
-        "The modal stays in 2nd position even when the sentence starts with Heute: the subject follows (inversion), the infinitive goes last."),
-      F("mo10", "Heute ich muss lange arbeiten.", [1, 2], "Heute muss ich lange arbeiten.",
-        "Posizione 2 ≠ dopo il soggetto: dopo Heute viene subito il verbo, poi il soggetto.",
-        "Position 2 ≠ after the subject: after Heute the verb comes first, then the subject."),
-      F("mo11", "Ich kann gut zu schwimmen.", [3], "Ich kann gut schwimmen.",
-        "Dopo un verbo modale l'infinito va SENZA zu.",
-        "After a modal verb the infinitive has NO zu."),
-      G("mo12", "Hier ___ man parken. (nel parlato, al posto di darf)", "können", "kann",
-        "Nel parlato il permesso si esprime spesso con können: Hier kann man parken.",
-        "In everyday speech permission is often expressed with können: Hier kann man parken.")
-    ] },
-
-  { id: "alsoso",
-    cards: ["also · so — Folge und Vergleich", "Position 0 — und/aber/oder/denn/sondern"],
-    it: "also · und so · so / zu", en: "also · und so · so / zu",
-    items: [
-      C("as01", "Es regnet, ___ bleiben wir zu Hause.", ["also", "und", "denn"], "also",
-        "Conseguenza con il verbo subito dopo (bleiben) → also (Position 1). Con und o denn il verbo non si sposterebbe.",
-        "Result with the verb right after (bleiben) → also (Position 1). With und or denn the verb would not move."),
-      C("as02", "Das Camp war voll, und ___ wurde ich in die Berge geschickt.", ["so", "zu", "wie"], "so",
-        "und so = e così (conseguenza). so occupa la Position 1, quindi wurde viene subito dopo.",
-        "und so = and so (result). so takes Position 1, so wurde comes right after."),
-      O("as03", "Ich wollte mehr. Also", ["habe", "ich", "mit", "dem", "Bloggen", "angefangen"], ".",
-        "Dopo also viene subito il verbo coniugato (habe), poi il soggetto; il participio va in fondo.",
-        "After also the conjugated verb comes first (habe), then the subject; the participle goes last."),
-      F("as04", "Ich hatte Hunger, also ich habe gekocht.", [4, 5], "Ich hatte Hunger, also habe ich gekocht.",
-        "also è Position 1 come deshalb: il verbo va subito dopo → also habe ich.",
-        "also is Position 1 like deshalb: the verb goes right after → also habe ich."),
-      C("as05", "Sei nicht ___ streng mit dir! (= troppo)", ["zu", "so", "also"], "zu",
-        "zu + aggettivo = troppo, valore negativo. so + aggettivo = così (neutro).",
-        "zu + adjective = too, negative. so + adjective = so (neutral)."),
-      C("as06", "Das Wetter ist heute nicht ___ schön wie gestern.", ["so", "zu", "also"], "so",
-        "Confronto di uguaglianza: so … wie = tanto … quanto.",
-        "Comparison of equality: so … wie = as … as."),
-      C("as07", "Ich komme ___ mit! (= anch'io)", ["auch", "also", "so"], "auch",
-        "Falso amico: «anche» è auch. also in tedesco vuol dire «quindi».",
-        "False friend: «also/too» is auch. German also means «so, therefore»."),
-      G("as08", "Er war krank, ___ ist er zu Hause geblieben.", "quindi", "also",
-        "Conseguenza + verbo subito dopo (ist): also. Vanno bene anche deshalb, deswegen, daher.",
-        "Result + verb right after (ist): also. deshalb, deswegen, daher also work.", ["deshalb", "deswegen", "daher"])
-    ] },
-
-  { id: "indfrag",
-    cards: ["Indirekte Fragen — ob und W-Wörter"],
-    it: "Domande indirette — ob e W-Wörter", en: "Indirect questions — ob and W-words",
-    items: [
-      C("if01", "Weißt du, ___ der Supermarkt heute geöffnet ist?", ["ob", "wenn", "dass"], "ob",
-        "Domanda sì/no → ob (= se).",
-        "Yes/no question → ob (= whether)."),
-      C("if02", "Können Sie mir sagen, ___ der Bahnhof ist?", ["wo", "ob", "was"], "wo",
-        "La domanda diretta è Wo ist der Bahnhof? → la W-Wort resta.",
-        "The direct question is Wo ist der Bahnhof? → the W-word stays."),
-      C("if03", "Ich weiß nicht, ___ er heißt.", ["wie", "ob", "dass"], "wie",
-        "Wie heißt er? → …, wie er heißt.",
-        "Wie heißt er? → …, wie er heißt."),
-      C("if04", "Können Sie mir sagen, wann ___?", ["der Zug abfährt", "fährt der Zug ab", "der Zug fährt ab"], "der Zug abfährt",
-        "Nella domanda indiretta il verbo va in fondo e il separabile si riunisce: abfährt.",
-        "In an indirect question the verb goes to the end and the separable verb joins up: abfährt."),
-      G("if05", "Ich frage mich, ___ sie morgen kommt.", "se (sì/no)", "ob",
-        "Kommt sie morgen? (sì/no) → ob.",
-        "Kommt sie morgen? (yes/no) → ob."),
-      G("if06", "Weißt du, ___ das kostet?", "quanto?", "wie viel",
-        "Wie viel kostet das? → …, wie viel das kostet.",
-        "Wie viel kostet das? → …, wie viel das kostet.", ["wieviel"]),
-      O("if07", "Kannst du mir sagen,", ["warum", "du", "so", "spät", "kommst"], "?",
-        "W-Wort + soggetto + … + verbo in fondo.",
-        "W-word + subject + … + verb at the end."),
-      O("if08", "Ich möchte wissen,", ["ob", "es", "hier", "WLAN", "gibt"], ".",
-        "ob + soggetto + … + verbo in fondo.",
-        "ob + subject + … + verb at the end."),
-      F("if09", "Weißt du, wo ist die Post?", [3], "Weißt du, wo die Post ist?",
-        "Nella domanda indiretta il verbo (ist) va in fondo.",
-        "In an indirect question the verb (ist) goes to the end."),
-      F("if10", "Ich weiß nicht, wenn er kommt.", [3], "Ich weiß nicht, ob er kommt.",
-        "Per «se» in una domanda indiretta si usa ob (o wann per «quando»), mai wenn.",
-        "For «whether» in an indirect question use ob (or wann for «when»), never wenn.")
-    ] },
-
-  { id: "reflex",
-    cards: ["Reflexivpronomen (Akk./Dat.)", "Riflessivo + parte del corpo: mich o mir?"],
-    it: "Verbi riflessivi — mich o mir?", en: "Reflexive verbs — mich or mir?",
-    items: [
-      C("rf01", "Ich wasche ___.", ["mich", "mir", "sich"], "mich",
-        "Non c'è un altro oggetto → riflessivo all'Akkusativ: mich.",
-        "There's no other object → reflexive in the accusative: mich."),
-      C("rf02", "Ich wasche ___ die Hände.", ["mir", "mich", "sich"], "mir",
-        "C'è già un oggetto (die Hände) → il riflessivo va al Dativ: mir.",
-        "There's already an object (die Hände) → the reflexive goes in the dative: mir."),
-      C("rf03", "Er freut ___ auf den Urlaub.", ["sich", "ihn", "ihm"], "sich",
-        "Terza persona: il riflessivo è sempre sich.",
-        "Third person: the reflexive is always sich."),
-      C("rf04", "Wir treffen ___ um acht.", ["uns", "euch", "sich"], "uns",
-        "wir → uns.",
-        "wir → uns."),
-      C("rf05", "Kannst du ___ das vorstellen?", ["dir", "dich", "sich"], "dir",
-        "sich etwas vorstellen: c'è già l'oggetto (das) → Dativ: dir.",
-        "sich etwas vorstellen: there's already an object (das) → dative: dir."),
-      G("rf06", "Ich putze ___ die Zähne.", "Dativ (c'è già un oggetto)", "mir",
-        "die Zähne è l'oggetto → riflessivo al Dativ: mir.",
-        "die Zähne is the object → reflexive in the dative: mir."),
-      G("rf07", "Habt ihr ___ schon angemeldet?", "ihr → ?", "euch",
-        "ihr → euch (uguale per Akk. e Dat.).",
-        "ihr → euch (same for acc. and dat.)."),
-      O("rf08", "Heute Morgen", ["habe", "ich", "mich", "verspätet"], ".",
-        "Il riflessivo sta subito dopo verbo e soggetto: habe ich mich …",
-        "The reflexive comes right after verb and subject: habe ich mich …"),
-      F("rf09", "Ich ziehe mich die Jacke an.", [2], "Ich ziehe mir die Jacke an.",
-        "C'è l'oggetto die Jacke → mir (Dativ), non mich.",
-        "There's the object die Jacke → mir (dative), not mich."),
-      F("rf10", "Sie interessiert mich für Kunst.", [2], "Sie interessiert sich für Kunst.",
-        "Lei si interessa → terza persona → sich.",
-        "She is interested → third person → sich.")
-    ] },
-
-  { id: "kompar",
-    cards: ["Komparativ & Superlativ", "Comparativi irregolari: viel · gern · gut", "Vergleichssätze mit als oder wie"],
-    it: "Comparativo e superlativo — als, wie, am …sten", en: "Comparative and superlative — als, wie, am …sten",
-    items: [
-      C("kp01", "Berlin ist größer ___ München.", ["als", "wie", "dann"], "als",
-        "Comparativo (größer) → als.",
-        "Comparative (größer) → als."),
-      C("kp02", "Anna ist so groß ___ Maria.", ["wie", "als", "so"], "wie",
-        "Uguaglianza so … wie.",
-        "Equality so … wie."),
-      C("kp03", "Ich trinke ___ Tee als Kaffee.", ["lieber", "gerner", "mehr gern"], "lieber",
-        "gern → lieber → am liebsten (irregolare).",
-        "gern → lieber → am liebsten (irregular)."),
-      C("kp04", "Das ist der ___ Tag meines Lebens.", ["schönste", "schönster", "schönsten"], "schönste",
-        "Superlativo con articolo, Nominativ dopo der → -e: der schönste.",
-        "Superlative with an article, nominative after der → -e: der schönste."),
-      C("kp05", "Im Sommer ist es am ___.", ["wärmsten", "wärmste", "warmsten"], "wärmsten",
-        "am + …sten; warm prende l'Umlaut: am wärmsten.",
-        "am + …sten; warm takes the Umlaut: am wärmsten."),
-      G("kp06", "Mein Bruder ist ___ als ich.", "alt, comparativo", "älter",
-        "alt → älter (Umlaut).",
-        "alt → älter (Umlaut)."),
-      G("kp07", "Ich esse ___ Obst als früher.", "viel, comparativo", "mehr",
-        "viel → mehr → am meisten.",
-        "viel → mehr → am meisten."),
-      G("kp08", "Das Wetter ist heute ___ als gestern.", "gut, comparativo", "besser",
-        "gut → besser → am besten.",
-        "gut → besser → am besten."),
-      F("kp09", "Mein Auto ist schneller wie dein Auto.", [4], "Mein Auto ist schneller als dein Auto.",
-        "Dopo un comparativo si usa als, non wie.",
-        "After a comparative you use als, not wie."),
-      F("kp10", "Das ist die gutste Lösung.", [3], "Das ist die beste Lösung.",
-        "gut è irregolare: der/die/das beste.",
-        "gut is irregular: der/die/das beste.")
-    ] },
-
-  { id: "neg",
-    cards: ["Negationswörter — nicht, kein, nichts, niemand"],
-    it: "Negazione — nicht, kein, nichts, niemand, nie", en: "Negation — nicht, kein, nichts, niemand, nie",
-    items: [
-      C("ng01", "Ich habe ___ Auto.", ["kein", "nicht", "keine"], "kein",
-        "Si nega un nome con articolo indeterminativo (ein Auto) → kein.",
-        "You negate a noun with an indefinite article (ein Auto) → kein."),
-      C("ng02", "Ich komme heute ___.", ["nicht", "kein", "nichts"], "nicht",
-        "Si nega il verbo / la frase → nicht.",
-        "You negate the verb / the sentence → nicht."),
-      C("ng03", "Ich habe ___ gesehen.", ["niemanden", "nichts", "keine"], "niemanden",
-        "Nessuna persona → niemand (all'Akkusativ: niemanden).",
-        "No person → niemand (accusative: niemanden).", "nessuna persona"),
-      C("ng04", "Er hat heute ___ gegessen.", ["nichts", "niemand", "kein"], "nichts",
-        "Nessuna cosa → nichts.",
-        "No thing → nichts.", "nessuna cosa"),
-      C("ng05", "Das ist ___ mein Buch.", ["nicht", "kein", "keines"], "nicht",
-        "Davanti a un possessivo o articolo determinativo si usa nicht.",
-        "Before a possessive or definite article you use nicht."),
-      G("ng06", "Ich habe ___ Zeit.", "die Zeit, negazione", "keine",
-        "Nome senza articolo → kein-; femminile → keine.",
-        "Noun without article → kein-; feminine → keine."),
-      G("ng07", "Ich war noch ___ in Japan.", "mai", "nie",
-        "noch nie = mai (finora).",
-        "noch nie = never (so far).", ["niemals"]),
-      O("ng08", "Leider", ["habe", "ich", "heute", "keine", "Lust"], ".",
-        "keine sta davanti al nome che nega (Lust).",
-        "keine stands before the noun it negates (Lust)."),
-      F("ng09", "Ich habe nicht Geld.", [2], "Ich habe kein Geld.",
-        "Nome senza articolo → kein, non nicht.",
-        "Noun without an article → kein, not nicht."),
-      F("ng10", "Ich habe keine Hunger.", [2], "Ich habe keinen Hunger.",
-        "der Hunger è maschile, all'Akkusativ → keinen.",
-        "der Hunger is masculine, in the accusative → keinen.")
-    ] }
-  ];
-})();
+document.getElementById("exClose").addEventListener("click", closeEx);
+document.getElementById("exOverlay").addEventListener("click", (ev) => {
+  if(ev.target.id === "exOverlay") closeEx();
+});
+document.addEventListener("keydown", (ev) => {
+  if(ev.key === "Escape" && document.getElementById("exOverlay").classList.contains("open")) closeEx();
+});
