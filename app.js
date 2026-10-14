@@ -424,8 +424,11 @@ const UI_STRINGS = {
     exReviewTitle: "Ripasso esercizi",
     exItems: (n, m) => `${n} esercizi · ${m} padroneggiati`,
     exNowChip: (n) => `${n} da ripassare`,
-    exInstr: { choice: "Scegli la risposta giusta", order: "Metti le parole in ordine: tocca le tessere", gap: "Scrivi la parola mancante", fix: "Dov'è l'errore?" },
+    exInstr: { choice: "Scegli la risposta giusta", order: "Metti le parole in ordine: tocca le tessere", gap: "Scrivi tu la parola che manca, con la tastiera", fix: "Dov'è l'errore?" },
     exHint: "Suggerimento", exKeysAria: "Lettere speciali",
+    exPlaceholder: "Scrivi qui la parola…",
+    exKeysLabel: "Sulla tua tastiera manca una di queste lettere? Toccala e si aggiunge a quello che stai scrivendo.",
+    exKeysAlt: "Puoi anche scrivere ae · oe · ue · ss: vale come giusto.",
     exFixHint: "Tocca la parola (o le parole) sbagliata, poi «Verifica».",
     exCheck: "Verifica", exFinish: "Fine",
     exRight: "Richtig!", exWrong: "Non proprio", exCorrectIs: "Giusto:",
@@ -527,8 +530,11 @@ const UI_STRINGS = {
     exReviewTitle: "Exercise review",
     exItems: (n, m) => `${n} exercises · ${m} mastered`,
     exNowChip: (n) => `${n} to review`,
-    exInstr: { choice: "Pick the right answer", order: "Put the words in order: tap the tiles", gap: "Type the missing word", fix: "Where is the mistake?" },
+    exInstr: { choice: "Pick the right answer", order: "Put the words in order: tap the tiles", gap: "Type the missing word yourself, using the keyboard", fix: "Where is the mistake?" },
     exHint: "Hint", exKeysAria: "Special letters",
+    exPlaceholder: "Type the word here…",
+    exKeysLabel: "Is one of these letters missing from your keyboard? Tap it to add it to what you are typing.",
+    exKeysAlt: "You can also type ae · oe · ue · ss: it counts as correct.",
     exFixHint: "Tap the wrong word (or words), then «Check».",
     exCheck: "Check", exFinish: "Finish",
     exRight: "Richtig!", exWrong: "Not quite", exCorrectIs: "Correct:",
@@ -2813,9 +2819,16 @@ function renderExPlay(){
     const sentence = exEsc(it.q).replace("___", done ? `<span class="ex-filled">${exEsc(it.a)}</span>` : gapSpan("___"));
     main = `<div class="ww-sentence">${sentence}</div>
       <div class="genus-hint">${s.exHint}: ${exEsc(it.hint)}</div>
-      <input type="text" class="ex-input ${done ? (d.res.ok ? "ok" : "bad") : ""}" id="exInput" value="${exEsc(d.given)}" lang="de"
-        autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text"${done ? " disabled" : ""}>
-      ${done ? "" : `<div class="ex-keys" aria-label="${s.exKeysAria}">${["ä","ö","ü","ß"].map(c => `<button type="button" class="ex-key" data-c="${c}">${c}</button>`).join("")}</div>`}`;
+      <div class="ex-field">
+        <input type="text" class="ex-input ${done ? (d.res.ok ? "ok" : "bad") : ""}" id="exInput" value="${exEsc(d.given)}" lang="de"
+          placeholder="${s.exPlaceholder}" aria-label="${s.exPlaceholder}"
+          autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text"${done ? " disabled" : ""}>
+        ${done ? "" : `<div class="ex-keys-box">
+          <div class="ex-keys-label">${s.exKeysLabel}</div>
+          <div class="ex-keys" role="group" aria-label="${s.exKeysAria}">${["ä","ö","ü","ß"].map(c => `<button type="button" class="ex-key" data-c="${c}" tabindex="-1">${c}</button>`).join("")}</div>
+          <div class="ex-keys-alt">${s.exKeysAlt}</div>
+        </div>`}
+      </div>`;
     if(!done){
       actions = `<button type="button" class="conj-btn ex-go" id="exCheck">${s.exCheck}</button>
         <button type="button" class="flash-secondary" id="exSkip">${s.cqSkip}</button>`;
@@ -2890,6 +2903,8 @@ function renderExPlay(){
     const inp = document.getElementById("exInput");
     inp.addEventListener("input", () => { d.given = inp.value; });
     inp.addEventListener("keydown", (ev) => { if(ev.key === "Enter"){ ev.preventDefault(); d.given = inp.value; exSubmit(false); } });
+    /* mousedown/pointerdown senza default: il campo resta attivo, quindi i tasti non spariscono prima del tocco */
+    body.querySelectorAll(".ex-key").forEach(k => ["mousedown","pointerdown"].forEach(t => k.addEventListener(t, ev => ev.preventDefault())));
     body.querySelectorAll(".ex-key").forEach(k => k.addEventListener("click", () => {
       const a = inp.selectionStart == null ? inp.value.length : inp.selectionStart;
       const b = inp.selectionEnd == null ? a : inp.selectionEnd;

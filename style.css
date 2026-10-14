@@ -1047,10 +1047,16 @@ input:focus-visible, [tabindex]:focus-visible {
 .ex-input:focus { outline: none; border-color: var(--navy); }
 .ex-input.ok { border-color: var(--accent); background: var(--accent-light); }
 .ex-input.bad { border-color: var(--amber); background: var(--amber-light); }
-.ex-keys { display: flex; gap: var(--sp-15); margin-top: var(--sp-15); }
+/* Lettere speciali: compaiono SOLO mentre si scrive nel campo (focus), piccole e con spiegazione,
+   così non sembrano opzioni di risposta */
+.ex-keys-box { display: none; margin-top: var(--sp-15); padding: 8px 10px; border-radius: 10px; background: var(--surface-alt); }
+.ex-field:focus-within .ex-keys-box { display: block; }
+.ex-keys-label { font-size: var(--fs-xs); color: var(--muted); line-height: 1.35; }
+.ex-keys-alt { font-size: var(--fs-2xs); color: var(--muted); margin-top: 6px; }
+.ex-keys { display: flex; gap: var(--sp-15); margin-top: 6px; }
 .ex-key {
-  flex: 1; font: inherit; font-weight: 800; font-size: var(--fs-lg); min-height: 44px; cursor: pointer;
-  background: var(--surface-alt); color: var(--navy-dark); border: 1px solid var(--border); border-radius: 10px;
+  width: 44px; min-height: 44px; font: inherit; font-weight: 700; font-size: var(--fs-base); cursor: pointer;
+  background: var(--card); color: var(--navy-dark); border: 1px solid var(--border); border-radius: 8px;
 }
 .ex-actions { display: flex; gap: var(--sp-25); margin-top: var(--sp-3); }
 .ex-actions .ex-go { flex: 1; justify-content: center; margin: 0; }
