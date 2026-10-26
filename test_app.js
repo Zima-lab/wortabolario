@@ -23,22 +23,30 @@ const CANDIDATI = [
   process.env.HOME + '/mnt/Corso Tedesco/Corso tedesco B1/Vocabolario App v3/',
   process.cwd() + '/'
 ];
-const D = CANDIDATI.find(p => require('fs').existsSync(p + 'data.js'));
+const D = CANDIDATI.find(p => require('fs').existsSync(p + 'dati/grammatica.js'));
 if(!D){ console.error('Non trovo la cartella dell app. Percorsi provati:\n ' + CANDIDATI.join('\n ')); process.exit(1); }
 console.log('cartella app: ' + D);
 let pass=0, fail=0; const errs=[];
 function ok(c,m){ if(c){pass++;} else {fail++; errs.push(m);} }
 
 // ---------- A. CONTROLLI SUI DATI ----------
-const dataSrc = fs.readFileSync(D+'data.js','utf8');
-const appSrc  = fs.readFileSync(D+'app.js','utf8');
+/* v46: i file si leggono nell'ordine in cui li carica index.html
+   (dati/… = vocabolario e grammatica · dati/esercizi.js = banca esercizi · js/… = logica) */
+const SCRIPTS = [...fs.readFileSync(D+'index.html','utf8').matchAll(/<script src="([^"]+)"><\/script>/g)].map(m=>m[1]);
+const leggi = list => list.map(f => fs.readFileSync(D+f,'utf8')).join('\n');
+const dataSrc = leggi(SCRIPTS.filter(f => f.startsWith('dati/') && f !== 'dati/esercizi.js'));
+const exSrc   = leggi(['dati/esercizi.js']);
+const appSrc  = leggi(SCRIPTS.filter(f => f.startsWith('js/')));
 const verSrc  = fs.readFileSync(D+'version.js','utf8');
-const exSrc   = fs.readFileSync(D+'esercizi.js','utf8');
+ok(SCRIPTS[0] === 'version.js' && SCRIPTS[SCRIPTS.length-1] === 'js/avvio.js', 'index.html: version.js deve essere il primo script e js/avvio.js l ultimo');
 function arr(n){ const m=dataSrc.match(new RegExp('const '+n+'\\s*=\\s*(\\[[\\s\\S]*?\\n\\]);')); return eval(m[1]); }
-const VERBI=arr('VERBI'), SOST=arr('SOSTANTIVI'), AGG=arr('AGGETTIVI'), GRAM=arr('GRAMMATICA'), FRASI=arr('FRASI'), DETTI=arr('DETTI');
+const VERBI=arr('VERBI'), AGG=arr('AGGETTIVI');
+/* si eseguono tutti i file di dati insieme, come fa il browser */
+const FULL = new Function(dataSrc + ';return {GRAMMATICA, FRASI, GRAM_TABLES, SOSTANTIVI, DETTI, VERBI};')();
+const GRAM = FULL.GRAMMATICA, FRASI = FULL.FRASI, GTAB = FULL.GRAM_TABLES, SOST = FULL.SOSTANTIVI, DETTI = FULL.DETTI;
 
-ok(GRAM.length===80, 'GRAMMATICA dovrebbe avere 80 schede, ne ha '+GRAM.length);
-ok(verSrc.includes('"v38"'), 'version.js non e a v38');
+ok(GRAM.length===98, 'GRAMMATICA dovrebbe avere 98 schede, ne ha '+GRAM.length);
+ok(verSrc.includes('"v48"'), 'version.js non e a v48');
 
 // campi obbligatori e bilinguismo grammatica
 GRAM.forEach(g=>{
@@ -46,7 +54,13 @@ GRAM.forEach(g=>{
   ok(g.rows.length===g.enRows.length, 'GRAM "'+g.de+'": rows/enRows disallineati');
   ok(g.ex.length===g.enEx.length, 'GRAM "'+g.de+'": ex/enEx disallineati');
   g.ex.forEach((p,i)=>ok(p[0]===g.enEx[i][0], 'GRAM "'+g.de+'": frase tedesca diversa tra ex ed enEx ('+p[0]+')'));
-  g.rows.forEach(r=>ok(Array.isArray(r)&&r.length===2&&r[0]&&r[1], 'GRAM "'+g.de+'": riga malformata'));
+  /* v45: una riga e [titolo, "testo"] oppure [titolo, [[de, traduzione], ...], consiglio?] */
+  const rigaOk = r => Array.isArray(r) && (r.length===2 || r.length===3) && r[0] &&
+    (typeof r[1]==='string' ? r[1] : Array.isArray(r[1]) && r[1].length && r[1].every(x=>Array.isArray(x) && x[0]));
+  g.rows.forEach(r=>ok(rigaOk(r), 'GRAM "'+g.de+'": riga malformata'));
+  g.enRows.forEach(r=>ok(rigaOk(r), 'GRAM "'+g.de+'": riga EN malformata'));
+  g.rows.forEach((r,i)=>{ if(Array.isArray(r[1])) r[1].forEach((x,j)=>ok(g.enRows[i][1][j] && g.enRows[i][1][j][0]===x[0], 'GRAM "'+g.de+'": esempio tedesco diverso tra IT ed EN ('+x[0]+')')); });
+  [...g.rows,...g.enRows].forEach(r=>{ const t=JSON.stringify(r)+''; ok((t.match(/_/g)||[]).length%2===0, 'GRAM "'+g.de+'": _ sbilanciati in '+r[0]); ok((t.match(/\*/g)||[]).length%2===0, 'GRAM "'+g.de+'": * sbilanciati in '+r[0]); });
 });
 
 // duplicati
@@ -89,14 +103,45 @@ const BIG = eval('('+bigSrc+')');
 const titoli = new Set(GRAM.map(g=>g.de));
 Object.keys(BIG).forEach(k=>ok(titoli.has(k), 'BIGNAMI_PAGES: la chiave "'+k+'" non corrisponde a nessuna scheda'));
 GRAM.forEach(g=>ok(BIG[g.de]!==undefined, 'BIGNAMI_PAGES: la scheda "'+g.de+'" non ha una pagina'));
-Object.entries(BIG).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=1&&p<=49, 'BIGNAMI_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
+Object.entries(BIG).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=1&&p<=54, 'BIGNAMI_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
 // BIGNAMI_B2_PAGES (dalla v33): chiavi esistenti, pagine 2-19, PDF in precache
 const big2Src = appSrc.match(/const BIGNAMI_B2_PAGES = (\{[\s\S]*?\n\});/)[1];
 const BIG2 = eval('('+big2Src+')');
 Object.keys(BIG2).forEach(k=>ok(titoli.has(k), 'BIGNAMI_B2_PAGES: la chiave "'+k+'" non corrisponde a nessuna scheda'));
-Object.entries(BIG2).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=2&&p<=19, 'BIGNAMI_B2_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
+Object.entries(BIG2).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=2&&p<=25, 'BIGNAMI_B2_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
 const swSrc2 = fs.readFileSync(path.join(__dirname,'sw.js'),'utf8');
 ok(swSrc2.includes('Grammatica_Tedesca_B2_Bignami.pdf') && swSrc2.includes('German_Grammar_B2_Bignami_EN.pdf'), 'sw.js: PDF B2 non in precache');
+
+// ---------- v39: TABELLE CASI × GENERE ----------
+Object.entries(GTAB).forEach(([k,v])=>{
+  const g = GRAM.find(x=>x.de===k);
+  ok(!!g, 'GRAM_TABLES: la chiave "'+k+'" non corrisponde a nessuna scheda');
+  ok(Array.isArray(v.tables) && v.tables.length>0, 'GRAM_TABLES "'+k+'": nessuna tabella');
+  /* v46: le tabelle contengono solo le tabelle; righe e nota stanno nella scheda */
+  ok(Object.keys(v).join()==='tables', 'GRAM_TABLES "'+k+'": deve contenere solo tables (trovato '+Object.keys(v).join()+')');
+  v.tables.forEach(t=>{
+    ok(t.cols.every(c=>['m','f','n','pl','x'].includes(c[0])), 'GRAM_TABLES "'+k+'": colore di colonna sconosciuto');
+    t.rows.forEach(r=>ok(r.length===t.cols.length+1, 'GRAM_TABLES "'+k+'": riga di lunghezza sbagliata ('+JSON.stringify(r[0])+')'));
+    t.rows.forEach(r=>r.slice(1).forEach(c=>ok((c.match(/\{/g)||[]).length===(c.match(/\}/g)||[]).length, 'GRAM_TABLES "'+k+'": graffe sbilanciate in '+c)));
+  });
+});
+// le tabelle di declinazione principali hanno le colonne nell ordine der · die · das · Plural
+['Der/die/das — Artikel nach Kasus','Relativpronomen','Possessivpronomen','Indefinitpronomen','Adjektive ohne Artikel — Nullartikel'].forEach(k=>{
+  const c = GTAB[k] && GTAB[k].tables[0].cols.map(x=>x[0]).join(',');
+  ok(c==='m,f,n,pl', 'ordine colonne non m,f,n,pl in "'+k+'": '+c);
+  ok(GTAB[k] && GTAB[k].tables[0].rows[0][0]==='Nominativ', 'la prima riga non e il Nominativ in "'+k+'"');
+});
+['Das Perfekt — haben oder sein?','Modalverben — Präsens und Präteritum','als / wenn / wann','Zahlen und Ordnungszahlen','Das Wetter — es regnet, es ist kalt','der, die oder das? — il genere del nome','Präpositionen — Akkusativ, Dativ oder Wechsel?','Präposition + Artikel — am, im, ins, zum, zur','ein / kein — Artikel nach Kasus']
+  .forEach(k=>ok(GRAM.some(g=>g.de===k), 'v39: manca la scheda "'+k+'"'));
+ok(FRASI.some(f=>f[0]==='Es regnet.'), 'v39: mancano le frasi del meteo');
+// v39, 2° blocco (materiale «tabelle tedesco»)
+['Der Plural — come si forma il plurale','W-Fragen — wo, wohin, woher · hin und her','Weitere Konjunktionen — falls, indem, solange, sodass','Die Zeichensetzung — Punkt, Ausrufezeichen, Doppelpunkt','Konjunktiv I — die indirekte Rede']
+  .forEach(k=>ok(GRAM.some(g=>g.de===k), 'v39b: manca la scheda "'+k+'"'));
+ok(SOST.filter(x=>x.cat==='meteo').length>=30, 'v39b: servono almeno 30 nomi del meteo');
+ok(['der Nebel','das Gymnasium','das Fernweh','der Handschuh'].every(d=>SOST.some(x=>x.de===d)), 'v39b: mancano nomi nuovi (Nebel, Gymnasium, Fernweh, Handschuh)');
+ok(SOST.filter(x=>x.cat==='meteo'||x.cat==='scuola').filter(x=>x.note).every(x=>x.enNote), 'v39b: nota IT senza nota EN in un sostantivo');
+ok(FRASI.some(f=>f[0]==='Mit freundlichen Grüßen') && FRASI.some(f=>f[0]==='Das ist mir Wurst.'), 'v39b: mancano le frasi (lettere formali / modi di dire)');
+ok(GTAB['Personalpronomen nei casi'].tables[0].rows.length===5, 'v39b: la tabella dei pronomi personali deve avere anche Reflexiv e Possessiv');
 
 // ---------- B. L APP IN JSDOM ----------
 const html = fs.readFileSync(D+'index.html','utf8')
@@ -108,13 +153,14 @@ w.scrollTo = ()=>{};
 w.matchMedia = w.matchMedia || (q=>({matches:false, media:q, addEventListener(){}, removeEventListener(){}, addListener(){}, removeListener(){}}));
 const s = w.document.createElement('script');
 s.textContent = verSrc + '\n' + dataSrc + '\n' + exSrc + '\n' + appSrc + '\n' +
-  'window.__test = { get ENTRIES(){return ENTRIES;}, get lang(){return lang;}, get EX(){return EX_TOPICS;}, get exData(){return exData;}, get exDeck(){return exDeck;}, get exIdx(){return exIdx;}, exNorm, exStatus, exDueItems };';
+  'window.__test = { get ENTRIES(){return ENTRIES;}, get lang(){return lang;}, get EX(){return EX_TOPICS;}, get exData(){return exData;}, get exDeck(){return exDeck;}, get exIdx(){return exIdx;}, exNorm, exStatus, exDueItems, exOpenOverlay, exStartTopic, get tl(){return tl;}, tlClock, TLD };';
 w.document.body.appendChild(s);
 w.document.dispatchEvent(new w.Event('DOMContentLoaded',{bubbles:true}));
 
 const T = w.__test;
 ok(!!T && T.ENTRIES.length > 900, 'boot: ENTRIES non popolato ('+(T?T.ENTRIES.length:'nessun ponte')+')');
-ok(T.ENTRIES.length === VERBI.length+SOST.length+AGG.length+GRAM.length+FRASI.length+DETTI.length, 'boot: conteggio ENTRIES incoerente');
+/* dalla v42 anche VERBI riceve voci con push: si conta l'array completo */
+ok(T.ENTRIES.length === FULL.VERBI.length+SOST.length+AGG.length+GRAM.length+FRASI.length+DETTI.length, 'boot: conteggio ENTRIES incoerente');
 
 // vai sulla tab Cerca
 const tabCerca = w.document.querySelector('.tab[data-tab="cerca"]');
@@ -168,11 +214,11 @@ ok(entry && entry.textContent.includes('worden'), 'scheda Passiv: manca il Perfe
 ok(entry && entry.textContent.includes('durch'), 'scheda Passiv: manca von/durch');
 
 
-// v37: scheda AP6 Preposizione vs Präpositionaladverb (Bignami p. 49)
+// v37: scheda Preposizione vs Präpositionaladverb (dalla v39 Bignami p. 17, sezione B3)
 res = cerca('Präpositionaladverb');
 entry = apri(res,"Preposizione vs Präpositionaladverb — la differenza");
 ok(!!entry, 'AP6: scheda non trovata cercando "Präpositionaladverb"');
-ok(entry && entry.innerHTML.includes('#page=49'), 'AP6: manca il link alla pagina 49 del Bignami');
+ok(entry && entry.innerHTML.includes('#page=18'), 'AP6: manca il link alla pagina 18 del Bignami');
 ok(entry && entry.textContent.includes('darauf'), 'AP6: contenuto mancante (darauf)');
 ok(entry && entry.innerHTML.includes('Grammatica_Tedesca_B1_Bignami.pdf'), 'AP6: il link non punta al Bignami B1');
 
@@ -207,11 +253,20 @@ EXT.forEach(t => {
     }
   });
 });
+ok(EXT.some(t=>t.id==='finali' && t.items.length>=12), 'esercizi: manca l argomento um…zu / damit (finali)');
+// v40: esercizi d'esame telc, raggruppati nella sezione TELC
+['telc_sb','telc_brief','telc_sprechen'].forEach(id => {
+  const t = EXT.find(x => x.id === id);
+  ok(t && t.sec === 'TELC' && t.items.length >= 15, 'telc: manca o incompleto l argomento '+id);
+});
+ok(appSrc.includes('TELC:{ it: "Esame telc B1 · B2"'), 'telc: manca l etichetta di sezione TELC');
 ok(exCount >= 70, 'esercizi: ne servono almeno 70, ce ne sono '+exCount);
 ['choice','order','gap','fix'].forEach(k => ok((TIPI[k]||0) >= 8, 'esercizi: pochi di tipo '+k));
 ok(T.exNorm('Über') === T.exNorm('ueber') && T.exNorm('Straße') === T.exNorm('strasse'), 'exNorm: ae/oe/ue/ss non equivalgono a ä/ö/ü/ß');
-ok(/<script src="esercizi.js">/.test(fs.readFileSync(D+'index.html','utf8')), 'index.html: manca esercizi.js');
-ok(swSrc2.includes('"esercizi.js"'), 'sw.js: esercizi.js non in precache');
+ok(SCRIPTS.includes('dati/esercizi.js'), 'index.html: manca dati/esercizi.js');
+/* v46: ogni script caricato da index.html deve essere anche nella cache offline */
+SCRIPTS.forEach(f => ok(swSrc2.includes('"'+f+'"'), 'sw.js: '+f+' non in precache'));
+ok(!SCRIPTS.some(f => !fs.existsSync(D+f)), 'index.html: carica un file che non esiste');
 ok(/wortabolario_ex"/.test(appSrc), 'BACKUP_KEYS: manca wortabolario_ex');
 ok(!!w.document.getElementById('exOverlay'), 'index.html: manca exOverlay');
 
@@ -299,6 +354,9 @@ if(entry && entry.querySelector('.ex-entry-btn')){
   click($('exGram'));
   ['pronad','nebens','pos0','komma','dk','ww','gen','nde'].forEach(id => {
     if(visti.size >= 4) return;
+    /* v42: gli argomenti hanno più di 10 esercizi, quindi un tipo può mancare dal mazzo:
+       se la sessione precedente non è tornata all'elenco, lo riapro */
+    if(!$('exBody').querySelector('.ex-topic[data-t="'+id+'"]')) w.openExPicker();
     click($('exBody').querySelector('.ex-topic[data-t="'+id+'"]'));
     for(let i=0;i<10;i++){
       const d = T.exDeck[T.exIdx]; if(!d) break;
@@ -339,6 +397,202 @@ entry = apri(res,"stolz");
 ok(T.lang==='en', 'cambio lingua non riuscito');
 ok(entry && entry.textContent.includes('Preposition'), 'scheda stolz in inglese: manca l etichetta Preposition');
 langBtn.dispatchEvent(new w.Event('click',{bubbles:true}));
+
+// ---------- v39 nel DOM ----------
+click(w.document.querySelector('.tab[data-tab="cerca"]'));
+res = cerca('Artikel nach Kasus');
+entry = apri(res, 'Der/die/das — Artikel nach Kasus');
+ok(entry && entry.querySelector('table.gtable'), 'tabella: la scheda der/die/das non mostra la tabella');
+if(entry && entry.querySelector('table.gtable')){
+  const ths = [...entry.querySelectorAll('thead th')].map(x=>x.className);
+  ok(ths.join(',')==='g-k,g-m,g-f,g-n,g-pl', 'tabella der/die/das: intestazioni/colori sbagliati '+ths);
+  const righe = [...entry.querySelectorAll('tbody th')].map(x=>x.firstChild.textContent);
+  ok(righe.join(',')==='Nominativ,Akkusativ,Dativ,Genitiv', 'tabella der/die/das: righe dei casi sbagliate '+righe);
+  ok(entry.querySelector('tbody td.g-m b.hl') && entry.querySelector('tbody td.g-m b.hl').textContent==='den', 'tabella der/die/das: den non evidenziato');
+  ok(entry.querySelector('tbody th .gq'), 'tabella der/die/das: manca la domanda Wer?/Wen?…');
+  ok(!entry.textContent.includes('Maschile (der)'), 'scheda der/die/das: le vecchie righe di testo sono ancora visibili');
+  ok(entry.innerHTML.includes('#page=3'), 'scheda der/die/das: link al Bignami non va a p.3');
+}
+res = cerca('Ihnen');
+ok(res.textContent.includes('Personalpronomen nei casi'), 'ricerca: il testo delle tabelle non e cercabile (Ihnen)');
+res = cerca('Modalverben');
+entry = apri(res, 'Modalverben — Präsens und Präteritum');
+ok(entry && entry.querySelectorAll('table.gtable').length===2, 'Modalverben: servono 2 tabelle');
+ok(entry && entry.innerHTML.includes('#page=36'), 'Modalverben: link al Bignami non va a p.36');
+res = cerca('Zahlen');
+ok(res.textContent.includes('einundzwanzig'), 'Zahlen: scheda non trovata');
+// quiz der/die/das: dopo la risposta compare la regola della desinenza (quando c'e)
+click(w.document.querySelector('.tab[data-tab="esercizi"]'));
+{
+  const gbtn = [...w.document.querySelectorAll('button, .ex-card')].find(b=>/genus|der\/die\/das/i.test(b.id+' '+b.className+' '+b.textContent));
+  ok(!!gbtn, 'quiz genus: pulsante non trovato');
+  if(gbtn){
+    click(gbtn);
+    let visto = false;
+    for(let i=0;i<15 && !visto;i++){
+      const opt = w.document.querySelector('#genusBtns .genus-opt:not([disabled])');
+      if(!opt) break;
+      click(opt);
+      if(w.document.querySelector('#genusAnswer .genus-rule')) visto = true;
+      const nx = w.document.querySelector('#genusNav .genus-next'); if(nx) click(nx);
+    }
+    ok(visto, 'quiz genus: nessuna regola della desinenza mostrata in 15 parole');
+    const cl = w.document.querySelector('#genusOverlay .conj-close'); if(cl) click(cl);
+  }
+}
+// in inglese le etichette di riga cambiano
+click(w.document.querySelector('.tab[data-tab="cerca"]'));
+langBtn.dispatchEvent(new w.Event('click',{bubbles:true}));
+res = cerca('Adjektivendungen im Genitiv');
+entry = apri(res, 'Adjektivendungen im Genitiv');
+ok(entry && entry.textContent.includes('definite article'), 'tabella in inglese: etichetta di riga non tradotta');
+langBtn.dispatchEvent(new w.Event('click',{bubbles:true}));
+
+// v44: esercizio "scrivi la parola" — campo con istruzione chiara, lettere speciali spiegate e inseribili
+{
+  T.exOpenOverlay(); T.exStartTopic('pronad', 999);
+  let guard = 0, inp = null;
+  while(guard++ < 80){
+    inp = w.document.getElementById('exInput');
+    if(inp) break;
+    const sk = w.document.getElementById('exSkip');
+    if(sk) click(sk); else { const o = w.document.querySelector('.ex-opt'); if(o) click(o); }
+    const nx = w.document.getElementById('exNext'); if(nx) click(nx); else break;
+  }
+  ok(!!inp, 'gap: nessun esercizio da scrivere trovato in pronad');
+  if(inp){
+    const body = w.document.getElementById('exBody');
+    ok(body.querySelector('.ex-instr').textContent.includes('Scrivi tu'), 'gap: istruzione non chiarita');
+    ok(inp.placeholder.includes('Scrivi qui'), 'gap: placeholder mancante');
+    ok(inp.closest('.ex-field') && inp.closest('.ex-field').querySelector('.ex-keys-box'), 'gap: tasti non dentro .ex-field');
+    ok(body.querySelector('.ex-keys-label').textContent.includes('tastiera'), 'gap: etichetta lettere speciali mancante');
+    ok(body.querySelector('.ex-keys-alt').textContent.includes('ae'), 'gap: nota ae/oe/ue/ss mancante');
+    inp.value = 'f'; inp.dispatchEvent(new w.Event('input',{bubbles:true}));
+    inp.setSelectionRange(1,1);
+    const md = new w.MouseEvent('mousedown',{bubbles:true,cancelable:true});
+    const kU = [...body.querySelectorAll('.ex-key')].find(k=>k.dataset.c==='ü');
+    kU.dispatchEvent(md);
+    ok(md.defaultPrevented, 'gap: mousedown sui tasti non bloccato (il campo perderebbe il focus)');
+    click(kU);
+    ok(w.document.getElementById('exInput').value === 'fü', 'gap: il tasto ü non inserisce la lettera');
+    ok(T.exNorm('fuer') === T.exNorm('für') && T.exNorm('Strasse') === T.exNorm('Straße'), 'gap: ae/oe/ue/ss non equivalenti');
+  }
+  const cl = w.document.querySelector('#exOverlay .conj-close'); if(cl) click(cl);
+}
+
+// v48: simulatore d'esame telc B1 (dati/esame-b1.js + js/esame.js)
+{
+  const D1 = T.TLD;
+  const nums = [];
+  ['lesen','hoeren'].forEach(m => D1[m].teile.forEach(t => {
+    ok(t.items.length * t.perItem === t.points, 'telc '+t.id+': punti per item × item ≠ punti della parte');
+    t.items.forEach(i => {
+      nums.push(i.n);
+      ok(i.src && i.src.length > 3, 'telc '+i.n+': manca la Textstelle (src)');
+      const valid = t.type==='tf' ? ['r','f'] : (t.type==='mc'||t.type==='mcgap') ? ['a','b','c'] : t.options.map(o=>o[0]).concat(t.allowX?['x']:[]);
+      ok(valid.includes(i.a), 'telc '+i.n+': soluzione non valida ('+i.a+')');
+      if(t.type==='mc'||t.type==='mcgap') ok(i.opts.length===3, 'telc '+i.n+': servono 3 opzioni');
+      if(t.type==='tf' && !t.audio) ok(Array.isArray(i.audio) && i.audio.length, 'telc '+i.n+': manca l audio');
+    });
+    if(t.type==='match'||t.type==='bank'){
+      const used = t.items.map(i=>i.a).filter(a=>a!=='x');
+      ok(new Set(used).size===used.length, 'telc '+t.id+': una lettera è usata due volte');
+      ok(new Set(t.options.map(o=>o[0])).size===t.options.length, 'telc '+t.id+': lettere delle opzioni duplicate');
+    }
+    if(t.text && t.type!=='mc'){
+      const g=[...t.text.matchAll(/\{(\d+)\}/g)].map(x=>+x[1]);
+      ok(JSON.stringify(g)===JSON.stringify(t.items.map(i=>i.n)), 'telc '+t.id+': buchi nel testo ≠ item');
+    }
+  }));
+  ok(JSON.stringify(nums)===JSON.stringify(Array.from({length:60},(_, k)=>k+1)), 'telc: la numerazione deve andare da 1 a 60 senza buchi');
+  ok(D1.lesen.teile.reduce((n,t)=>n+t.points,0)===D1.lesen.max && D1.lesen.max===105, 'telc: Lesen+SB devono fare 105');
+  ok(D1.hoeren.teile.reduce((n,t)=>n+t.points,0)===75, 'telc: Hören deve fare 75');
+  ok(D1.sprechen.teile.reduce((n,t)=>n+t.points,0)===75, 'telc: Sprechen deve fare 75');
+  ok(D1.schreiben.tasks.every(t=>t.points.length===4 && t.model), 'telc: ogni lettera ha 4 punti e un modello');
+  const sIt = w.eval('UI_STRINGS.it.tl'), sEn = w.eval('UI_STRINGS.en.tl');
+  ok(Object.keys(sIt).sort().join()===Object.keys(sEn).sort().join(), 'telc: chiavi IT/EN dei testi diverse');
+
+  const $ = id => w.document.getElementById(id);
+  const tab = w.document.querySelector('.tabbar [data-tab="esercizi"]'); click(tab);
+  ok(!!$('exTelc'), 'telc: manca la card nella tab Esercizi');
+  click($('exTelc'));
+  ok($('tlOverlay').classList.contains('open'), 'telc: il pannello non si apre');
+  ok($('tlBody').querySelectorAll('[data-start]').length===5, 'telc: il menu deve avere 5 prove');
+
+  // Lesen: tutte giuste → 105/105
+  click($('tlBody').querySelector('[data-start="lesen"]'));
+  T.tlClock();
+  ok(/^(90|89):\d\d$/.test($('tlClock').textContent), 'telc: il timer di Lesen non parte da 90:00 ('+$('tlClock').textContent+')');
+  D1.lesen.teile.forEach((t, k) => {
+    click($('tlBody').querySelectorAll('[data-teil]')[k]);
+    t.items.forEach(i => {
+      const el = $('tlBody').querySelector('select[data-q="'+i.n+'"]') || $('tlBody').querySelector('input[data-q="'+i.n+'"][value="'+i.a+'"]');
+      ok(!!el, 'telc: campo per la domanda '+i.n+' mancante');
+      if(!el) return;
+      if(el.tagName==='SELECT') el.value = i.a; else el.checked = true;
+      el.dispatchEvent(new w.Event('change',{bubbles:true}));
+    });
+  });
+  click($('tlBody').querySelectorAll('[data-teil]')[3]);
+  ok($('tlg-24') && $('tlg-24').textContent==='an', 'telc: il buco 24 non mostra la parola scelta');
+  click($('tlBody').querySelectorAll('[data-teil]')[4]);
+  click($('tlSubmit'));
+  ok($('tlSubmit') && $('tlSubmit').textContent.includes('di nuovo'), 'telc: la consegna non chiede conferma');
+  click($('tlSubmit'));
+  ok(T.tl.phase==='result' && T.tl.res.lesen.p===105, 'telc: tutte giuste dovrebbe fare 105, fa '+(T.tl.res.lesen && T.tl.res.lesen.p));
+  ok($('tlBody').textContent.includes('105 / 105'), 'telc: risultato non mostrato');
+  click($('tlMenu'));
+
+  // Esame completo: Lesen vuoto, Hören a tempo scaduto, Schreiben valutato A/B/C → 27/225
+  click($('tlBody').querySelector('[data-start="full"]'));
+  click($('tlBody').querySelectorAll('[data-teil]')[4]); click($('tlSubmit')); click($('tlSubmit'));
+  ok(T.tl.res.lesen.p===0, 'telc completo: Lesen vuoto dovrebbe fare 0');
+  click($('tlNextMod'));
+  ok(T.tl.mod==='hoeren', 'telc completo: dopo Lesen deve venire Hören');
+  ok($('tlBody').textContent.includes('trascrizione') || $('tlBody').querySelector('[data-play]'), 'telc: Hören senza audio né trascrizione');
+  T.tl.endAt = Date.now() - 1000; T.tlClock();
+  ok(T.tl.phase==='result' && T.tl.timeUp, 'telc: a tempo scaduto la prova non viene consegnata');
+  click($('tlNextMod'));
+  ok(T.tl.mod==='schreiben', 'telc completo: dopo Hören deve venire Schreiben');
+  click($('tlBody').querySelector('[data-task="A"]'));
+  const ta = $('tlText'); ta.value = 'Lieber Paul, danke für deine Mail.'; ta.dispatchEvent(new w.Event('input',{bubbles:true}));
+  ok($('tlWords').textContent.startsWith('6 '), 'telc: contatore parole sbagliato ('+$('tlWords').textContent+')');
+  click($('tlSubmit')); click($('tlSubmit'));
+  ok(T.tl.phase==='assess', 'telc: dopo la consegna della lettera manca la valutazione');
+  click($('tlCalc'));
+  ok(!$('tlCritMsg').hidden, 'telc: senza livelli deve chiedere di sceglierli');
+  [['I','A'],['II','B'],['III','C']].forEach(([c,v]) => { const r=$('tlBody').querySelector('input[name="tlc'+c+'"][value="'+v+'"]'); r.checked=true; r.dispatchEvent(new w.Event('change',{bubbles:true})); });
+  click($('tlCalc'));
+  ok(T.tl.res.schreiben && T.tl.res.schreiben.p===27, 'telc: A+B+C dovrebbe fare 27');
+  ok($('tlBody').querySelector('.tl-total') && $('tlBody').textContent.includes('27 / 225'), 'telc: manca il totale dello scritto');
+  click($('tlMenu'));
+
+  // Sprechen: Teil 1 tutto A (15), Teil 2 tutto B (6+6+6+4=22), Teil 3 tutto C (2+2+2+2=8) → 45 (soglia)
+  click($('tlBody').querySelector('[data-start="sprechen"]'));
+  click($('tlBody').querySelectorAll('[data-teil]')[2]); click($('tlCalc'));
+  ok(!$('tlCritMsg').hidden, 'telc: Sprechen senza livelli deve chiedere di sceglierli');
+  ['A','B','C'].forEach((v,k) => {
+    click($('tlBody').querySelectorAll('[data-teil]')[k]);
+    const rs = $('tlBody').querySelectorAll('.tl-abcd input[value="'+v+'"]');
+    ok(rs.length===4, 'telc: ogni parte di Sprechen deve avere 4 criteri');
+    rs.forEach(r => { r.checked=true; r.dispatchEvent(new w.Event('change',{bubbles:true})); });
+  });
+  click($('tlCalc'));
+  ok(T.tl.res.sprechen && T.tl.res.sprechen.p===45, 'telc: Sprechen A/B/C dovrebbe fare 45, fa '+(T.tl.res.sprechen&&T.tl.res.sprechen.p));
+  ok($('tlBody').textContent.includes('Superato'), 'telc: con 45/75 l orale è superato');
+  ok(D1.sprechen.teile.every(x => D1.sprechen.criteria.reduce((n,c)=>n+D1.sprechen.scales[x.id][c.aussp?1:0][0],0)===x.points), 'telc: i punti massimi dei criteri non coincidono con i punti della parte');
+  const hist = JSON.parse(w.localStorage.getItem('wortabolario_telc')||'[]');
+  ok(hist.length===5, 'telc: lo storico dovrebbe avere 5 risultati, ne ha '+hist.length);
+  click($('tlMenu'));
+  ok($('tlBody').textContent.includes('ultimo: 45/75'), 'telc: il menu non mostra l ultimo punteggio');
+
+  // uscita in due tocchi
+  click($('tlBody').querySelector('[data-start="hoeren"]'));
+  click($('tlQuit')); ok(T.tl!==null, 'telc: il primo tocco su Esci non deve chiudere la prova');
+  click($('tlQuit')); ok(T.tl===null && $('tlBody').querySelectorAll('[data-start]').length===5, 'telc: Esci non torna al menu');
+  click(w.document.getElementById('tlClose'));
+  ok(!$('tlOverlay').classList.contains('open'), 'telc: il pannello non si chiude');
+}
 
 console.log('\nasserzioni: '+pass+' verdi, '+fail+' rosse');
 if(fail){ console.log('\n--- problemi ---'); errs.slice(0,25).forEach(e=>console.log(' • '+e)); if(errs.length>25) console.log(' … e altri '+(errs.length-25)); process.exit(1); }
