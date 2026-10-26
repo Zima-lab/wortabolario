@@ -104,7 +104,21 @@ const FRASI = [
   ["Ich verstehe deine Position, aber …","Capisco la tua posizione, però…","I understand your position, but…"],
   ["Da muss ich widersprechen.","Qui devo contraddirti.","I have to disagree there."],
   ["Das sehe ich ganz anders.","Io la vedo in modo completamente diverso.","I see it completely differently."],
-  ["Wie meinst du das genau?","Cosa intendi esattamente? (per chiedere chiarimenti)","What exactly do you mean? (to ask back)"]
+  ["Wie meinst du das genau?","Cosa intendi esattamente? (per chiedere chiarimenti)","What exactly do you mean? (to ask back)"],
+  ["Ich kann leider nicht nachvollziehen, warum …", "Purtroppo non riesco a capire perché … (critica gentile)", "Unfortunately I can't understand why … (polite criticism)"],
+  ["Es ist mir ein Rätsel, wieso …", "Per me è un mistero perché …", "It's a mystery to me why …"],
+  ["Für mich wäre es leichter, wenn …", "Per me sarebbe più facile se …", "It would be easier for me if …"],
+  ["Kannst du mir mal sagen, warum …?", "Mi spieghi un po' perché …?", "Can you tell me why …?"],
+  ["Es tut mir leid, das ist mir gar nicht aufgefallen.", "Mi dispiace, non me ne sono proprio accorto.", "I'm sorry, I didn't notice that at all."],
+  ["Ich verstehe, was Sie meinen, aber …", "Capisco che cosa intende, ma …", "I understand what you mean, but …"],
+  ["Das war wohl ein Missverständnis.", "Dev'essere stato un malinteso.", "That must have been a misunderstanding."],
+  ["Aus meiner Sicht …", "Dal mio punto di vista …", "From my point of view …"],
+  ["Nein, da irrst du dich.", "No, qui ti sbagli.", "No, you're wrong there."],
+  ["Jetzt übertreibst du aber!", "Adesso stai esagerando!", "Now you're exaggerating!"],
+  ["Mich hat überrascht, dass …", "Mi ha sorpreso che … (verbo in fondo)", "I was surprised that … (verb at the end)"],
+  ["Was wäre, wenn …?", "Che cosa succederebbe se …?", "What would happen if …?"],
+  ["Wenn du einen Wunsch frei hättest, was würdest du dir wünschen?", "Se potessi esprimere un desiderio, che cosa desidereresti?", "If you had one wish, what would you wish for?"],
+  ["Was hast du heute ohne … gemacht?", "Che cosa hai fatto oggi senza …? (ohne … zu / ohne dass)", "What did you do today without …? (ohne … zu / ohne dass)"]
 ];
 
 const DETTI = [

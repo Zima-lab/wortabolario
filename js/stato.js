@@ -235,7 +235,7 @@ function awardXp(points){
 
 const BACKUP_KEYS = ["wortabolario_favs","wortabolario_learned","wortabolario_recent","wortabolario_srs",
   "wortabolario_streak","wortabolario_lang","wortabolario_theme","wortabolario_sort","wortabolario_flashdir",
-  "wortabolario_xp","wortabolario_xp_trophies","wortabolario_xp_messages","wortabolario_ex"];
+  "wortabolario_xp","wortabolario_xp_trophies","wortabolario_xp_messages","wortabolario_ex","wortabolario_telc"];
 
 function exportProgress(){
   const data = { app: "wortabolario", version: 3, date: new Date().toISOString() };

@@ -116,7 +116,10 @@ const BIGNAMI_PAGES = {
   "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 4,
   "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 14,
   "Infinitivsatz oder dass-Satz?": 25,
-  "Infinitiv Perfekt — geschrieben zu haben": 25
+  "Infinitiv Perfekt — geschrieben zu haben": 25,
+  /* v47 */
+  "Konjunktiv II — die Fallen": 38,
+  "Modalwörter — vielleicht, hoffentlich, leider": 42
 };
 
 /* ---------- BIGNAMI B2 (dalla v33) ----------
@@ -127,32 +130,35 @@ const BIGNAMI_B2_PDF = "Grammatica_Tedesca_B2_Bignami.pdf";
 const BIGNAMI_B2_PDF_EN = "German_Grammar_B2_Bignami_EN.pdf";
 function bignamiB2Pdf(){ return lang === "en" ? BIGNAMI_B2_PDF_EN : BIGNAMI_B2_PDF; }
 const BIGNAMI_B2_PAGES = {
+  /* v47: + A6 Konjunktiv II — die Fallen (p. 7) e D5 Modalwörter (p. 25) */
   "Perfekt mit doppeltem Infinitiv": 2,
   "Das Verb lassen — vier Bedeutungen": 3,
   "Vermutungen mit Modalverben — die Sicherheitsskala": 4,
   "Trennbare und untrennbare Vorsilben": 5,
   "Konjunktiv I — die indirekte Rede": 6,
-  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 7,
-  "Das Wort es — le sue funzioni": 8,
-  "Indirekte Fragen — ob und W-Wörter": 9,
-  "Negationswörter — nicht, kein, nichts, niemand": 10,
-  "Vergleichssätze mit als oder wie": 11,
-  "je …, desto / umso — und Vergleiche": 12,
-  "ohne … zu und (an)statt … zu": 13,
-  "Infinitivsatz oder dass-Satz?": 14,
-  "Infinitiv Perfekt — geschrieben zu haben": 15,
-  "Zweiteilige und nachgestellte Präpositionen": 16,
-  "Adjektive mit Präpositionen": 17,
-  "Nomen mit Präpositionen": 18,
-  "Nomen-Verb-Verbindungen": 19,
-  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 20,
-  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 21,
-  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 22,
-  "Das Wort eigentlich — Adverb oder Modalpartikel": 22,
-  "also · so — Folge und Vergleich": 23
+  "Konjunktiv II — die Fallen": 7,
+  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 8,
+  "Das Wort es — le sue funzioni": 9,
+  "Indirekte Fragen — ob und W-Wörter": 10,
+  "Negationswörter — nicht, kein, nichts, niemand": 11,
+  "Vergleichssätze mit als oder wie": 12,
+  "je …, desto / umso — und Vergleiche": 13,
+  "ohne … zu und (an)statt … zu": 14,
+  "Infinitivsatz oder dass-Satz?": 15,
+  "Infinitiv Perfekt — geschrieben zu haben": 16,
+  "Zweiteilige und nachgestellte Präpositionen": 17,
+  "Adjektive mit Präpositionen": 18,
+  "Nomen mit Präpositionen": 19,
+  "Nomen-Verb-Verbindungen": 20,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 21,
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 22,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 23,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 23,
+  "also · so — Folge und Vergleich": 24,
+  "Modalwörter — vielleicht, hoffentlich, leider": 25
 };
-/* Sezioni del B2 (v41): A verbi (2-6) · B frase (7-15) · C preposizioni (16-19) · D parole (20-22) */
-function bignamiB2Section(p){ return p <= 6 ? "B2A" : p <= 15 ? "B2B" : p <= 19 ? "B2C" : "B2D"; }
+/* Sezioni del B2 (v47): A verbi (2-7) · B frase (8-16) · C preposizioni (17-20) · D parole (21-25) */
+function bignamiB2Section(p){ return p <= 7 ? "B2A" : p <= 16 ? "B2B" : p <= 20 ? "B2C" : "B2D"; }
 function bignamiPageOf(e){ return BIGNAMI_B2_PAGES[e.de] || BIGNAMI_PAGES[e.de] || 99; }
 
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------

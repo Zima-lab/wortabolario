@@ -155,6 +155,18 @@
   </div>
 </div>
 
+<div id="tlOverlay" class="conj-overlay" role="dialog" aria-modal="true" aria-labelledby="tlTitle">
+  <div class="conj-sheet flash-sheet">
+    <div class="conj-sheet-handle"></div>
+    <div class="conj-sheet-header">
+      <h2 id="tlTitle">Esame telc B1</h2>
+      <span id="tlClock" class="tl-clock" aria-live="off"></span>
+      <button type="button" id="tlClose" class="conj-close" aria-label="Chiudi" data-icon="close"></button>
+    </div>
+    <div class="conj-sheet-body" id="tlBody"></div>
+  </div>
+</div>
+
 <div id="xpOverlay" class="conj-overlay" role="dialog" aria-modal="true" aria-labelledby="xpTitle">
   <div class="conj-sheet flash-sheet">
     <div class="conj-sheet-handle"></div>
@@ -187,6 +199,7 @@
 <script src="dati/tabelle.js"></script>
 <script src="dati/frasi.js"></script>
 <script src="dati/esercizi.js"></script>
+<script src="dati/esame-b1.js"></script>
 <script src="js/coniugazione.js"></script>
 <script src="js/voci.js"></script>
 <script src="js/testi.js"></script>
@@ -200,6 +213,7 @@
 <script src="js/flashcard.js"></script>
 <script src="js/quiz.js"></script>
 <script src="js/esercizi.js"></script>
+<script src="js/esame.js"></script>
 <script src="js/avvio.js"></script>
 <script>
   // Registrazione service worker: rende l'app utilizzabile offline (PWA).

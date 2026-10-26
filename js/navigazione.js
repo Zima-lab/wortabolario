@@ -20,7 +20,8 @@ function renderExercises(){
     { id: "exGenus", ic: "dice",   name: s.exGenus, desc: s.exGenusDesc },
     { id: "exConj",  ic: "pencil", name: s.exConj,  desc: s.exConjDesc },
     { id: "exWww",   ic: "book",   name: s.exWww,   desc: s.exWwwDesc },
-    { id: "exDk",    ic: "book",   name: s.exDk,    desc: s.exDkDesc }
+    { id: "exDk",    ic: "book",   name: s.exDk,    desc: s.exDkDesc },
+    { id: "exTelc",  ic: "exam",   name: s.exTelc,  desc: s.exTelcDesc }
   ];
   host.innerHTML = `
     <p class="eyebrow">${s.exTitle}</p>
@@ -39,6 +40,7 @@ function renderExercises(){
   document.getElementById("exConj").addEventListener("click", () => openConjQuiz());
   document.getElementById("exWww").addEventListener("click", () => openWwQuiz());
   document.getElementById("exDk").addEventListener("click", () => openDkQuiz());
+  document.getElementById("exTelc").addEventListener("click", () => openTelc());
 }
 
 function setTab(t){
