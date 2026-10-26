@@ -28,6 +28,7 @@ const PRECACHE = [
   "dati/frasi.js",
   "dati/esercizi.js",
   "dati/esame-b1.js",
+  "dati/esame-b1-2.js",
   "js/coniugazione.js",
   "js/voci.js",
   "js/testi.js",

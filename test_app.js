@@ -46,7 +46,7 @@ const FULL = new Function(dataSrc + ';return {GRAMMATICA, FRASI, GRAM_TABLES, SO
 const GRAM = FULL.GRAMMATICA, FRASI = FULL.FRASI, GTAB = FULL.GRAM_TABLES, SOST = FULL.SOSTANTIVI, DETTI = FULL.DETTI;
 
 ok(GRAM.length===98, 'GRAMMATICA dovrebbe avere 98 schede, ne ha '+GRAM.length);
-ok(verSrc.includes('"v48"'), 'version.js non e a v48');
+ok(verSrc.includes('"v49"'), 'version.js non e a v49');
 
 // campi obbligatori e bilinguismo grammatica
 GRAM.forEach(g=>{
@@ -150,10 +150,11 @@ const dom = new JSDOM(html, { runScripts:'dangerously', url:'https://example.org
 const w = dom.window;
 w.HTMLMediaElement && (w.HTMLMediaElement.prototype.play = ()=>{});
 w.scrollTo = ()=>{};
+w.requestAnimationFrame = w.requestAnimationFrame || (f => setTimeout(f, 0));   // jsdom non lo ha: serve al messaggio XP dei traguardi
 w.matchMedia = w.matchMedia || (q=>({matches:false, media:q, addEventListener(){}, removeEventListener(){}, addListener(){}, removeListener(){}}));
 const s = w.document.createElement('script');
 s.textContent = verSrc + '\n' + dataSrc + '\n' + exSrc + '\n' + appSrc + '\n' +
-  'window.__test = { get ENTRIES(){return ENTRIES;}, get lang(){return lang;}, get EX(){return EX_TOPICS;}, get exData(){return exData;}, get exDeck(){return exDeck;}, get exIdx(){return exIdx;}, exNorm, exStatus, exDueItems, exOpenOverlay, exStartTopic, get tl(){return tl;}, tlClock, TLD };';
+  'window.__test = { get ENTRIES(){return ENTRIES;}, get lang(){return lang;}, get EX(){return EX_TOPICS;}, get exData(){return exData;}, get exDeck(){return exDeck;}, get exIdx(){return exIdx;}, exNorm, exStatus, exDueItems, exOpenOverlay, exStartTopic, get tl(){return tl;}, tlClock, get TLD(){return TLD;}, TL_TESTS };';
 w.document.body.appendChild(s);
 w.document.dispatchEvent(new w.Event('DOMContentLoaded',{bubbles:true}));
 
@@ -481,8 +482,9 @@ langBtn.dispatchEvent(new w.Event('click',{bubbles:true}));
 }
 
 // v48: simulatore d'esame telc B1 (dati/esame-b1.js + js/esame.js)
-{
-  const D1 = T.TLD;
+ok(T.TL_TESTS.length === 2 && new Set(T.TL_TESTS.map(t=>t.id)).size === 2, 'telc: servono 2 modelli con id diversi');
+// i controlli sui dati valgono per OGNI modello
+T.TL_TESTS.forEach(D1 => {
   const nums = [];
   ['lesen','hoeren'].forEach(m => D1[m].teile.forEach(t => {
     ok(t.items.length * t.perItem === t.points, 'telc '+t.id+': punti per item × item ≠ punti della parte');
@@ -509,6 +511,12 @@ langBtn.dispatchEvent(new w.Event('click',{bubbles:true}));
   ok(D1.hoeren.teile.reduce((n,t)=>n+t.points,0)===75, 'telc: Hören deve fare 75');
   ok(D1.sprechen.teile.reduce((n,t)=>n+t.points,0)===75, 'telc: Sprechen deve fare 75');
   ok(D1.schreiben.tasks.every(t=>t.points.length===4 && t.model), 'telc: ogni lettera ha 4 punti e un modello');
+  ok(D1.schreiben.criteria && D1.sprechen.scales && D1.sprechen.teile.length===3, 'telc '+D1.id+': griglie mancanti');
+});
+// testi dei due modelli davvero diversi
+ok(T.TL_TESTS[0].lesen.teile[1].text !== T.TL_TESTS[1].lesen.teile[1].text && T.TL_TESTS[0].hoeren.teile[1].audio !== T.TL_TESTS[1].hoeren.teile[1].audio, 'telc: il modello 2 ripete i testi del modello 1');
+{
+  const D1 = T.TL_TESTS[0];
   const sIt = w.eval('UI_STRINGS.it.tl'), sEn = w.eval('UI_STRINGS.en.tl');
   ok(Object.keys(sIt).sort().join()===Object.keys(sEn).sort().join(), 'telc: chiavi IT/EN dei testi diverse');
 
@@ -585,6 +593,29 @@ langBtn.dispatchEvent(new w.Event('click',{bubbles:true}));
   ok(hist.length===5, 'telc: lo storico dovrebbe avere 5 risultati, ne ha '+hist.length);
   click($('tlMenu'));
   ok($('tlBody').textContent.includes('ultimo: 45/75'), 'telc: il menu non mostra l ultimo punteggio');
+
+  // Modelltest 2: si sceglie nel menu, tutte giuste → 105, storico separato dal modello 1
+  click($('tlBody').querySelector('[data-test="1"]'));
+  ok(T.TLD.id==='b1-2' && !$('tlBody').textContent.includes('ultimo: 45/75'), 'telc: il modello 2 non deve mostrare i punteggi del modello 1');
+  click($('tlBody').querySelector('[data-start="lesen"]'));
+  T.TL_TESTS[1].lesen.teile.forEach((t, k) => {
+    click($('tlBody').querySelectorAll('[data-teil]')[k]);
+    t.items.forEach(i => {
+      const el = $('tlBody').querySelector('select[data-q="'+i.n+'"]') || $('tlBody').querySelector('input[data-q="'+i.n+'"][value="'+i.a+'"]');
+      ok(!!el, 'telc M2: campo per la domanda '+i.n+' mancante');
+      if(!el) return;
+      if(el.tagName==='SELECT') el.value = i.a; else el.checked = true;
+      el.dispatchEvent(new w.Event('change',{bubbles:true}));
+    });
+  });
+  ok($('tlBody').textContent.includes('Sprachcafé'), 'telc M2: Sprachbausteine 2 non mostra il testo del modello 2');
+  click($('tlSubmit')); click($('tlSubmit'));
+  ok(T.tl.res.lesen.p===105, 'telc M2: tutte giuste dovrebbe fare 105, fa '+T.tl.res.lesen.p);
+  click($('tlMenu'));
+  ok($('tlBody').textContent.includes('ultimo: 105/105'), 'telc M2: il menu non mostra l ultimo punteggio del modello 2');
+  ok(w.localStorage.getItem('wortabolario_telc_m')==='b1-2', 'telc: la scelta del modello non viene ricordata');
+  click($('tlBody').querySelector('[data-test="0"]'));
+  ok($('tlBody').textContent.includes('ultimo: 45/75'), 'telc: tornando al modello 1 manca il suo storico');
 
   // uscita in due tocchi
   click($('tlBody').querySelector('[data-start="hoeren"]'));

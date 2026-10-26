@@ -11,7 +11,7 @@ Vocabolario tedesco ↔ italiano/inglese per il corso B1 — app web offline (PW
 - Coniugatore completo (Indikativ, Konjunktiv, Imperativ, participi)
 - Flashcard bidirezionali con ripetizione spaziata (sistema Leitner)
 - Quiz *der/die/das* e quiz di coniugazione
-- Simulazione d'esame telc Deutsch B1 (Lesen, Sprachbausteine, Hören, Schreiben, Sprechen) con tempo e punteggio
+- Simulazione d'esame telc Deutsch B1, due modelli completi (Lesen, Sprachbausteine, Hören, Schreiben, Sprechen) con tempo e punteggio
 - Preferiti, parole imparate, serie di giorni consecutivi
 - Backup dei progressi in JSON (esporta / importa)
 - Funziona offline e si installa sul telefono
@@ -33,7 +33,8 @@ dati/             IL CONTENUTO — per aggiungere parole o regole si toccano sol
   tabelle.js        tabelle casi × genere delle schede
   frasi.js          frasi utili e modi di dire
   esercizi.js       banca degli esercizi di grammatica
-  esame-b1.js       modello d'esame telc B1 (testi originali, soluzioni, griglie)
+  esame-b1.js       modello d'esame telc B1 n. 1 (testi originali, soluzioni, griglie)
+  esame-b1-2.js     modello n. 2: stessa struttura del n. 1, testi nuovi
 
 js/               LA LOGICA — 15 file caricati in quest'ordine (vedi index.html)
   coniugazione.js   motore che costruisce tutte le forme di un verbo
