@@ -5,7 +5,10 @@
    Il timer si basa sull'ora di fine (endAt): chiudere il pannello non ferma né perde la prova.
    Tutti i file di js/ condividono le stesse variabili: l'ordine di caricamento è in index.html. */
 
-const TLD = TELC_B1;
+/* I modelli d'esame disponibili (dati/esame-b1*.js). TLD = quello scelto nel menu. */
+const TL_TESTS = [TELC_B1, TELC_B1_2];
+const TL_PICK_KEY = "wortabolario_telc_m";
+let TLD = TL_TESTS.find(t => { try { return t.id === localStorage.getItem(TL_PICK_KEY); } catch(e){ return false; } }) || TL_TESTS[0];
 const TL_KEY = "wortabolario_telc";
 const TL_FULL = ["lesen", "hoeren", "schreiben"];
 const TL_PASS_WRITTEN = 135, TL_PASS_ORAL = 45;
@@ -23,10 +26,11 @@ function tlTip(t){ return t.tip ? `<p class="tl-tip">${ic("book","ic-sm")}${t.ti
 function tlHistory(){ try { return JSON.parse(localStorage.getItem(TL_KEY)) || []; } catch(e){ return []; } }
 function tlSave(m, p, max){
   const h = tlHistory();
-  h.push({ d: new Date().toISOString().slice(0, 10), m, p, max });
+  h.push({ d: new Date().toISOString().slice(0, 10), t: TLD.id, m, p, max });
   try { localStorage.setItem(TL_KEY, JSON.stringify(h.slice(-30))); } catch(e){}
 }
-function tlLast(m){ return tlHistory().filter(x => x.m === m).pop(); }
+/* le voci senza `t` vengono dalla v48, quando esisteva solo il Modelltest 1 */
+function tlLast(m){ return tlHistory().filter(x => x.m === m && (x.t || "b1-1") === TLD.id).pop(); }
 
 /* ---------- audio: voce A e voce B, una frase alla volta ----------
    Frasi brevi = niente interruzioni a metà (alcuni browser tagliano gli enunciati lunghi). */
@@ -115,12 +119,19 @@ function tlMenuHtml(){
   };
   return `
     <p class="ex-pick-hint">${s.intro}</p>
+    <p class="tl-box-h">${s.pickTest}</p>
+    <div class="tl-tabs">${TL_TESTS.map((t, i) => `<button type="button" class="chip ${t === TLD ? "active" : ""}" data-test="${i}">Modelltest ${i + 1}</button>`).join("")}</div>
     ${card("full", s.full, s.fullDesc)}
     ${["lesen", "hoeren", "schreiben", "sprechen"].map(m => card(m, s.mods[m], s.modDesc[m], m)).join("")}
     <p class="tl-note">${s.pass}</p>
     <p class="tl-note">${s.honest}</p>`;
 }
 function tlBindMenu(){
+  document.querySelectorAll("#tlBody [data-test]").forEach(b => b.addEventListener("click", () => {
+    TLD = TL_TESTS[+b.dataset.test];
+    try { localStorage.setItem(TL_PICK_KEY, TLD.id); } catch(e){}
+    tlRender();
+  }));
   document.querySelectorAll("#tlBody [data-start]").forEach(b => b.addEventListener("click", () => {
     const id = b.dataset.start;
     tlStart(id === "full" ? TL_FULL.slice() : [id]);

@@ -117,7 +117,8 @@ const UI_STRINGS = {
     exTelc: "Esame telc B1", exTelcDesc: "Simulazione con tempo e punteggio",
     tl: {
       title: "Simulazione telc Deutsch B1",
-      intro: "Un modello d'esame completo, scritto apposta per l'app nel formato telc: stessi tempi, stessi tipi di esercizio, stessi punteggi. Il tempo parte appena inizi.",
+      intro: "Due modelli d'esame completi, scritti apposta per l'app nel formato telc: stessi tempi, stessi tipi di esercizio, stessi punteggi. Il tempo parte appena inizi.",
+      pickTest: "Scegli il modello d'esame:",
       full: "Esame scritto completo", fullDesc: "Lesen + Sprachbausteine → Hören → Schreiben · circa 2½ ore · 225 punti",
       mods: { lesen: "Lesen + Sprachbausteine", hoeren: "Hören", schreiben: "Schreiben", sprechen: "Sprechen" },
       modDesc: { lesen: "5 parti · 90 min · 105 punti", hoeren: "3 parti · 30 min · 75 punti", schreiben: "1 lettera · 30 min · 45 punti", sprechen: "3 parti · 20 min di preparazione · 75 punti" },
@@ -264,7 +265,8 @@ const UI_STRINGS = {
     exTelc: "telc B1 exam", exTelcDesc: "Timed mock exam with scores",
     tl: {
       title: "telc Deutsch B1 mock exam",
-      intro: "A complete mock exam, written for the app in the telc format: same timing, same task types, same scoring. The clock starts as soon as you begin.",
+      intro: "Two complete mock exams, written for the app in the telc format: same timing, same task types, same scoring. The clock starts as soon as you begin.",
+      pickTest: "Choose the mock exam:",
       full: "Full written exam", fullDesc: "Reading + Language elements → Listening → Writing · about 2½ hours · 225 points",
       mods: { lesen: "Lesen + Sprachbausteine", hoeren: "Hören", schreiben: "Schreiben", sprechen: "Sprechen" },
       modDesc: { lesen: "5 parts · 90 min · 105 points", hoeren: "3 parts · 30 min · 75 points", schreiben: "1 letter · 30 min · 45 points", sprechen: "3 parts · 20 min preparation · 75 points" },
