@@ -15,6 +15,7 @@
     13. Navigazione (tab bar, torna su, stato vuoto, piè di pagina)
     14. Accessibilità (aree di tocco, focus, movimento ridotto)
     15. Simulazione d'esame telc B1
+    16. Layout desktop (≥1024px): intestazione larga, ricerca fissa, menu laterale
    Regola: niente rossi — l'errore usa l'ambra. Ogni font-size usa un token --fs-*. */
 
 
@@ -248,6 +249,7 @@ header.top p.sub { margin: 0; color: var(--muted); font-size: var(--fs-xs); }
   transition: box-shadow .15s, border-color .15s;
 }
 .searchbar:focus-within { border-color: var(--navy); box-shadow: var(--e2); }
+.search-input-wrap input:focus-visible { outline: none; }   /* il focus lo mostra già il bordo della barra */
 .search-input-wrap { position: relative; flex: 1; display: flex; align-items: center; min-width: 0; }
 .search-input-wrap input {
   /* 1rem = 16px: sotto i 16px iOS fa lo zoom sul campo */
@@ -1114,6 +1116,7 @@ header.top p.sub { margin: 0; color: var(--muted); font-size: var(--fs-xs); }
   transition: transform .15s;
   display: inline-flex; align-items: center; justify-content: center;
 }
+.back-top[hidden] { display: none; }   /* senza questa riga display:inline-flex vinceva su hidden */
 .back-top:active { transform: scale(.92); }
 .back-top .ic { width: 20px; height: 20px; stroke-width: 2; }
 
@@ -1240,3 +1243,98 @@ input:focus-visible, [tabindex]:focus-visible {
 .tl-total p { margin: 0; }
 .tl-actions { flex-direction: column; margin-top: var(--sp-3); }
 .tl-mod .ic { color: var(--muted); }
+
+
+/* ============ 16. LAYOUT DESKTOP (≥1024px) ============
+   Stesso schema di Glifo: fascia in alto con nome dell'app, controlli e ricerca a tutta
+   larghezza; sotto, menu laterale a sinistra (è la tab bar, girata in verticale) e contenuto
+   a destra. Sotto i 1024px non cambia nulla. Il valore 1024px va tenuto uguale a
+   desktopMQ in js/navigazione.js. La griglia è sul body: .wrap usa display:contents,
+   così intestazione, ricerca, <main> e tab bar diventano celle della stessa griglia. */
+
+.xp-top { display: none; }   /* il chip XP in alto esiste solo su desktop */
+
+@media (min-width: 1024px){
+  body {
+    /* margine laterale della fascia: 40px, cresce sugli schermi molto larghi
+       così il contenuto resta centrato (larghezza utile max 1440px) */
+    --band-pad: max(32px, calc((100vw - 1440px) / 2));
+    --side-w: clamp(200px, 18vw, 264px);   /* 200px a 1024, 264px da ~1470 */
+    display: grid;
+    grid-template-columns: calc(var(--band-pad) + var(--side-w)) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    min-height: 100vh;
+    padding-bottom: 0;
+  }
+  /* fondo bianco della fascia in alto (intestazione + ricerca) */
+  body::before {
+    content: ""; grid-column: 1 / -1; grid-row: 1 / 3;
+    background: var(--card); border-bottom: 1px solid var(--border);
+  }
+  .wrap { display: contents; }
+
+  /* --- Intestazione: nome + sottotitolo sulla stessa riga, controlli a destra --- */
+  header.top {
+    grid-column: 1 / -1; grid-row: 1;
+    margin: 0; padding: 22px var(--band-pad) 0;
+  }
+  .header-row { align-items: center; }
+  .header-row > div:first-child { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; min-width: 0; }
+  header.top h1 { font-size: var(--fs-4xl); margin: 0; line-height: 1.1; }
+  header.top p.sub { font-size: var(--fs-sm); }
+  .toggles { align-items: center; gap: var(--sp-25); margin-top: 0; }
+  .xp-top {
+    display: inline-flex; font-size: var(--fs-sm); min-height: 40px; padding: 8px 16px;
+  }
+
+  /* --- Ricerca: sempre visibile, a tutta larghezza --- */
+  .searchbar {
+    grid-column: 1 / -1; grid-row: 2;
+    position: relative; top: auto;
+    margin: 18px var(--band-pad) 20px;
+    background: var(--surface-alt); box-shadow: none; padding: 14px 18px;
+  }
+  .searchbar:focus-within { background: var(--card); }
+  .suggest-list { left: -18px; right: -18px; }
+
+  /* --- Menu laterale (la tab bar in verticale) --- */
+  .tabbar {
+    grid-column: 1; grid-row: 3;
+    position: sticky; top: 0; bottom: auto; left: auto; right: auto; z-index: 20;
+    align-self: start;
+    flex-direction: column; gap: var(--sp-1);
+    min-height: calc(100vh - 170px);
+    background: transparent; box-shadow: none;
+    border-top: none; border-right: 1px solid var(--border);
+    padding: 28px 18px 28px var(--band-pad);
+  }
+  .tabbar .tab {
+    flex: none; flex-direction: row; justify-content: flex-start; gap: var(--sp-35);
+    min-height: 52px; padding: 12px 18px;
+    font-size: var(--fs-base); font-weight: 700; color: var(--text);
+    transition: background .15s, color .15s;
+  }
+  .tabbar .tab .tab-ic { height: auto; line-height: 0; }
+  .tabbar .tab .tab-ic .ic { width: 21px; height: 21px; }
+  .tabbar .tab .tab-lb { line-height: 1.2; }
+  .tabbar .tab:hover:not(.active) { background: var(--surface-alt); }
+  .tabbar .tab.active { color: var(--navy); background: var(--navy-light); font-weight: 800; }
+
+  /* --- Contenuto principale --- */
+  .main {
+    grid-column: 2; grid-row: 3; min-width: 0;
+    width: 100%; max-width: calc(1120px + 2 * 48px);
+    padding: 32px 48px 60px;
+  }
+  .home { margin-top: 0; }
+  .today-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-4); }
+  .today-card { padding: 20px 22px; border-radius: 16px; }
+  .progress-card { padding: 20px 22px; border-radius: 16px; }
+  .ex-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-4); }
+  .date-strip { border-radius: 16px; }
+  /* il chip XP della card "Oggi" è già in alto: non duplicarlo */
+  .today-panel .xp-chip { display: none; }
+
+  /* "torna su": non c'è più la tab bar in basso */
+  .back-top { bottom: 24px; right: 24px; }
+}

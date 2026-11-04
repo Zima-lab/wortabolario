@@ -35,6 +35,8 @@
         <p class="sub" id="subTitle">Corso tedesco · vocabolario tedesco ↔ italiano — verbi, sostantivi, aggettivi, grammatica</p>
       </div>
       <div class="toggles">
+        <!-- Chip XP in alto: visibile solo su desktop (vedi sez. 16 di style.css) -->
+        <button type="button" id="xpTopChip" class="xp-chip xp-top"></button>
         <button type="button" id="langToggle" class="lang-toggle" aria-label="Cambia lingua di traduzione / Change translation language">
           <span class="lang-opt" data-lang="it">IT</span><span class="lang-opt" data-lang="en">EN</span>
         </button>
@@ -54,6 +56,9 @@
     </div>
     <span class="count" id="count"></span>
   </div>
+
+  <!-- Contenuto principale: su desktop è la colonna a destra del menu laterale -->
+  <main class="main" id="main">
 
   <div class="filters" id="typeFilters"></div>
 
@@ -75,6 +80,8 @@
 
   <!-- Versione dell'app: per capire al volo se si sta vedendo l'ultima pubblicazione o la cache -->
   <div class="app-version" id="appVersion"></div>
+
+  </main>
 
 </div>
 
