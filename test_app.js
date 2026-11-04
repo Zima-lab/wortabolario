@@ -46,7 +46,7 @@ const FULL = new Function(dataSrc + ';return {GRAMMATICA, FRASI, GRAM_TABLES, SO
 const GRAM = FULL.GRAMMATICA, FRASI = FULL.FRASI, GTAB = FULL.GRAM_TABLES, SOST = FULL.SOSTANTIVI, DETTI = FULL.DETTI;
 
 ok(GRAM.length===98, 'GRAMMATICA dovrebbe avere 98 schede, ne ha '+GRAM.length);
-ok(verSrc.includes('"v49"'), 'version.js non e a v49');
+ok(verSrc.includes('"v53"'), 'version.js non e a v53');
 
 // campi obbligatori e bilinguismo grammatica
 GRAM.forEach(g=>{
