@@ -1252,7 +1252,19 @@ input:focus-visible, [tabindex]:focus-visible {
    desktopMQ in js/navigazione.js. La griglia è sul body: .wrap usa display:contents,
    così intestazione, ricerca, <main> e tab bar diventano celle della stessa griglia. */
 
-.xp-top { display: none; }   /* il chip XP in alto esiste solo su desktop */
+
+/* Chip XP in alto (solo desktop): stesso guscio pill degli switch lingua/tema */
+.xp-top { display: none; }
+@media (min-width: 1024px){
+  .xp-top {
+    display: inline-flex; align-items: center; font: inherit; font-size: var(--fs-xs); font-weight: 700;
+    color: var(--plum); background: var(--card); border: 1.5px solid var(--border); border-radius: 999px;
+    box-shadow: var(--e1); padding: 0 14px; min-height: 43px; white-space: nowrap; cursor: pointer;
+    transition: box-shadow .15s;
+  }
+  .xp-top:hover { box-shadow: var(--e2, var(--e1)); }
+  .xp-top .ic { margin-right: 5px; }
+}
 
 @media (min-width: 1024px){
   body {
@@ -1276,16 +1288,13 @@ input:focus-visible, [tabindex]:focus-visible {
   /* --- Intestazione: nome + sottotitolo sulla stessa riga, controlli a destra --- */
   header.top {
     grid-column: 1 / -1; grid-row: 1;
-    margin: 0; padding: 22px var(--band-pad) 0;
+    margin: 0; padding: 22px var(--band-pad) 18px;
   }
   .header-row { align-items: center; }
   .header-row > div:first-child { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; min-width: 0; }
   header.top h1 { font-size: var(--fs-4xl); margin: 0; line-height: 1.1; }
   header.top p.sub { font-size: var(--fs-sm); }
   .toggles { align-items: center; gap: var(--sp-25); margin-top: 0; }
-  .xp-top {
-    display: inline-flex; font-size: var(--fs-sm); min-height: 40px; padding: 8px 16px;
-  }
 
   /* --- Ricerca: sempre visibile, a tutta larghezza --- */
   .searchbar {
