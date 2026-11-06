@@ -8,6 +8,11 @@
 let currentTab = "home";
 let resultsOverride = null;   // la tab Preferiti forza il filtro senza toccare quello di Cerca
 
+/* v53 — Su desktop (≥1024px) la tab bar diventa un menu laterale e la ricerca resta sempre
+   visibile in alto (layout come Glifo). Il valore deve coincidere con la sez. 16 di style.css. */
+const desktopMQ = typeof window.matchMedia === "function" ? window.matchMedia("(min-width: 1024px)") : { matches: false };
+function isDesktop(){ return !!desktopMQ.matches; }
+
 function renderExercises(){
   const s = UI_STRINGS[lang];
   const host = document.getElementById("exercises");
@@ -52,6 +57,7 @@ function setTab(t){
   });
   updateView();
   window.scrollTo({ top: 0 });
+  if(t === "cerca" && isDesktop()) searchEl().focus({ preventScroll: true });
 }
 
 function updateView(){
@@ -61,7 +67,7 @@ function updateView(){
   const showFav = currentTab === "preferiti";
   document.getElementById("home").style.display = showHome ? "" : "none";
   document.getElementById("exercises").style.display = showEx ? "" : "none";
-  document.querySelector(".searchbar").style.display = showSearch ? "" : "none";
+  document.querySelector(".searchbar").style.display = (showSearch || isDesktop()) ? "" : "none";
   document.getElementById("typeFilters").style.display = showSearch ? "" : "none";
   document.getElementById("results").style.display = (showSearch || showFav) ? "" : "none";
   if(showHome) renderHome();
@@ -76,8 +82,13 @@ function updateView(){
 searchEl().addEventListener("input", () => {
   document.getElementById("clearBtn").hidden = searchEl().value.length === 0;
   renderSuggestions();
-  updateView();
+  /* su desktop la ricerca è visibile da ogni tab: scrivere porta ai risultati */
+  if(searchEl().value.trim() && currentTab !== "cerca") setTab("cerca");
+  else updateView();
 });
+
+if(typeof desktopMQ.addEventListener === "function") desktopMQ.addEventListener("change", updateView);
+document.getElementById("xpTopChip").addEventListener("click", () => openXpPanel());
 
 searchEl().addEventListener("focus", () => { if(searchEl().value.trim()) renderSuggestions(); });
 

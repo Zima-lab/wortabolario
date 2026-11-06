@@ -355,4 +355,5 @@ function applyStaticStrings(){
   document.querySelectorAll(".tabbar .tab-lb").forEach(el => {
     if(s[el.dataset.tl]) el.textContent = s[el.dataset.tl];
   });
+  paintTopXp();
 }

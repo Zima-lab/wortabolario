@@ -227,6 +227,17 @@ function awardXp(points){
     saveXpMessages();
     showXpToast("msg", text);
   }
+  paintTopXp();
+}
+
+/* Chip XP nell'intestazione (visibile solo su desktop): stesso pannello Traguardi della card "Oggi" */
+function paintTopXp(){
+  const b = document.getElementById("xpTopChip");
+  if(!b) return;
+  const s = UI_STRINGS[lang];
+  b.innerHTML = ic("trophy", "ic-sm") + xpTotal + " XP";
+  b.title = s.xpChipTitle;
+  b.setAttribute("aria-label", s.xpChipTitle);
 }
 
 /* ---------- BACKUP: ESPORTA / IMPORTA PROGRESSI ----------
