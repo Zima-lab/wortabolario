@@ -13,39 +13,83 @@ let resultsOverride = null;   // la tab Preferiti forza il filtro senza toccare 
 const desktopMQ = typeof window.matchMedia === "function" ? window.matchMedia("(min-width: 1024px)") : { matches: false };
 function isDesktop(){ return !!desktopMQ.matches; }
 
+/* v57 — Pagina Esercizi in tre blocchi:
+   1. Da fare oggi  (ripasso parole + ripasso esercizi in scadenza)
+   2. Allenati      (quiz veloci)
+   3. Grammatica per argomento (tutti gli argomenti, divisi per sezione del Bignami)
+   Prima gli argomenti erano nascosti dietro la card "Esercizi di grammatica": ora sono in vista.
+   Su telefono le sezioni partono chiuse (aperta solo quella con esercizi da ripassare);
+   le sezioni aperte/chiuse a mano restano tali finché la pagina non si ricarica. */
+const exSecOpen = {};   // chiave sezione → true/false scelto dall'utente
 function renderExercises(){
   const s = UI_STRINGS[lang];
   const host = document.getElementById("exercises");
   const nDue = dueEntries().length;
   const nExDue = exDueItems().length;
-  const cards = [
-    { id: "exDue",   ic: "clock",  name: s.exDue,   desc: s.exDueDesc(nDue), cls: nDue > 0 ? "ex-hot" : "" },
-    { id: "exGram",  ic: "pencil", name: s.exGram,  desc: s.exGramDesc(nExDue), cls: nExDue > 0 ? "ex-hot" : "" },
+  const today = [
+    { id: "exDue",   ic: "clock",  name: s.exDue,    desc: s.exDueDesc(nDue),      cls: nDue > 0 ? "ex-hot" : "" },
+    { id: "exRevEx", ic: "pencil", name: s.exRevEx,  desc: s.exRevExDesc(nExDue),  cls: nExDue > 0 ? "ex-hot" : "" }
+  ];
+  const train = [
     { id: "exFlash", ic: "cards",  name: s.exFlash, desc: s.exFlashDesc },
     { id: "exGenus", ic: "dice",   name: s.exGenus, desc: s.exGenusDesc },
     { id: "exConj",  ic: "pencil", name: s.exConj,  desc: s.exConjDesc },
-    { id: "exWww",   ic: "book",   name: s.exWww,   desc: s.exWwwDesc },
-    { id: "exDk",    ic: "book",   name: s.exDk,    desc: s.exDkDesc },
     { id: "exTelc",  ic: "exam",   name: s.exTelc,  desc: s.exTelcDesc }
   ];
-  host.innerHTML = `
-    <p class="eyebrow">${s.exTitle}</p>
-    <div class="ex-grid">
-      ${cards.map(c => `
+  const card = c => `
         <button type="button" class="ex-card ${c.cls || ""}" id="${c.id}">
           <span class="ex-ic">${ic(c.ic)}</span>
           <span class="ex-name">${c.name}</span>
           <span class="ex-desc">${c.desc}</span>
-        </button>`).join("")}
-    </div>`;
+        </button>`;
+
+  const groups = {};
+  exTopics().forEach(t => { const k = exTopicSection(t); (groups[k] = groups[k] || []).push(t); });
+  const secs = SEC_ORDER.filter(k => groups[k]).map(k => {
+    const ts = groups[k];
+    let tot = 0, mas = 0, now = 0;
+    const rows = ts.map(t => {
+      const st = exTopicStats(t), n = t.items.length;
+      tot += n; mas += st.mastered; now += st.now;
+      return `<button type="button" class="ex-topic" data-t="${t.id}">
+          <span class="ex-topic-main">
+            <span class="ex-topic-name">${exEsc(exTopicName(t))}</span>
+            <span class="ex-topic-meta">${s.exItems(n, st.mastered)}</span>
+            <span class="ex-bar"><span class="ex-bar-fill" style="width:${Math.round(st.mastered / n * 100)}%"></span></span>
+          </span>
+          ${st.now > 0 ? `<span class="ex-chip-now">${s.exNowChip(st.now)}</span>` : ""}
+        </button>`;
+    }).join("");
+    const open = k in exSecOpen ? exSecOpen[k] : (isDesktop() || now > 0);
+    return `<details class="ex-fold" data-sec="${k}"${open ? " open" : ""}>
+        <summary class="gsec gsec-${SEC_COLOR[k]}">
+          <span class="gsec-code">${SEC_CODE[k] || k}</span>
+          <span class="gsec-title">${SEC_LABELS[k][lang === "en" ? "en" : "it"]}</span>
+          ${now > 0 ? `<span class="ex-fold-now">${s.exNowChip(now)}</span>` : ""}
+          <span class="gsec-n">${mas}/${tot}</span>
+          <span class="ex-fold-chev">${ic("chevron")}</span>
+        </summary>
+        <div class="ex-topics-grid">${rows}</div>
+      </details>`;
+  }).join("");
+
+  host.innerHTML = `
+    <p class="eyebrow">${s.exTodayTitle}</p>
+    <div class="ex-grid ex-grid-today">${today.map(card).join("")}</div>
+    <p class="eyebrow ex-eyebrow">${s.exTitle}</p>
+    <div class="ex-grid">${train.map(card).join("")}</div>
+    <p class="eyebrow ex-eyebrow">${s.exTopicsTitle}</p>
+    <p class="ex-pick-hint">${s.exPickHint}</p>
+    <div class="ex-topics">${secs}</div>`;
+
   document.getElementById("exDue").addEventListener("click", () => openFlashcards("due"));
-  document.getElementById("exGram").addEventListener("click", openExPicker);
+  document.getElementById("exRevEx").addEventListener("click", () => nExDue > 0 ? openExReview() : openExPicker());
   document.getElementById("exFlash").addEventListener("click", () => openFlashcards());
   document.getElementById("exGenus").addEventListener("click", () => openGenusQuiz());
   document.getElementById("exConj").addEventListener("click", () => openConjQuiz());
-  document.getElementById("exWww").addEventListener("click", () => openWwQuiz());
-  document.getElementById("exDk").addEventListener("click", () => openDkQuiz());
   document.getElementById("exTelc").addEventListener("click", () => openTelc());
+  host.querySelectorAll(".ex-topic").forEach(b => b.addEventListener("click", () => openExTopic(b.dataset.t)));
+  host.querySelectorAll(".ex-fold").forEach(d => d.addEventListener("toggle", () => { exSecOpen[d.dataset.sec] = d.open; }));
 }
 
 function setTab(t){
