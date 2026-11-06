@@ -81,6 +81,7 @@ document.querySelectorAll(".tabbar .tab").forEach(b => {
 
 paintStaticIcons();
 applyStaticStrings();
+paintTopXp();
 applyTheme();
 renderFilters();
 updateView();
