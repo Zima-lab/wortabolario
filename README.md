@@ -2,7 +2,7 @@
 
 Vocabolario tedesco ↔ italiano/inglese per il corso B1 — app web offline (PWA).
 
-**Sito:** https://zima-lab.github.io/wortabolario-V3/
+**Sito:** https://zima-lab.github.io/wortabolario/
 
 ## Cosa contiene
 
@@ -23,7 +23,7 @@ index.html        struttura della pagina e ordine di caricamento degli script
 style.css         stile, diviso in 14 sezioni (indice in cima al file)
 version.js        numero di versione: l'unica cosa da cambiare a ogni pubblicazione
 sw.js             funzionamento offline (elenca tutti i file da salvare in cache)
-manifest.webmanifest, icon.png, favicon.png, fonts/, *.pdf
+manifest.webmanifest, icon.png, icons/ (icone del manifest), fonts/, *.pdf
 
 dati/             IL CONTENUTO — per aggiungere parole o regole si toccano solo questi
   verbi.js          un verbo per riga

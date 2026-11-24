@@ -52,7 +52,6 @@ const PRECACHE = [
   "fonts/PoltawskiNowy-Italic-Variable.woff2",
   "manifest.webmanifest",
   "icon.png",
-  "favicon.png",
   "Grammatica_Tedesca_B1_Bignami.pdf",
   "German_Grammar_B1_Bignami_EN.pdf",
   "Grammatica_Tedesca_B2_Bignami.pdf",
