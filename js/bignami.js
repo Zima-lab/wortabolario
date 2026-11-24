@@ -119,7 +119,15 @@ const BIGNAMI_PAGES = {
   "Infinitiv Perfekt — geschrieben zu haben": 25,
   /* v47 */
   "Konjunktiv II — die Fallen": 38,
-  "Modalwörter — vielleicht, hoffentlich, leider": 42
+  "Modalwörter — vielleicht, hoffentlich, leider": 42,
+  /* v58 — pagina "madre" nel B1 */
+  "Konjunktiv II der Vergangenheit — hätte/wäre + Partizip II": 38,
+  "Bedingungssätze — wenn, falls und ohne Konjunktion": 27,
+  "mithilfe (+ Genitiv) und mithilfe von (+ Dativ)": 22,
+  /* v59 — pagina "madre" nel B1 */
+  "Passiv mit Konjunktiv II der Vergangenheit — wäre … worden": 39,
+  "Hilfsverben — haben, sein, werden: welche Form wofür?": 34,
+  "Die temporale Präposition bei (+ Dativ)": 17
 };
 
 /* ---------- BIGNAMI B2 (dalla v33) ----------
@@ -130,35 +138,41 @@ const BIGNAMI_B2_PDF = "Grammatica_Tedesca_B2_Bignami.pdf";
 const BIGNAMI_B2_PDF_EN = "German_Grammar_B2_Bignami_EN.pdf";
 function bignamiB2Pdf(){ return lang === "en" ? BIGNAMI_B2_PDF_EN : BIGNAMI_B2_PDF; }
 const BIGNAMI_B2_PAGES = {
-  /* v47: + A6 Konjunktiv II — die Fallen (p. 7) e D5 Modalwörter (p. 25) */
+  /* v59: + A8 Passiv mit Konj. II der Vergangenheit (p. 9), A9 Hilfsverben (p. 10), C6 bei temporale (p. 26) — B, C, D slittano */
   "Perfekt mit doppeltem Infinitiv": 2,
   "Das Verb lassen — vier Bedeutungen": 3,
   "Vermutungen mit Modalverben — die Sicherheitsskala": 4,
   "Trennbare und untrennbare Vorsilben": 5,
   "Konjunktiv I — die indirekte Rede": 6,
   "Konjunktiv II — die Fallen": 7,
-  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 8,
-  "Das Wort es — le sue funzioni": 9,
-  "Indirekte Fragen — ob und W-Wörter": 10,
-  "Negationswörter — nicht, kein, nichts, niemand": 11,
-  "Vergleichssätze mit als oder wie": 12,
-  "je …, desto / umso — und Vergleiche": 13,
-  "ohne … zu und (an)statt … zu": 14,
-  "Infinitivsatz oder dass-Satz?": 15,
-  "Infinitiv Perfekt — geschrieben zu haben": 16,
-  "Zweiteilige und nachgestellte Präpositionen": 17,
-  "Adjektive mit Präpositionen": 18,
-  "Nomen mit Präpositionen": 19,
-  "Nomen-Verb-Verbindungen": 20,
-  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 21,
-  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 22,
-  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 23,
-  "Das Wort eigentlich — Adverb oder Modalpartikel": 23,
-  "also · so — Folge und Vergleich": 24,
-  "Modalwörter — vielleicht, hoffentlich, leider": 25
+  "Konjunktiv II der Vergangenheit — hätte/wäre + Partizip II": 8,
+  "Passiv mit Konjunktiv II der Vergangenheit — wäre … worden": 9,
+  "Hilfsverben — haben, sein, werden: welche Form wofür?": 10,
+  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 11,
+  "Das Wort es — le sue funzioni": 12,
+  "Indirekte Fragen — ob und W-Wörter": 13,
+  "Negationswörter — nicht, kein, nichts, niemand": 14,
+  "Vergleichssätze mit als oder wie": 15,
+  "je …, desto / umso — und Vergleiche": 16,
+  "ohne … zu und (an)statt … zu": 17,
+  "Infinitivsatz oder dass-Satz?": 18,
+  "Infinitiv Perfekt — geschrieben zu haben": 19,
+  "Bedingungssätze — wenn, falls und ohne Konjunktion": 20,
+  "Zweiteilige und nachgestellte Präpositionen": 21,
+  "Adjektive mit Präpositionen": 22,
+  "Nomen mit Präpositionen": 23,
+  "Nomen-Verb-Verbindungen": 24,
+  "mithilfe (+ Genitiv) und mithilfe von (+ Dativ)": 25,
+  "Die temporale Präposition bei (+ Dativ)": 26,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 27,
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 28,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 29,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 29,
+  "also · so — Folge und Vergleich": 30,
+  "Modalwörter — vielleicht, hoffentlich, leider": 31
 };
-/* Sezioni del B2 (v47): A verbi (2-7) · B frase (8-16) · C preposizioni (17-20) · D parole (21-25) */
-function bignamiB2Section(p){ return p <= 7 ? "B2A" : p <= 16 ? "B2B" : p <= 20 ? "B2C" : "B2D"; }
+/* Sezioni del B2 (v59): A verbi (2-10) · B frase (11-20) · C preposizioni (21-26) · D parole (27-31) */
+function bignamiB2Section(p){ return p <= 10 ? "B2A" : p <= 20 ? "B2B" : p <= 26 ? "B2C" : "B2D"; }
 function bignamiPageOf(e){ return BIGNAMI_B2_PAGES[e.de] || BIGNAMI_PAGES[e.de] || 99; }
 
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------

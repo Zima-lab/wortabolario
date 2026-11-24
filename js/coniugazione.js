@@ -20,7 +20,8 @@ const VERB_META = {
   "sich aufregen": { reflexive:"akk" },
   "sich die Hände waschen": { reflexive:"dat" },
   "sich die Zähne putzen": { reflexive:"dat" },
-  "sich etwas kaufen": { reflexive:"dat" }
+  "sich etwas kaufen": { reflexive:"dat" },
+  "sich etwas in Erinnerung rufen": { reflexive:"dat" }
 };
 
 function deUmlaut(s){ return s.replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u"); }
@@ -34,7 +35,9 @@ function umlaut(s){
   const rep = ch === "a" ? "ä" : ch === "o" ? "ö" : "ü";
   return s.slice(0,idx) + rep + s.slice(idx+1);
 }
-function deriveDuPresent(pres){
+function deriveDuPresent(pres, stem){
+  /* v59: verbi forti con tema in -t e 3ª pers. senza desinenza: er hält → du hältst, er tritt → du trittst */
+  if (stem && /t$/.test(stem) && pres.endsWith("t") && !pres.endsWith("et") && !/[sßz]t$/.test(pres)) return pres + "st";
   if (pres.endsWith("et")) return pres.slice(0,-2) + "est";
   if (pres.endsWith("t")){
     const before = pres.slice(0,-1);
@@ -101,7 +104,8 @@ const PARTIZIP1_OVERRIDE = {
   sein:"seiend", tun:"tuend"
 };
 const SEPARABLE_PREFIXES = new Set(["an","auf","ein","aus","mit","nach","vor","zu","weg","zurück",
-  "ab","bei","her","hin","los","fest","statt","teil","wieder","zusammen","um","über","unter","durch","heim"]);
+  "ab","bei","her","hin","los","fest","statt","teil","wieder","zusammen","um","über","unter","durch","heim",
+  "heraus","herein","hervor","herunter","hinaus","hinein"]);
 
 function buildParadigm(v, meta){
   meta = meta || {};
@@ -133,6 +137,8 @@ function buildParadigm(v, meta){
     lastInfWord = lastInfWord.slice(candidatePrefix.length);
   }
   const unchangedStemFull = lastInfWord.endsWith("en") ? lastInfWord.slice(0,-2) : lastInfWord.slice(0,-1);
+  /* v58: verbi in -eln / -ern (erinnern, grübeln): wir/sie = stem + "n" (erinnern), non "erinneren" */
+  const wirSuffix = lastInfWord.endsWith("en") ? "en" : "n";
 
   function substitute(tokens, personIdx){
     return tokens.map(t => t === "sich" ? pronTable[personIdx] : t).join(" ");
@@ -146,13 +152,13 @@ function buildParadigm(v, meta){
   if (irregularKey) {
     coreFormsPres = IRREGULAR_PRESENT[irregularKey];
   } else if (isModal) {
-    const duPres = deriveDuPresent(coreErPres);
-    const wirPres = unchangedStemFull + "en";
+    const duPres = deriveDuPresent(coreErPres, unchangedStemFull);
+    const wirPres = unchangedStemFull + wirSuffix;
     coreFormsPres = [coreErPres, duPres, coreErPres, wirPres, ihrFromUnchangedStem(unchangedStemFull), wirPres];
   } else {
-    const duPres = deriveDuPresent(coreErPres);
+    const duPres = deriveDuPresent(coreErPres, unchangedStemFull);
     const ichPres = unchangedStemFull + "e";
-    const wirPres = unchangedStemFull + "en";
+    const wirPres = unchangedStemFull + wirSuffix;
     coreFormsPres = [ichPres, duPres, coreErPres, wirPres, ihrFromUnchangedStem(unchangedStemFull), wirPres];
   }
   const praesens = coreFormsPres.map((f,i) => attach(f, restPres, i));
@@ -177,6 +183,7 @@ function buildParadigm(v, meta){
 
   const k1Stem = v.inf === "sein" ? null : unchangedStemFull;
   const k1PresForms = v.inf === "sein" ? ["sei","seiest","sei","seien","seiet","seien"] : weakEndings(k1Stem);
+  if (wirSuffix === "n" && k1Stem) { k1PresForms[3] = k1Stem+"n"; k1PresForms[4] = k1Stem+"t"; k1PresForms[5] = k1Stem+"n"; }
   const konjIPraesens = k1PresForms.map((f,i) => attach(f, restPres, i));
   const auxK1 = auxWord === "ist" ? ["sei","seiest","sei","seien","seiet","seien"] : weakEndings("hab");
   const konjIPerfekt = auxK1.map((a,i) => [a, substitute(restPerf,i), participle].filter(Boolean).join(" "));
@@ -228,8 +235,8 @@ function buildParadigm(v, meta){
     const duRest = substitute(restPres, 1);
     const duStr = duForms.join("/") + (duRest ? " " + duRest : "");
     const ihrStr = attach(ihrFromUnchangedStem(unchangedStemFull), restPres, 4);
-    const wirStr = [unchangedStemFull+"en", "wir", substitute(restPres,3)].filter(Boolean).join(" ");
-    const sieStr = [unchangedStemFull+"en", "Sie", substitute(restPres,5)].filter(Boolean).join(" ");
+    const wirStr = [unchangedStemFull+wirSuffix, "wir", substitute(restPres,3)].filter(Boolean).join(" ");
+    const sieStr = [unchangedStemFull+wirSuffix, "Sie", substitute(restPres,5)].filter(Boolean).join(" ");
     imperativ = { du: duStr, ihr: ihrStr, wir: wirStr, Sie: sieStr };
   }
 

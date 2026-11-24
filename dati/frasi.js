@@ -118,7 +118,32 @@ const FRASI = [
   ["Mich hat überrascht, dass …", "Mi ha sorpreso che … (verbo in fondo)", "I was surprised that … (verb at the end)"],
   ["Was wäre, wenn …?", "Che cosa succederebbe se …?", "What would happen if …?"],
   ["Wenn du einen Wunsch frei hättest, was würdest du dir wünschen?", "Se potessi esprimere un desiderio, che cosa desidereresti?", "If you had one wish, what would you wish for?"],
-  ["Was hast du heute ohne … gemacht?", "Che cosa hai fatto oggi senza …? (ohne … zu / ohne dass)", "What did you do today without …? (ohne … zu / ohne dass)"]
+  ["Was hast du heute ohne … gemacht?", "Che cosa hai fatto oggi senza …? (ohne … zu / ohne dass)", "What did you do today without …? (ohne … zu / ohne dass)"],
+  /* v58 — slide B2.2: Den Kopf frei bekommen · Erinnerungen · Bedingungssätze · Passiv */
+  ["Einfach mal abschalten!", "Staccare la spina, ogni tanto!", "Just switch off for a while!"],
+  ["Ich muss erst mal den Kopf frei bekommen.", "Prima devo schiarirmi le idee.", "I need to clear my head first."],
+  ["Was wäre, wenn du nie wieder arbeiten müsstest?", "Cosa succederebbe se non dovessi più lavorare?", "What if you never had to work again?"],
+  ["Was wäre anders gewesen, wenn …?", "Cosa sarebbe stato diverso se …?", "What would have been different if …?"],
+  ["Wir haben in Erinnerungen geschwelgt.", "Ci siamo abbandonati ai ricordi.", "We were reminiscing."],
+  ["Ich habe gute Erinnerungen an diese Zeit.", "Ho bei ricordi di quel periodo.", "I have good memories of that time."],
+  /* v59 — foto del libro B2: Präsentation · Stromausfall · Energiewende · DDR/BRD · Gedächtnis */
+  ["In meiner Präsentation geht es um …", "Nella mia presentazione si parla di …", "My presentation is about …"],
+  ["Im ersten Teil geht es darum, dass …", "Nella prima parte si parla del fatto che … (verbo in fondo)", "The first part is about the fact that … (verb at the end)"],
+  ["Anschließend werde ich …", "Poi … (passo successivo della presentazione)", "After that I will …"],
+  ["Zum Schluss möchte ich …", "Per finire vorrei …", "Finally I would like to …"],
+  ["Ein wichtiger Aspekt ist, dass …", "Un aspetto importante è che …", "An important aspect is that …"],
+  ["Ich möchte darauf hinweisen, dass …", "Vorrei far notare che …", "I would like to point out that …"],
+  ["Besonders hervorheben möchte ich …", "Vorrei mettere in evidenza soprattutto …", "I would particularly like to highlight …"],
+  ["Dazu nenne ich Ihnen folgende Beispiele: …", "A questo proposito vi faccio questi esempi: …", "Here are some examples of this: …"],
+  ["Abschließend kann man sagen, dass …", "Per concludere si può dire che …", "In conclusion one can say that …"],
+  ["Zusammenfassend kann man sagen, dass …", "Riassumendo si può dire che …", "To sum up one can say that …"],
+  ["Ich bedanke mich für Ihre Aufmerksamkeit. Haben Sie Fragen?", "Vi ringrazio per l'attenzione. Avete domande?", "Thank you for your attention. Do you have any questions?"],
+  ["Die Präsentation hat mir sehr gut gefallen, weil …", "La presentazione mi è piaciuta molto perché …", "I liked the presentation very much because …"],
+  ["Den Aspekt … hast du gut erklärt.", "Hai spiegato bene l'aspetto …", "You explained the point … well."],
+  ["Ich denke, der Aspekt … hat noch gefehlt.", "Secondo me mancava ancora l'aspetto …", "I think the point … was still missing."],
+  ["Was mir nicht so gut gefallen hat, ist, dass …", "Quello che mi è piaciuto meno è che …", "What I didn't like so much is that …"],
+  ["Vielleicht könnte man …", "Forse si potrebbe …", "Maybe you could …"],
+  ["Wobei können Sie gut abschalten?", "In quali momenti riesce a staccare la spina?", "When are you able to switch off?"]
 ];
 
 const DETTI = [

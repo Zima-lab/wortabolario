@@ -45,8 +45,8 @@ const VERBI=arr('VERBI'), AGG=arr('AGGETTIVI');
 const FULL = new Function(dataSrc + ';return {GRAMMATICA, FRASI, GRAM_TABLES, SOSTANTIVI, DETTI, VERBI};')();
 const GRAM = FULL.GRAMMATICA, FRASI = FULL.FRASI, GTAB = FULL.GRAM_TABLES, SOST = FULL.SOSTANTIVI, DETTI = FULL.DETTI;
 
-ok(GRAM.length===98, 'GRAMMATICA dovrebbe avere 98 schede, ne ha '+GRAM.length);
-ok(verSrc.includes('"v53"'), 'version.js non e a v53');
+ok(GRAM.length===104, 'GRAMMATICA dovrebbe avere 104 schede, ne ha '+GRAM.length);
+ok(verSrc.includes('"v59"'), 'version.js non e a v59');
 
 // campi obbligatori e bilinguismo grammatica
 GRAM.forEach(g=>{
@@ -108,7 +108,7 @@ Object.entries(BIG).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=1&&p<=54, 'BIGNA
 const big2Src = appSrc.match(/const BIGNAMI_B2_PAGES = (\{[\s\S]*?\n\});/)[1];
 const BIG2 = eval('('+big2Src+')');
 Object.keys(BIG2).forEach(k=>ok(titoli.has(k), 'BIGNAMI_B2_PAGES: la chiave "'+k+'" non corrisponde a nessuna scheda'));
-Object.entries(BIG2).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=2&&p<=25, 'BIGNAMI_B2_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
+Object.entries(BIG2).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=2&&p<=31, 'BIGNAMI_B2_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
 const swSrc2 = fs.readFileSync(path.join(__dirname,'sw.js'),'utf8');
 ok(swSrc2.includes('Grammatica_Tedesca_B2_Bignami.pdf') && swSrc2.includes('German_Grammar_B2_Bignami_EN.pdf'), 'sw.js: PDF B2 non in precache');
 
@@ -275,9 +275,16 @@ const $ = (id) => w.document.getElementById(id);
 const click = (el) => el.dispatchEvent(new w.Event('click',{bubbles:true}));
 // tab Esercizi -> scheda Grammatica
 click(w.document.querySelector('.tab[data-tab="esercizi"]'));
-ok(!!$('exGram'), 'tab Esercizi: manca la card Grammatica');
-click($('exGram'));
-ok($('exOverlay').classList.contains('open'), 'exGram: overlay non aperto');
+/* v57: gli argomenti sono elencati direttamente nella pagina Esercizi */
+ok(!$('exGram'), 'tab Esercizi: la card Grammatica doveva essere tolta');
+ok(!$('exWww') && !$('exDk'), 'tab Esercizi: le card wurde/dürfen dovevano essere tolte');
+ok(!!$('exRevEx'), 'tab Esercizi: manca la card Ripasso esercizi');
+ok($('exercises').querySelectorAll('.ex-topic').length === EXT.length, 'pagina Esercizi: numero di argomenti sbagliato');
+ok($('exercises').querySelectorAll('.ex-fold').length >= 3, 'pagina Esercizi: mancano le sezioni');
+click($('exercises').querySelector('.ex-topic[data-t="nde"]'));
+ok($('exOverlay').classList.contains('open') && $('exBody').querySelector('.ex-instr'), 'pagina Esercizi: il tocco su n-Deklination non avvia la sessione');
+w.openExPicker();
+ok($('exOverlay').classList.contains('open'), 'openExPicker: overlay non aperto');
 ok($('exBody').querySelectorAll('.ex-topic').length === EXT.length, 'elenco: numero di argomenti sbagliato');
 ok($('exBody').querySelectorAll('.gsec').length >= 3, 'elenco: mancano le barre di sezione');
 // sessione: risolvo ogni tipo
@@ -348,11 +355,10 @@ if(entry && entry.querySelector('.ex-entry-btn')){
   const visti = new Set();
   let guard2 = 0;
   while(visti.size < 4 && guard2++ < 40){
-    click($('exGram'));   // già nella tab esercizi? ricarico la tab
     break;
   }
   click(w.document.querySelector('.tab[data-tab="esercizi"]'));
-  click($('exGram'));
+  w.openExPicker();
   ['pronad','nebens','pos0','komma','dk','ww','gen','nde'].forEach(id => {
     if(visti.size >= 4) return;
     /* v42: gli argomenti hanno più di 10 esercizi, quindi un tipo può mancare dal mazzo:
