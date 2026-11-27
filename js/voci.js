@@ -11,7 +11,7 @@ VERBI.forEach(v => {
   ENTRIES.push({
     id: "v"+(uid++), type: "verbo",
     de: v.inf, it: v.it, en: v.en, catLabel: v.cat,
-    fields: [ ["Präsens", v.pres], ["Präteritum", v.pra], ["Perfekt", v.perf] ],
+    fields: [ ["Präsens", v.pres], ["Präteritum", v.pra], ["Perfekt", v.perf] ].concat(v.prep ? [["Preposizione", v.prep]] : []),
     rows: [], enRows: [],
     note: v.note, enNote: v.enNote,
     ex: v.ex, enEx: v.enex,

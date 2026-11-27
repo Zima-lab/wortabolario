@@ -133,7 +133,8 @@ function buildParadigm(v, meta){
   let lastInfWord = infWords[infWords.length-1];
   const nonSichRestPres = presTokens.slice(1).filter(t => t !== "sich");
   const candidatePrefix = nonSichRestPres[nonSichRestPres.length-1];
-  if (candidatePrefix && SEPARABLE_PREFIXES.has(candidatePrefix) && lastInfWord.startsWith(candidatePrefix)) {
+  /* v62: anche prefissi fuori elenco (fern-, weh-, leid-, gut-, zugute-, wider-…), se l'infinito comincia davvero con quella parola */
+  if (candidatePrefix && lastInfWord.startsWith(candidatePrefix) && lastInfWord.length > candidatePrefix.length + 2) {
     lastInfWord = lastInfWord.slice(candidatePrefix.length);
   }
   const unchangedStemFull = lastInfWord.endsWith("en") ? lastInfWord.slice(0,-2) : lastInfWord.slice(0,-1);

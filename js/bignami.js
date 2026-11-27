@@ -127,7 +127,12 @@ const BIGNAMI_PAGES = {
   /* v59 — pagina "madre" nel B1 */
   "Passiv mit Konjunktiv II der Vergangenheit — wäre … worden": 39,
   "Hilfsverben — haben, sein, werden: welche Form wofür?": 34,
-  "Die temporale Präposition bei (+ Dativ)": 17
+  "Die temporale Präposition bei (+ Dativ)": 17,
+  /* v61 — pagina "madre" nel B1 */
+  "Passiversatzformen — lässt sich, ist zu, -bar": 39,
+  "Relativsätze mit wer, wem, wen — Wer …, (der) …": 6,
+  "Irreale Wünsche und Vergleiche — wenn … doch nur, als ob": 38,
+  "Satzumformung — Präposition, Nebensatz oder Verbindungsadverb": 22
 };
 
 /* ---------- BIGNAMI B2 (dalla v33) ----------
@@ -138,7 +143,7 @@ const BIGNAMI_B2_PDF = "Grammatica_Tedesca_B2_Bignami.pdf";
 const BIGNAMI_B2_PDF_EN = "German_Grammar_B2_Bignami_EN.pdf";
 function bignamiB2Pdf(){ return lang === "en" ? BIGNAMI_B2_PDF_EN : BIGNAMI_B2_PDF; }
 const BIGNAMI_B2_PAGES = {
-  /* v59: + A8 Passiv mit Konj. II der Vergangenheit (p. 9), A9 Hilfsverben (p. 10), C6 bei temporale (p. 26) — B, C, D slittano */
+  /* v61: + A10 Passiversatzformen (p. 11), B11 wer/wem/wen (p. 22), B12 irreale Wünsche/Vergleiche (p. 23), C7 Satzumformung (p. 30) — B, C, D slittano */
   "Perfekt mit doppeltem Infinitiv": 2,
   "Das Verb lassen — vier Bedeutungen": 3,
   "Vermutungen mit Modalverben — die Sicherheitsskala": 4,
@@ -148,31 +153,35 @@ const BIGNAMI_B2_PAGES = {
   "Konjunktiv II der Vergangenheit — hätte/wäre + Partizip II": 8,
   "Passiv mit Konjunktiv II der Vergangenheit — wäre … worden": 9,
   "Hilfsverben — haben, sein, werden: welche Form wofür?": 10,
-  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 11,
-  "Das Wort es — le sue funzioni": 12,
-  "Indirekte Fragen — ob und W-Wörter": 13,
-  "Negationswörter — nicht, kein, nichts, niemand": 14,
-  "Vergleichssätze mit als oder wie": 15,
-  "je …, desto / umso — und Vergleiche": 16,
-  "ohne … zu und (an)statt … zu": 17,
-  "Infinitivsatz oder dass-Satz?": 18,
-  "Infinitiv Perfekt — geschrieben zu haben": 19,
-  "Bedingungssätze — wenn, falls und ohne Konjunktion": 20,
-  "Zweiteilige und nachgestellte Präpositionen": 21,
-  "Adjektive mit Präpositionen": 22,
-  "Nomen mit Präpositionen": 23,
-  "Nomen-Verb-Verbindungen": 24,
-  "mithilfe (+ Genitiv) und mithilfe von (+ Dativ)": 25,
-  "Die temporale Präposition bei (+ Dativ)": 26,
-  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 27,
-  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 28,
-  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 29,
-  "Das Wort eigentlich — Adverb oder Modalpartikel": 29,
-  "also · so — Folge und Vergleich": 30,
-  "Modalwörter — vielleicht, hoffentlich, leider": 31
+  "Passiversatzformen — lässt sich, ist zu, -bar": 11,
+  "Dativ und Akkusativ im Mittelfeld — die Reihenfolge": 12,
+  "Das Wort es — le sue funzioni": 13,
+  "Indirekte Fragen — ob und W-Wörter": 14,
+  "Negationswörter — nicht, kein, nichts, niemand": 15,
+  "Vergleichssätze mit als oder wie": 16,
+  "je …, desto / umso — und Vergleiche": 17,
+  "ohne … zu und (an)statt … zu": 18,
+  "Infinitivsatz oder dass-Satz?": 19,
+  "Infinitiv Perfekt — geschrieben zu haben": 20,
+  "Bedingungssätze — wenn, falls und ohne Konjunktion": 21,
+  "Relativsätze mit wer, wem, wen — Wer …, (der) …": 22,
+  "Irreale Wünsche und Vergleiche — wenn … doch nur, als ob": 23,
+  "Zweiteilige und nachgestellte Präpositionen": 24,
+  "Adjektive mit Präpositionen": 25,
+  "Nomen mit Präpositionen": 26,
+  "Nomen-Verb-Verbindungen": 27,
+  "mithilfe (+ Genitiv) und mithilfe von (+ Dativ)": 28,
+  "Die temporale Präposition bei (+ Dativ)": 29,
+  "Satzumformung — Präposition, Nebensatz oder Verbindungsadverb": 30,
+  "Wortbildung: Nomen — Nominalisierung, -ung, -heit, -keit": 31,
+  "Wortbildung: Adjektive — un-, in-, des- und -bar, -los, -reich, -voll": 32,
+  "Modalpartikeln — denn, eigentlich, doch, ja, aber, wohl": 33,
+  "Das Wort eigentlich — Adverb oder Modalpartikel": 33,
+  "also · so — Folge und Vergleich": 34,
+  "Modalwörter — vielleicht, hoffentlich, leider": 35
 };
-/* Sezioni del B2 (v59): A verbi (2-10) · B frase (11-20) · C preposizioni (21-26) · D parole (27-31) */
-function bignamiB2Section(p){ return p <= 10 ? "B2A" : p <= 20 ? "B2B" : p <= 26 ? "B2C" : "B2D"; }
+/* Sezioni del B2 (v61): A verbi (2-11) · B frase (12-23) · C preposizioni (24-30) · D parole (31-35) */
+function bignamiB2Section(p){ return p <= 11 ? "B2A" : p <= 23 ? "B2B" : p <= 30 ? "B2C" : "B2D"; }
 function bignamiPageOf(e){ return BIGNAMI_B2_PAGES[e.de] || BIGNAMI_PAGES[e.de] || 99; }
 
 /* ---------- SEZIONI DEL BIGNAMI (A-F) ----------

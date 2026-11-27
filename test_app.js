@@ -45,8 +45,8 @@ const VERBI=arr('VERBI'), AGG=arr('AGGETTIVI');
 const FULL = new Function(dataSrc + ';return {GRAMMATICA, FRASI, GRAM_TABLES, SOSTANTIVI, DETTI, VERBI};')();
 const GRAM = FULL.GRAMMATICA, FRASI = FULL.FRASI, GTAB = FULL.GRAM_TABLES, SOST = FULL.SOSTANTIVI, DETTI = FULL.DETTI;
 
-ok(GRAM.length===104, 'GRAMMATICA dovrebbe avere 104 schede, ne ha '+GRAM.length);
-ok(verSrc.includes('"v59"'), 'version.js non e a v59');
+ok(GRAM.length===108, 'GRAMMATICA dovrebbe avere 108 schede, ne ha '+GRAM.length);
+ok(verSrc.includes('"v62"'), 'version.js non e a v62');
 
 // campi obbligatori e bilinguismo grammatica
 GRAM.forEach(g=>{
@@ -108,7 +108,7 @@ Object.entries(BIG).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=1&&p<=54, 'BIGNA
 const big2Src = appSrc.match(/const BIGNAMI_B2_PAGES = (\{[\s\S]*?\n\});/)[1];
 const BIG2 = eval('('+big2Src+')');
 Object.keys(BIG2).forEach(k=>ok(titoli.has(k), 'BIGNAMI_B2_PAGES: la chiave "'+k+'" non corrisponde a nessuna scheda'));
-Object.entries(BIG2).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=2&&p<=31, 'BIGNAMI_B2_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
+Object.entries(BIG2).forEach(([k,p])=>ok(Number.isInteger(p)&&p>=2&&p<=35, 'BIGNAMI_B2_PAGES: pagina fuori range per "'+k+'" ('+p+')'));
 const swSrc2 = fs.readFileSync(path.join(__dirname,'sw.js'),'utf8');
 ok(swSrc2.includes('Grammatica_Tedesca_B2_Bignami.pdf') && swSrc2.includes('German_Grammar_B2_Bignami_EN.pdf'), 'sw.js: PDF B2 non in precache');
 
